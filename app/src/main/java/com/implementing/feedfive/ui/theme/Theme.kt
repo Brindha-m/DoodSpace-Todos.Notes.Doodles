@@ -68,11 +68,11 @@ fun FeedFiveTheme(
         }
     }
 
-    val Typography = getTypography(fontFamily)
+    val typography = getTypography(fontFamily)
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )
