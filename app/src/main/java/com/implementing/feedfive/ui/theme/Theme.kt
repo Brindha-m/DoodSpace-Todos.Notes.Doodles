@@ -10,21 +10,26 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.font.FontFamily
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = PrimaryColor,
+    secondary = SecondaryColor,
+    surface = DarkGray,
+    background = Color.Black,
+    onSurface = Color.White,
+    onBackground = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = PrimaryColor,
+    secondary = SecondaryColor,
+    background = Color.White,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -40,6 +45,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun FeedFiveTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    fontFamily: FontFamily = Jost,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -62,9 +68,12 @@ fun FeedFiveTheme(
         }
     }
 
+    val Typography = getTypography(fontFamily)
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }
