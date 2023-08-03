@@ -13,16 +13,22 @@ interface BookmarkDao {
 
     @Query("SELECT * FROM bookmarks")
     fun getAllBookmarks(): Flow<List<Bookmark>>
+
     @Query("SELECT * FROM bookmarks WHERE id = :id")
     suspend fun getBookmark(id: Int): Bookmark
+
     @Query("SELECT * FROM bookmarks WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR url LIKE '%' || :query || '%'")
     suspend fun getBookmark(query: String): List<Bookmark>
+
     @Insert
     suspend fun insertBookmark(bookmark: Bookmark)
+
     @Delete
     suspend fun deleteBookmark(bookmark: Bookmark)
+
     @Update
     suspend fun updateBookmark(bookmark: Bookmark)
+
     @Insert
     suspend fun insertBookmarks(bookmark: List<Bookmark>)
 

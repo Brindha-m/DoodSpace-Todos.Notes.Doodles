@@ -17,6 +17,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Singleton
     @Provides
     fun provideLocalDataBase(@ApplicationContext context: Context) =
@@ -27,9 +28,11 @@ object AppModule {
         )
             .addMigrations(Migration_1_2)
             .build()
+
     @Singleton
     @Provides
     fun provideBookmarkDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.bookmarkDao()
+
     @Singleton
     @Provides
     fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository = BookmarkRepositoryImpl(bookmarkDao)
