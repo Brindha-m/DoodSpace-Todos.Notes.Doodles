@@ -14,8 +14,8 @@ data class Bookmark(
     val title: String? = "",
     val description: String = "",
     @ColumnInfo(name = "created_date")
-    val createdDate: Date = Date(),
+    val createdDate: Long = 0L,
     @ColumnInfo(name = "updated_date")
-    val updatedDate: Date = Date()
+    val updatedDate: Long = 0L
 
 )
