@@ -104,8 +104,8 @@ fun SpaceWideCard(
 @Composable
 fun SpaceRegularCardPreview() {
     SpaceRegularCard(
-        "Notes",
-        R.drawable.notes_img,
-        Blue
+        "Book Marks",
+        R.drawable.bookmarks_img,
+        Color.Blue
     )
 }
