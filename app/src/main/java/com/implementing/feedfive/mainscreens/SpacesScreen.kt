@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -41,15 +42,20 @@ fun SpacesScreen(
                 title = {
                     Text(
                         text = "Spaces",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+
             )
         }
     ) {
+
+
         LazyColumn {
             item {
+                Spacer(Modifier.height(60.dp))
+
                 Row {
                     SpaceRegularCard(
                         modifier = Modifier.weight(1f, fill = true),

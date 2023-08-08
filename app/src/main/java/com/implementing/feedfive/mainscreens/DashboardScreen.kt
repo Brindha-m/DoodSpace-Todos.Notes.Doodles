@@ -24,7 +24,7 @@ fun DashboardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "dashboard",
+                        text = "Dashboard",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },

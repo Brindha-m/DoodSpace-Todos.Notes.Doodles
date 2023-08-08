@@ -23,7 +23,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "dashboard",
+                        text = "Settings",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
