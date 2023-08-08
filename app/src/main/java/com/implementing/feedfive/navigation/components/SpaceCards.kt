@@ -47,7 +47,11 @@ fun SpaceRegularCard(
                 .padding(18.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = title, style = MaterialTheme.typography.bodySmall.copy(color = Color.White))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White)
+            )
+
             Image(
                 modifier = Modifier
                     .size(70.dp)

@@ -20,7 +20,6 @@ fun MainBottomBar(
     items: List<BottomNavItem>,
 ) {
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
-
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         val currentDestination = navBackStackEntry?.destination
