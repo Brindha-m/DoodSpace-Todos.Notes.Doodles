@@ -6,16 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.implementing.feedfive.navigation.Screen
+import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkDetailsScreen
+import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkSearchScreen
+import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarksScreen
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.BookmarksScreen.route) {
-//                            BookmarksScreen(navController = navController)
+                            BookmarksScreen(navController = navController)
                         }
 
                         composable(
@@ -57,14 +57,14 @@ class MainActivity : ComponentActivity() {
                                 type = NavType.IntType
                             })
                             ) {
-//                            BookmarkDetailScreen(
-//                                navController = navController,
-//                                it.arguments?.getInt(Constants.BOOKMARK_ID_ARG)!!
-//                            )
+                            BookmarkDetailsScreen(
+                                navController = navController,
+                                bookmarkId = it.arguments?.getInt(Constants.BOOKMARK_ID_ARG)!!
+                            )
                         }
 
                         composable(Screen.BookmarkSearchScreen.route) {
-//                            BookmarkSearchScreen(navController = navController)
+                            BookmarkSearchScreen(navController = navController)
                         }
 
                     }

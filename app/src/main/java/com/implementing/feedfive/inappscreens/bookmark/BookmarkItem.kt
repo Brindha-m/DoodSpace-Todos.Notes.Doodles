@@ -1,4 +1,4 @@
-package com.implementing.feedfive.presentation.bookmark
+package com.implementing.feedfive.inappscreens.bookmark
 
 import android.content.Intent
 import android.net.Uri

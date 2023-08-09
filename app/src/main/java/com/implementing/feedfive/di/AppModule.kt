@@ -5,8 +5,11 @@ import androidx.room.Room
 import androidx.work.impl.Migration_1_2
 import com.implementing.feedfive.data.local.FeedFiveDatabase
 import com.implementing.feedfive.data.local.dao.BookmarkDao
+import com.implementing.feedfive.dataStore
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepository
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepositoryImpl
+import com.implementing.feedfive.domain.repository.settings.SettingsRepository
+import com.implementing.feedfive.domain.repository.settings.SettingsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +39,14 @@ object AppModule {
     @Singleton
     @Provides
     fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository = BookmarkRepositoryImpl(bookmarkDao)
+
+
+
+    @Singleton
+    @Provides
+    fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository = SettingsRepositoryImpl(context.dataStore)
+
+    @Singleton
+    @Provides
+    fun provideAppContext(@ApplicationContext context: Context) = context
 }

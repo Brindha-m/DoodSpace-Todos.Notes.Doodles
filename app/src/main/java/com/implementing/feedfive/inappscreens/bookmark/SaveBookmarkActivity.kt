@@ -1,4 +1,4 @@
-package com.implementing.feedfive.presentation.bookmark
+package com.implementing.feedfive.inappscreens.bookmark
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.implementing.feedfive.R
 import com.implementing.feedfive.model.Bookmark
-import com.implementing.feedfive.presentation.bookmark.viewmodel.BookmarksViewModel
+import com.implementing.feedfive.inappscreens.bookmark.viewmodel.BookmarksViewModel
 import com.implementing.feedfive.util.isValidUrl
 import dagger.hilt.android.AndroidEntryPoint
 
