@@ -2,7 +2,7 @@ package com.implementing.feedfive.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryColor = Color(0xFF2DD1E7)
+val PrimaryColor = Color(0xFF161616)
 val PrimaryDarkColor = Color(0xFF00B0B0)
 val SecondaryColor = Color(0xFF5939CE)
 val DarkGray = Color(0xFF090909)

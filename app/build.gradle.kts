@@ -133,6 +133,9 @@ dependencies {
 
     // Compose live data
     implementation("androidx.compose.runtime:runtime-livedata")
+
+    /** Animated Compose Bottom navigation */
+    implementation("com.exyte:animated-navigation-bar:1.0.0")
 }
 
 
