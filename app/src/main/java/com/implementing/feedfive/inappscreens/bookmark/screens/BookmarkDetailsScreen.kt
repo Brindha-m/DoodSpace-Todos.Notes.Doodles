@@ -166,6 +166,9 @@ fun BookmarkDetailsScreen(
                 .fillMaxSize()
                 .padding(12.dp)
         ) {
+
+            Spacer(Modifier.height(60.dp))
+
             OutlinedTextField(
                 value = url,
                 onValueChange = { url = it },

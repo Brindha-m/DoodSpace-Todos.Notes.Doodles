@@ -123,8 +123,9 @@ fun BookmarksScreen(
                 IconButton(onClick = { orderSettingsVisible = !orderSettingsVisible }) {
                     Icon(
                         modifier = Modifier.size(25.dp),
-                        painter = painterResource(R.drawable.ic_settings_sliders),
-                        contentDescription = stringResource(R.string.order_by)
+                        painter = painterResource(R.drawable.ic_setttings_slider),
+                        contentDescription = stringResource(R.string.order_by),
+                        tint = Color.DarkGray
                     )
                 }
                 IconButton(onClick = {
@@ -132,8 +133,9 @@ fun BookmarksScreen(
                 }) {
                     Icon(
                         modifier = Modifier.size(25.dp),
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = stringResource(R.string.search)
+                        painter = painterResource(id = R.drawable.ic_searchbook),
+                        contentDescription = stringResource(R.string.search),
+                        tint = Color.DarkGray
                     )
                 }
             }
@@ -185,6 +187,9 @@ fun BookmarksScreen(
                 ) {
                     items(uiState.bookmarks) { bookmark ->
                         key(bookmark.id) {
+
+                            Spacer(Modifier.height(60.dp))
+
                             BookmarkItem(
                                 bookmark = bookmark,
                                 onClick = {

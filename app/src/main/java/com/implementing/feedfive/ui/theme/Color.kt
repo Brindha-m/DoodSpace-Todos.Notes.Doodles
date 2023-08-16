@@ -1,5 +1,6 @@
 package com.implementing.feedfive.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val PrimaryColor = Color(0xFF161616)
@@ -16,3 +17,6 @@ val Purple = Color(0xFF6F4CAD)
 
 val Gray = Color(0xFF7E7979)
 val LightGray = Color(0xFFECECEC)
+
+
+val bgCard = Brush.verticalGradient(colors = listOf(Color.Blue, Color.White))

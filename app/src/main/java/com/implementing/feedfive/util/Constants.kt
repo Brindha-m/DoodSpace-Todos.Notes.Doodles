@@ -24,11 +24,11 @@ object Constants {
 
     // Navigation
     const val TASK_ID_ARG = "task_id"
-    const val TASK_DETAILS_URI = "app://com.mhss.app.mybrain/task_details"
+    const val TASK_DETAILS_URI = "app://com.implementing.feedfive/task_details"
     const val ADD_TASK_ARG = "add_task"
-    const val TASKS_SCREEN_URI = "app://com.mhss.app.mybrain/tasks"
-    const val CALENDAR_SCREEN_URI = "app://com.mhss.app.mybrain/calendar"
-    const val CALENDAR_DETAILS_SCREEN_URI = "app://com.mhss.app.mybrain/calendar_event_details"
+    const val TASKS_SCREEN_URI = "app://com.implementing.feedfive/tasks"
+    const val CALENDAR_SCREEN_URI = "app://com.implementing.feedfive/calendar"
+    const val CALENDAR_DETAILS_SCREEN_URI = "app://com.implementing.feedfive/calendar_event_details"
     const val NOTE_ID_ARG = "note_id"
     const val BOOKMARK_ID_ARG = "bookmark_id"
     const val DIARY_ID_ARG = "diary_id"
@@ -44,9 +44,9 @@ object Constants {
 
     // Backup
     const val EXPORT_DIR = "MyBrain Export"
-    const val BACKUP_NOTES_FILE_NAME = "mybrain_notes.txt"
-    const val BACKUP_TASKS_FILE_NAME = "mybrain_tasks.txt"
-    const val BACKUP_DIARY_FILE_NAME = "mybrain_diary.txt"
-    const val BACKUP_BOOKMARKS_FILE_NAME = "mybrain_bookmarks.txt"
+    const val BACKUP_NOTES_FILE_NAME = "myfive_notes.txt"
+    const val BACKUP_TASKS_FILE_NAME = "myfive_tasks.txt"
+    const val BACKUP_DIARY_FILE_NAME = "myfive_diary.txt"
+    const val BACKUP_BOOKMARKS_FILE_NAME = "myfive_bookmarks.txt"
 
 }

@@ -5,7 +5,9 @@ import androidx.room.Room
 import androidx.work.impl.Migration_1_2
 import com.implementing.feedfive.data.local.FeedFiveDatabase
 import com.implementing.feedfive.data.local.dao.BookmarkDao
+import com.implementing.feedfive.data.local.dao.DiaryDao
 import com.implementing.feedfive.dataStore
+import com.implementing.feedfive.domain.repository.diary.DiaryRepositoryImpl
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepository
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepositoryImpl
 import com.implementing.feedfive.domain.repository.settings.SettingsRepository
@@ -32,6 +34,7 @@ object AppModule {
             .addMigrations(Migration_1_2)
             .build()
 
+// Bookmark repo and dao
     @Singleton
     @Provides
     fun provideBookmarkDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.bookmarkDao()
@@ -40,7 +43,15 @@ object AppModule {
     @Provides
     fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository = BookmarkRepositoryImpl(bookmarkDao)
 
+// Diary repo and dao
+    @Singleton
+    @Provides
+    fun provideDiaryDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.diaryDao()
 
+    @Singleton
+    @Provides
+    fun provideDiaryRepository(diaryDao: DiaryDao): DiaryRepositoryImpl = DiaryRepositoryImpl(diaryDao)
+// Setting Repo
 
     @Singleton
     @Provides

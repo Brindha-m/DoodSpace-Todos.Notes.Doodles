@@ -18,8 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,11 +36,13 @@ fun SpaceRegularCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+
     Card(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier.padding(8.dp).graphicsLayer(alpha = 0.9f),
         shape = RoundedCornerShape(25.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
+
     ) {
         Column(
             Modifier

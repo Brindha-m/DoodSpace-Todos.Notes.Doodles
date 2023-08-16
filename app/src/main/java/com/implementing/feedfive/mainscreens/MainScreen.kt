@@ -51,8 +51,9 @@ fun MainScreen(
         NavigationBarItems.values()
     }
 
+        // by default it will start with the spaces in bottom nav - value -> 1
     var selectedIndex by remember {
-        mutableStateOf(0)
+        mutableStateOf(1)
     }
 
 
@@ -78,11 +79,11 @@ fun MainScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            modifier = Modifier.size(26.dp),
+                            modifier = Modifier.size(22.dp),
                             painter = painterResource(id = item.icon),
                             contentDescription = "Bottom Bar",
-                            tint = if (selectedIndex == item.ordinal) MaterialTheme.colorScheme.onPrimary
-                            else MaterialTheme.colorScheme.inversePrimary
+                            tint = if (selectedIndex == item.ordinal) MaterialTheme.colorScheme.inversePrimary
+                            else MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -93,7 +94,7 @@ fun MainScreen(
         when (navigationBarItems[selectedIndex]) {
             NavigationBarItems.Dashboard -> DashboardScreen(navController = mainNavController)
             NavigationBarItems.Settings -> SettingsScreen(navController = mainNavController)
-            NavigationBarItems.Spaces -> SpacesScreen(mainNavController)
+            NavigationBarItems.Spaces -> SpacesScreen(navController = mainNavController)
             else -> {}
         }
     }

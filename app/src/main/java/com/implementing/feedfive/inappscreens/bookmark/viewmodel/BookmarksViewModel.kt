@@ -58,6 +58,7 @@ class BookmarksViewModel @Inject constructor(
 
     var uiState by mutableStateOf(UiState())
         private set
+    // private set --> private setter for the uiState property.
 
     private var getBookmarksJob: Job? = null
 
