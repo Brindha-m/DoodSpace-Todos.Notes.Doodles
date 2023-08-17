@@ -26,8 +26,5 @@ class FiveHiltMain : Application() {
 }
 
 // for string resources where context is not available
-fun getString(
-    @StringRes
-    resId: Int,
-    vararg args: String
-) = FiveHiltMain.appContext.getString(resId, *args)
+fun getString(@StringRes resId: Int, vararg args: String) =
+    FiveHiltMain.appContext.getString(resId, *args)

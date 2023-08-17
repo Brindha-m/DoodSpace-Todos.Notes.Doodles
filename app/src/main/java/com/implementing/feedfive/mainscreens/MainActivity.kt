@@ -16,6 +16,10 @@ import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkDetailsScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkSearchScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarksScreen
+import com.implementing.feedfive.inappscreens.diary.chart.DiaryChartScreen
+import com.implementing.feedfive.inappscreens.diary.screens.DiaryEntryDetailsScreen
+import com.implementing.feedfive.inappscreens.diary.screens.DiaryScreen
+import com.implementing.feedfive.inappscreens.diary.screens.DiarySearchScreen
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,13 +43,14 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Main.route,
                         navController = navController
                     ) {
-
                         composable(Screen.Main.route) {
                             MainScreen(
                                 startUpScreen = startUpScreen,
                                 mainNavController = navController
                             )
                         }
+
+                        // Bookmark Section
 
                         composable(Screen.BookmarksScreen.route) {
                             BookmarksScreen(navController = navController)
@@ -66,9 +71,32 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.BookmarkSearchScreen.route) {
                             BookmarkSearchScreen(navController = navController)
                         }
+                        // Diary Section
+
+                        composable(Screen.DiaryScreen.route) {
+                            DiaryScreen(navController = navController)
+                        }
+
+                        composable(Screen.DiarySearchScreen.route) {
+                            DiarySearchScreen(navController = navController)
+                        }
+
+                        composable(Screen.DiaryDetailScreen.route,
+                            arguments = listOf(navArgument(Constants.DIARY_ID_ARG) {
+                                type = NavType.IntType
+                            })
+                        ) {
+                            DiaryEntryDetailsScreen(
+                                navController = navController,
+                                it.arguments?.getInt(Constants.DIARY_ID_ARG)!!
+                            )
+                        }
+
+                        composable(Screen.DiaryChartScreen.route) {
+                            DiaryChartScreen()
+                        }
 
                     }
-
 
                 }
             }
