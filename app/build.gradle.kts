@@ -123,7 +123,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
     // Compose MarkDown
-//    implementation("com.github.jeziellago:compose-markdown:0.2.9")
+    implementation("com.github.jeziellago:compose-markdown:0.3.4")
 
     // Compose Glance (Widgets)
 //    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")

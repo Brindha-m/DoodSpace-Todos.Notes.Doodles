@@ -1,5 +1,6 @@
 package com.implementing.feedfive.data.local.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -8,7 +9,7 @@ import androidx.room.Update
 import com.implementing.feedfive.model.Note
 import com.implementing.feedfive.model.NoteFolder
 import kotlinx.coroutines.flow.Flow
-
+@Dao
 interface NoteDao {
     // Note section
     @Query("SELECT * FROM notes")

@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // FOR Markdown - notes section
+        maven(url = "https://jitpack.io")
     }
 }
 
