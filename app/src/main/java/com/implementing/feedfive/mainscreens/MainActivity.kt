@@ -20,6 +20,10 @@ import com.implementing.feedfive.inappscreens.diary.chart.DiaryChartScreen
 import com.implementing.feedfive.inappscreens.diary.screens.DiaryEntryDetailsScreen
 import com.implementing.feedfive.inappscreens.diary.screens.DiaryScreen
 import com.implementing.feedfive.inappscreens.diary.screens.DiarySearchScreen
+import com.implementing.feedfive.inappscreens.note.screens.NoteDetailsScreen
+import com.implementing.feedfive.inappscreens.note.screens.NoteFolderDetailsScreen
+import com.implementing.feedfive.inappscreens.note.screens.NotesScreen
+import com.implementing.feedfive.inappscreens.note.screens.NotesSearchScreen
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,6 +98,43 @@ class MainActivity : ComponentActivity() {
 
                         composable(Screen.DiaryChartScreen.route) {
                             DiaryChartScreen()
+                        }
+
+                        // Notes Section
+                        composable(Screen.NotesScreen.route) {
+                            NotesScreen(navController = navController)
+                        }
+                        composable(
+                            Screen.NoteDetailsScreen.route,
+                            arguments = listOf(navArgument(Constants.NOTE_ID_ARG) {
+                                type = NavType.IntType
+                            },
+                                navArgument(Constants.FOLDER_ID) {
+                                    type = NavType.IntType
+                                }
+                            ),
+                        ) {
+                            NoteDetailsScreen(
+                                navController,
+                                it.arguments?.getInt(Constants.NOTE_ID_ARG) ?: -1,
+                                it.arguments?.getInt(Constants.FOLDER_ID) ?: -1
+                            )
+                        }
+
+                        composable(Screen.NoteSearchScreen.route) {
+                            NotesSearchScreen(navController = navController)
+                        }
+
+                        composable(
+                            Screen.NoteFolderDetailsScreen.route,
+                            arguments = listOf(navArgument(Constants.FOLDER_ID) {
+                                type = NavType.IntType
+                            })
+                        ) {
+                            NoteFolderDetailsScreen(
+                                navController = navController,
+                                it.arguments?.getInt(Constants.FOLDER_ID) ?: -1
+                            )
                         }
 
                     }

@@ -15,7 +15,7 @@ import com.implementing.feedfive.model.NoteFolder
 
 @Database(
     entities = [Bookmark::class, Diary::class, Note::class, NoteFolder::class],
-    version = 3 )
+    version = 5 )
 //@AutoMigration(from = 1, to = 2)
 @TypeConverters(DBConverters::class)
 abstract class FeedFiveDatabase: RoomDatabase() {
