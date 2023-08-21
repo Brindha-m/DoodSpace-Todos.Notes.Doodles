@@ -38,8 +38,11 @@ sealed class Screen(val route: String) {
 
     object CalendarScreen : Screen("calendar_screen")
 
-    object TasksScreen : Screen("tasks_screen")
-   // object TasksScreen : Screen("tasks_screen?${SyncStateContract.Constants.ADD_TASK_ARG}={${Constants.ADD_TASK_ARG}}")
+//    object TasksScreen : Screen("tasks_screen")
+   object TasksScreen : Screen("tasks_screen?${Constants.ADD_TASK_ARG}={${Constants.ADD_TASK_ARG}}")
+   object TaskDetailScreen : Screen("task_detail_screen/{${Constants.TASK_ID_ARG}}")
+   object TaskSearchScreen : Screen("task_search_screen")
+
 
 
 
@@ -47,8 +50,6 @@ sealed class Screen(val route: String) {
 
 
     /*
-    object TaskDetailScreen : Screen("task_detail_screen/{${Constants.TASK_ID_ARG}}")
-    object TaskSearchScreen : Screen("task_search_screen")
 
 
     object CalendarEventDetailsScreen : Screen("calendar_event_details_screen/{${Constants.CALENDAR_EVENT_ARG}}")

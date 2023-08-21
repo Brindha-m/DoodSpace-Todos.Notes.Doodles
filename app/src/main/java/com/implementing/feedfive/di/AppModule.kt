@@ -3,19 +3,25 @@ package com.implementing.feedfive.di
 import android.content.Context
 import androidx.room.Room
 import com.implementing.feedfive.data.local.FeedFiveDatabase
+import com.implementing.feedfive.data.local.dao.AlarmDao
 import com.implementing.feedfive.data.local.dao.BookmarkDao
 import com.implementing.feedfive.data.local.dao.DiaryDao
 import com.implementing.feedfive.data.local.dao.NoteDao
+import com.implementing.feedfive.data.local.dao.TaskDao
 import com.implementing.feedfive.data.local.room.migration.MIGRATION_4_5
 import com.implementing.feedfive.dataStore
-import com.implementing.feedfive.domain.repository.diary.DiaryRepositoryImpl
+import com.implementing.feedfive.domain.repository.alarm.AlarmRepository
+import com.implementing.feedfive.domain.repository.alarm.AlarmRepositoryImpl
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepository
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepositoryImpl
 import com.implementing.feedfive.domain.repository.diary.DiaryRepository
+import com.implementing.feedfive.domain.repository.diary.DiaryRepositoryImpl
 import com.implementing.feedfive.domain.repository.note.NoteRepository
 import com.implementing.feedfive.domain.repository.note.NoteRepositoryImpl
 import com.implementing.feedfive.domain.repository.settings.SettingsRepository
 import com.implementing.feedfive.domain.repository.settings.SettingsRepositoryImpl
+import com.implementing.feedfive.domain.repository.task.TaskRepository
+import com.implementing.feedfive.domain.repository.task.TaskRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -65,6 +71,25 @@ object AppModule {
     @Singleton
     @Provides
     fun provideNoteRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
+
+// Tasks Repo and dao
+
+    @Singleton
+    @Provides
+    fun provideTaskDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.taskDao()
+
+    @Singleton
+    @Provides
+    fun provideTaskRepository(taskDao: TaskDao): TaskRepository = TaskRepositoryImpl(taskDao)
+
+// Alarms dao and repository
+    @Singleton
+    @Provides
+    fun provideAlarmDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.alarmDao()
+
+    @Singleton
+    @Provides
+    fun provideAlarmRepository(alarmDao: AlarmDao): AlarmRepository = AlarmRepositoryImpl(alarmDao)
 
 // Setting Repo
 

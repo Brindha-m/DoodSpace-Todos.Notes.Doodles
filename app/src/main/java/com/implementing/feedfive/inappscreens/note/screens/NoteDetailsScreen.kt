@@ -46,7 +46,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
 import com.implementing.feedfive.R
-import com.implementing.feedfive.inappscreens.bookmark.BookmarkEvent
 import com.implementing.feedfive.inappscreens.note.NoteEvent
 import com.implementing.feedfive.inappscreens.note.viewmodel.NotesViewModel
 import com.implementing.feedfive.model.Note

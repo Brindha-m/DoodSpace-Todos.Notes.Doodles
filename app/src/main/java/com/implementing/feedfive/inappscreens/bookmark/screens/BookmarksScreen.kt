@@ -207,7 +207,7 @@ fun BookmarksScreen(
                                         )
                                     }
                                 },
-                                modifier = Modifier.animateItemPlacement().height(220.dp)
+                                modifier = Modifier.animateItemPlacement().height(70.dp)
                             )
                         }
                     }

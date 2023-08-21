@@ -126,7 +126,15 @@ dependencies {
     implementation("com.github.jeziellago:compose-markdown:0.3.4")
 
     // Compose Glance (Widgets)
-//    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")
+
+    // For Glance support
+    implementation("androidx.glance:glance:1.0.0-rc01")
+
+    // For AppWidgets support
+    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")
+
+    // For Wear-Tiles support
+    implementation("androidx.glance:glance-wear-tiles:1.0.0-alpha05")
 
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.8.1")
@@ -136,6 +144,9 @@ dependencies {
 
     /** Animated Compose Bottom navigation */
     implementation("com.exyte:animated-navigation-bar:1.0.0")
+
+    // Model bottom sheet for task section
+    implementation("androidx.compose.material3:material3:1.1.1")
 }
 
 
