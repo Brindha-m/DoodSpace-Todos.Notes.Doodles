@@ -1,6 +1,7 @@
 package com.implementing.feedfive.navigation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.LinearGradient
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,20 +36,21 @@ import com.implementing.feedfive.R
 fun SpaceRegularCard(
     title: String,
     image: Int,
-    backgroundColor: Color,
+    backgroundColor: Brush,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
 
     Card(
-        modifier = modifier.padding(8.dp).graphicsLayer(alpha = 0.9f),
+        modifier = modifier.padding(8.dp).background(Color.Transparent),
         shape = RoundedCornerShape(25.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+//        colors = CardDefaults.cardColors(containerColor = gradientBrush),
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
 
     ) {
         Column(
             Modifier
+                .background(backgroundColor)
                 .clickable { onClick() }
                 .aspectRatio(1.0f)
                 .padding(18.dp),
@@ -71,17 +76,18 @@ fun SpaceRegularCard(
 fun SpaceWideCard(
     title: String,
     image: Int,
-    backgroundColor: Color = Color.White,
+    backgroundColor: Brush,
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(8.dp).background(Color.Transparent),
         shape = RoundedCornerShape(25.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
+//        colors = CardDefaults.cardColors(containerColor = Col),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
     ) {
         Column(
             Modifier
+                .background(backgroundColor)
                 .fillMaxWidth()
                 .clickable { onClick() }
                 .padding(18.dp),
@@ -110,6 +116,12 @@ fun SpaceRegularCardPreview() {
     SpaceRegularCard(
         "Book Marks",
         R.drawable.bookmarks_img,
-        Color.Blue
+        backgroundColor = Brush.linearGradient(
+            colorStops = arrayOf(
+                0f to Color(0xFF0D47A1), // Dark blue at the start
+                0.5f to Color(0xFF1976D2), // Lighter blue in the middle
+                1f to Color(0xFF2196F3) // Lightest blue at the end
+            )
+        )
     )
 }

@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,12 +57,20 @@ fun SpacesScreen(
             item {
                 Spacer(Modifier.height(60.dp))
 
+
                 Row {
                     SpaceRegularCard(
                         modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.notes),
                         image = R.drawable.notes_img,
-                        backgroundColor = Blue
+                        backgroundColor = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF546E7A), // Slightly darker silver at the start
+                                0.5f to Color(0xFFB0BEC5), // Darker silver in the middle
+                                1f to Color(0xFF949799) // Lighter silver at the end
+                            )
+                        )
+
                     ) {
                         navController.navigate(Screen.NotesScreen.route)
                     }
@@ -70,7 +79,13 @@ fun SpacesScreen(
                         modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.tasks),
                         image = R.drawable.tasks_img,
-                        backgroundColor = Color.Red
+                        backgroundColor = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF0D47A1), // Dark blue at the start
+                                0.5f to Color(0xFF1976D2), // Lighter blue in the middle
+                                1f to Color(0xFF2196F3) // Lightest blue at the end
+                            )
+                        )
                     ) {
                         navController.navigate(
                             Screen.TasksScreen.route
@@ -84,7 +99,14 @@ fun SpacesScreen(
                         modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.diary),
                         image = R.drawable.diary_img,
-                        backgroundColor = Green
+                        backgroundColor = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF4CAF50), // Dark green at the start
+                                0.5f to Color(0xFF66BB6A), // Lighter green in the middle
+                                1f to Color(0xFF81C784) // Lightest green at the end
+                            )
+                        )
+
                     ) {
                         navController.navigate(Screen.DiaryScreen.route)
                     }
@@ -92,7 +114,14 @@ fun SpacesScreen(
                         modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.bookmarks),
                         image = R.drawable.bookmarks_img,
-                        backgroundColor = Orange
+                        backgroundColor = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFFF06292), // Dark pink at the start
+                                0.5f to Color(0xFFEC407A), // Lighter pink in the middle
+                                1f to Color(0xFFFF4081) // Lightest pink at the end
+                            )
+                        )
+
                     ) {
                         navController.navigate(Screen.BookmarksScreen.route)
                     }
@@ -102,7 +131,13 @@ fun SpacesScreen(
                 SpaceWideCard(
                     title = stringResource(R.string.calendar),
                     image = R.drawable.calendar_img,
-                    backgroundColor = Purple
+                    backgroundColor = Brush.linearGradient(
+                        colorStops = arrayOf(
+                            0f to Color(0xFF9575CD), // Medium purple at the start
+                            0.5f to Color(0xFF7E57C2), // Slightly darker medium purple in the middle
+                            1f to Color(0xFF673AB7) // Darker medium purple at the end
+                        )
+                    )
                 ) {
                     navController.navigate(Screen.CalendarScreen.route)
                 }
