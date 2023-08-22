@@ -18,11 +18,11 @@ kotlin {
 
 android {
     namespace = "com.implementing.feedfive"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.implementing.feedfive"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -88,6 +88,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("androidx.compose.ui:ui-tooling")
+
 
     // Compose navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
@@ -147,6 +150,8 @@ dependencies {
 
     // Model bottom sheet for task section
     implementation("androidx.compose.material3:material3:1.1.1")
+
+    implementation("io.github.oleksandrbalan:modalsheet:0.6.0")
 }
 
 

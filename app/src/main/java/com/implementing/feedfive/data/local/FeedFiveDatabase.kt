@@ -18,7 +18,7 @@ import com.implementing.feedfive.model.Task
 
 @Database(
     entities = [Bookmark::class, Diary::class, Note::class, NoteFolder::class, Task::class, Alarm::class],
-    version = 5 )
+    version = 6 )
 //@AutoMigration(from = 1, to = 2)
 @TypeConverters(DBConverters::class)
 abstract class FeedFiveDatabase: RoomDatabase() {

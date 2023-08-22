@@ -27,8 +27,11 @@ import com.implementing.feedfive.util.Constants
 import com.implementing.feedfive.util.Order
 import com.implementing.feedfive.util.OrderType
 import com.implementing.feedfive.util.toInt
+import com.implementing.feedfive.util.toOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -58,6 +61,22 @@ class TaskViewModel @Inject constructor(
     private var getTasksJob: Job? = null
     private var searchTasksJob: Job? = null
 
+    init {
+        viewModelScope.launch {
+            combine(
+                getSettings(
+                    intPreferencesKey(Constants.TASKS_ORDER_KEY),
+                    Order.DateModified(OrderType.ASC()).toInt()
+                ),
+                getSettings(
+                    booleanPreferencesKey(Constants.SHOW_COMPLETED_TASKS_KEY),
+                    false
+                )
+            ){ order, showCompleted ->
+                getTasks(order.toOrder(), showCompleted)
+            }.collect()
+        }
+    }
     fun onEvent(event: TaskEvent) {
         when (event) {
             is TaskEvent.AddTask -> {
@@ -72,7 +91,6 @@ class TaskViewModel @Inject constructor(
                                 )
                             )
                     }
-
                 } else
                     tasksUiState = tasksUiState.copy(error = getString(R.string.error_empty_title))
             }

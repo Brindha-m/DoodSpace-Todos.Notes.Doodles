@@ -3,6 +3,7 @@ package com.implementing.feedfive.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(tableName = "tasks")
 data class Task (
@@ -21,6 +22,7 @@ data class Task (
     val updatedDate: Long = 0L,
 
     @ColumnInfo(name = "sub_tasks")
+//    val subTasksJson: String = "",
     val subTasks: List<SubTask> = emptyList(),
 
     @PrimaryKey(autoGenerate = true)

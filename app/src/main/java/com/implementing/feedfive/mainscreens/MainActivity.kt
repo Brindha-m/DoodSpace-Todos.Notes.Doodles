@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkDetailsScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkSearchScreen
@@ -24,6 +25,9 @@ import com.implementing.feedfive.inappscreens.note.screens.NoteDetailsScreen
 import com.implementing.feedfive.inappscreens.note.screens.NoteFolderDetailsScreen
 import com.implementing.feedfive.inappscreens.note.screens.NotesScreen
 import com.implementing.feedfive.inappscreens.note.screens.NotesSearchScreen
+import com.implementing.feedfive.inappscreens.task.screens.TaskDetailScreen
+import com.implementing.feedfive.inappscreens.task.screens.TasksScreen
+import com.implementing.feedfive.inappscreens.task.screens.TasksSearchScreen
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,6 +79,8 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.BookmarkSearchScreen.route) {
                             BookmarkSearchScreen(navController = navController)
                         }
+
+
                         // Diary Section
 
                         composable(Screen.DiaryScreen.route) {
@@ -99,6 +105,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.DiaryChartScreen.route) {
                             DiaryChartScreen()
                         }
+
 
                         // Notes Section
                         composable(Screen.NotesScreen.route) {
@@ -135,6 +142,46 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 it.arguments?.getInt(Constants.FOLDER_ID) ?: -1
                             )
+                        }
+
+                        // Tasks Section
+                        composable(Screen.TaskSearchScreen.route) {
+                            TasksSearchScreen(navController = navController)
+                        }
+
+                        composable(
+                            route = Screen.TasksScreen.route,
+                            arguments = listOf(navArgument(Constants.ADD_TASK_ARG) {
+                                type = NavType.BoolType
+                                defaultValue = false
+                            }),
+                            deepLinks = listOf(
+                                navDeepLink {
+                                    uriPattern = "${Constants.TASKS_SCREEN_URI}/{${Constants.ADD_TASK_ARG}}"
+                                }
+                            )
+                        ){
+                            TasksScreen(
+                                navController = navController,
+                                addTask = it.arguments?.getBoolean(Constants.ADD_TASK_ARG) ?: false
+                            )
+
+                        }
+
+                        composable(
+                            route = Screen.TaskDetailScreen.route,
+                            arguments = listOf(navArgument(Constants.TASK_ID_ARG) {
+                                type = NavType.IntType
+                            }),
+                            deepLinks = listOf(
+                                navDeepLink {
+                                    uriPattern = "${Constants.TASK_DETAILS_URI}/{${Constants.TASK_ID_ARG}}"
+                                }
+                            )
+                        ){
+                            TaskDetailScreen(
+                                navController = navController,
+                                taskId = it.arguments?.getInt(Constants.TASK_ID_ARG)!! )
                         }
 
                     }

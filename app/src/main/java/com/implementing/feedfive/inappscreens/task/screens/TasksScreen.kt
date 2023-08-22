@@ -1,15 +1,18 @@
 package com.implementing.feedfive.inappscreens.task.screens
 
 import android.annotation.SuppressLint
+import android.text.Layout
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +22,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,11 +35,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +50,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,21 +86,29 @@ fun TasksScreen(
     val focusRequester = remember { FocusRequester() }
     val uiState = viewModel.tasksUiState
     val snackbarHostState = remember { SnackbarHostState() }
-    val sheetState = rememberModalBottomSheetState()
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
 
-//    val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+
     val scope = rememberCoroutineScope()
+    var scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = SheetState(
+            skipPartiallyExpanded = false,
+            initialValue = SheetValue.PartiallyExpanded
+        )
+    )
+
+
     BackHandler {
-        if (sheetState.isVisible)
+        if (scaffoldState.bottomSheetState.isVisible)
             scope.launch {
-                sheetState.hide()
+                scaffoldState.bottomSheetState.hide()
             }
         else
             navController.popBackStack()
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) } ,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -99,48 +117,36 @@ fun TasksScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch {
-                        sheetState
-                        focusRequester.requestFocus()
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Icon(
-                    modifier = Modifier.size(25.dp),
-                    painter = painterResource(R.drawable.ic_add),
-                    contentDescription = stringResource(R.string.add_task),
-                    tint = Color.White
+    ) {paddingValues ->
+
+//        if (openBottomSheet) {
+
+        BottomSheetScaffold(
+            scaffoldState = scaffoldState,
+            sheetPeekHeight = 75.dp,
+            sheetContent = {
+                Text(
+                    text = " Swipe Up to ➕ Add Tasks",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    color = Color.Gray,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-            }
-        },
-    ) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = {
-//                scope.launch {
-//                    sheetState.hide()
-//                }
-            },
-            shape = RoundedCornerShape(topEnd = 25.dp, topStart = 25.dp),
-            content = {
+
                 AddTaskBottomSheetContent(
                     onAddTask = {
                         viewModel.onEvent(TaskEvent.AddTask(it))
-                        scope.launch { sheetState.hide() }
+                        scope.launch { scaffoldState.bottomSheetState.hide() }
                         focusRequester.freeFocus()
                     },
                     focusRequester
                 )
-            })
-
+            }
+        )
+        {
             LaunchedEffect(uiState.error) {
                 uiState.error?.let {
                     snackbarHostState.showSnackbar(
@@ -149,10 +155,9 @@ fun TasksScreen(
                     viewModel.onEvent(TaskEvent.ErrorDisplayed)
                 }
             }
-            LaunchedEffect(true){
+            LaunchedEffect(true) {
                 if (addTask) scope.launch {
-                    sheetState.expand()
-//                    sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                    scaffoldState.bottomSheetState.hasExpandedState
                     focusRequester.requestFocus()
                 }
             }
@@ -160,6 +165,9 @@ fun TasksScreen(
                 NoTasksMessage()
 
             LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp)
             ) {
@@ -172,10 +180,12 @@ fun TasksScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            IconButton(onClick = { orderSettingsVisible = !orderSettingsVisible }) {
+                            IconButton(onClick = {
+                                orderSettingsVisible = !orderSettingsVisible
+                            }) {
                                 Icon(
                                     modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.ic_settings_sliders),
+                                    painter = painterResource(R.drawable.ic_setttings_slider),
                                     contentDescription = stringResource(R.string.order_by)
                                 )
                             }
@@ -184,7 +194,7 @@ fun TasksScreen(
                             }) {
                                 Icon(
                                     modifier = Modifier.size(25.dp),
-                                    painter = painterResource(id = R.drawable.ic_search),
+                                    painter = painterResource(id = R.drawable.ic_searchbook),
                                     contentDescription = stringResource(R.string.search)
                                 )
                             }
@@ -231,9 +241,11 @@ fun TasksScreen(
             }
         }
     }
+}
+
 
 @Composable
-fun NoTasksMessage(){
+fun NoTasksMessage() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -254,6 +266,7 @@ fun NoTasksMessage(){
         )
     }
 }
+
 @Composable
 fun TasksSettingsSection(
     order: Order,

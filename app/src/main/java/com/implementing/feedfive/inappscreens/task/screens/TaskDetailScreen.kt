@@ -149,12 +149,13 @@ fun TaskDetailScreen(
 //                elevation = 0.dp,
             )
         }
-    ) {
+    ) {paddingValues ->
+
         Column(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(12.dp)
+                .padding(start = 15.dp, bottom = 20.dp, top = 55.dp, end = 15.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -207,6 +208,7 @@ fun TaskDetailScreen(
             ) {
                 Text(
                     text = stringResource(R.string.add_sub_task),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Icon(

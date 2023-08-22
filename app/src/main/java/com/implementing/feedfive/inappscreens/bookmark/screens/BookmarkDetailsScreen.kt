@@ -160,7 +160,8 @@ fun BookmarkDetailsScreen(
 //                elevation = 0.dp,
             )
         },
-    ) {
+    ) {paddingValues ->
+
         Column(
             Modifier
                 .fillMaxSize()

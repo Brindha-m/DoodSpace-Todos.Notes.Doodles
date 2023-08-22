@@ -48,10 +48,10 @@ fun SubTaskItem(
             textStyle = if (subTask.isCompleted)
                 TextStyle(
                     textDecoration = TextDecoration.LineThrough,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.primary
                 )
             else
-                MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
+                MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier.fillMaxWidth()
         )
 

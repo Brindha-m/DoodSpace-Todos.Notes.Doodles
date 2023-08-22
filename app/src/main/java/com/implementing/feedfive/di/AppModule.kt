@@ -8,7 +8,7 @@ import com.implementing.feedfive.data.local.dao.BookmarkDao
 import com.implementing.feedfive.data.local.dao.DiaryDao
 import com.implementing.feedfive.data.local.dao.NoteDao
 import com.implementing.feedfive.data.local.dao.TaskDao
-import com.implementing.feedfive.data.local.room.migration.MIGRATION_4_5
+import com.implementing.feedfive.data.local.room.migration.MIGRATION_5_6
 import com.implementing.feedfive.dataStore
 import com.implementing.feedfive.domain.repository.alarm.AlarmRepository
 import com.implementing.feedfive.domain.repository.alarm.AlarmRepositoryImpl
@@ -42,7 +42,7 @@ object AppModule {
             FeedFiveDatabase.DATABASE_NAME
         )
 //            .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_4_5)
+            .addMigrations(MIGRATION_5_6)
             .build()
 
 // Bookmark repo and dao
