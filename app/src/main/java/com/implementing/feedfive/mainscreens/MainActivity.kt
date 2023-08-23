@@ -1,18 +1,28 @@
 package com.implementing.feedfive.mainscreens
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkDetailsScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkSearchScreen
@@ -28,19 +38,54 @@ import com.implementing.feedfive.inappscreens.note.screens.NotesSearchScreen
 import com.implementing.feedfive.inappscreens.task.screens.TaskDetailScreen
 import com.implementing.feedfive.inappscreens.task.screens.TasksScreen
 import com.implementing.feedfive.inappscreens.task.screens.TasksSearchScreen
+import com.implementing.feedfive.mainscreens.viewmodel.MainViewModel
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
+import com.implementing.feedfive.ui.theme.Jost
+import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
+import com.implementing.feedfive.util.ThemeSettings
+import com.implementing.feedfive.util.toFontFamily
+import com.implementing.feedfive.util.toInt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.AUTO.value)
+            val font = viewModel.font.collectAsState(initial = Jost.toInt())
+            val blockScreenshots = viewModel.blockScreenshots.collectAsState(initial = false)
+            val systemUiController = rememberSystemUiController()
 
             val startUpScreen = Screen.SpacesScreen.route
 
-            FeedFiveTheme {
+            LaunchedEffect(blockScreenshots.value) {
+                if (blockScreenshots.value) {
+                    window.setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE
+                    )
+                } else
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            }
+
+            val isDarkMode = when (themeMode.value) {
+                ThemeSettings.DARK.value -> true
+                ThemeSettings.LIGHT.value -> false
+                else -> isSystemInDarkTheme()
+            }
+            SideEffect {
+                systemUiController.setSystemBarsColor(
+                    if (isDarkMode) Color.Black else Color.White,
+                    darkIcons = !isDarkMode
+                )
+            }
+
+            FeedFiveTheme(darkTheme = isDarkMode, fontFamily = font.value.toFontFamily()) {
                 val navController = rememberNavController()
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -69,7 +114,7 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument(Constants.BOOKMARK_ID_ARG) {
                                 type = NavType.IntType
                             })
-                            ) {
+                        ) {
                             BookmarkDetailsScreen(
                                 navController = navController,
                                 bookmarkId = it.arguments?.getInt(Constants.BOOKMARK_ID_ARG)!!
@@ -91,7 +136,8 @@ class MainActivity : ComponentActivity() {
                             DiarySearchScreen(navController = navController)
                         }
 
-                        composable(Screen.DiaryDetailScreen.route,
+                        composable(
+                            Screen.DiaryDetailScreen.route,
                             arguments = listOf(navArgument(Constants.DIARY_ID_ARG) {
                                 type = NavType.IntType
                             })
@@ -157,10 +203,11 @@ class MainActivity : ComponentActivity() {
                             }),
                             deepLinks = listOf(
                                 navDeepLink {
-                                    uriPattern = "${Constants.TASKS_SCREEN_URI}/{${Constants.ADD_TASK_ARG}}"
+                                    uriPattern =
+                                        "${Constants.TASKS_SCREEN_URI}/{${Constants.ADD_TASK_ARG}}"
                                 }
                             )
-                        ){
+                        ) {
                             TasksScreen(
                                 navController = navController,
                                 addTask = it.arguments?.getBoolean(Constants.ADD_TASK_ARG) ?: false
@@ -175,13 +222,15 @@ class MainActivity : ComponentActivity() {
                             }),
                             deepLinks = listOf(
                                 navDeepLink {
-                                    uriPattern = "${Constants.TASK_DETAILS_URI}/{${Constants.TASK_ID_ARG}}"
+                                    uriPattern =
+                                        "${Constants.TASK_DETAILS_URI}/{${Constants.TASK_ID_ARG}}"
                                 }
                             )
-                        ){
+                        ) {
                             TaskDetailScreen(
                                 navController = navController,
-                                taskId = it.arguments?.getInt(Constants.TASK_ID_ARG)!! )
+                                taskId = it.arguments?.getInt(Constants.TASK_ID_ARG)!!
+                            )
                         }
 
                     }

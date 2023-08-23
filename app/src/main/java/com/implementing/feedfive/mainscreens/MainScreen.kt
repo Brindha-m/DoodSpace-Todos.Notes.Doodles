@@ -63,13 +63,13 @@ fun MainScreen(
 //            MainBottomBar(navController = navController, items = bottomNavItems )
 
             AnimatedNavigationBar(
-                modifier = Modifier.height(64.dp),
+                modifier = Modifier.height(60.dp),
                 selectedIndex = selectedIndex,
-                cornerRadius = shapeCornerRadius(cornerRadius = 34.dp),
+                cornerRadius = shapeCornerRadius(cornerRadius = 30.dp),
                 ballAnimation = Parabolic(tween(300)),
                 indentAnimation = Height(tween(300)),
-                barColor = MaterialTheme.colorScheme.primary,
-                ballColor = MaterialTheme.colorScheme.primary
+                barColor = MaterialTheme.colorScheme.onSecondary,
+                ballColor = MaterialTheme.colorScheme.onTertiary
             ) {
                 navigationBarItems.forEach { item ->
                     Box(

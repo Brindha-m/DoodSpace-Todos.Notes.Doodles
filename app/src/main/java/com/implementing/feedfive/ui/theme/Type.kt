@@ -18,6 +18,11 @@ val Jost = FontFamily(
     Font(R.font.jost_medium, FontWeight.Bold)
 )
 
+val Rubik = FontFamily(
+    Font(R.font.rubik_regular),
+    Font(R.font.rubik_bold, FontWeight.Bold)
+)
+
 val Mont = FontFamily(
     Font(R.font.montserrat_alternates_medium),
     Font(R.font.montserrat_alternates_semibold)
