@@ -8,6 +8,7 @@ import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.currentState
 import androidx.glance.state.PreferencesGlanceStateDefinition
@@ -30,19 +31,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TasksHomeWidget : GlanceAppWidget() {
-    @Composable
-    fun Content() {
-        val gson = Gson()
-        val type = object : TypeToken<List<Task>>() {}.type
-        val prefs = currentState<Preferences>()
-        val tasks: List<Task> = gson.fromJson(prefs[stringPreferencesKey("tasks")], type) ?: emptyList()
-        TasksHomeScreenWidget(
-            tasks
-        )
-    }
-
+//    @Composable
+//    fun MyContent() {
+//        val gson = Gson()
+//        val type = object : TypeToken<List<Task>>() {}.type
+//        val prefs = currentState<Preferences>()
+//        val tasks: List<Task> = gson.fromJson(prefs[stringPreferencesKey("tasks")], type) ?: emptyList()
+//        TasksHomeScreenWidget(
+//            tasks
+//        )
+//    }
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        TODO("Not yet implemented")
+        provideContent {
+            val gson = Gson()
+            val type = object : TypeToken<List<Task>>() {}.type
+            val prefs = currentState<Preferences>()
+            val tasks: List<Task> = gson.fromJson(prefs[stringPreferencesKey("tasks")], type) ?: emptyList()
+            TasksHomeScreenWidget(
+                tasks
+            )
+        }
     }
 }
 

@@ -91,6 +91,7 @@ object AppModule {
     @Provides
     fun provideAlarmRepository(alarmDao: AlarmDao): AlarmRepository = AlarmRepositoryImpl(alarmDao)
 
+
 // Setting Repo
 
     @Singleton
