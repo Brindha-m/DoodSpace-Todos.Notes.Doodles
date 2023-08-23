@@ -1,6 +1,8 @@
 package com.implementing.feedfive.inappscreens.diary
 
+import android.graphics.ColorFilter
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.implementing.feedfive.model.Diary
@@ -38,7 +41,7 @@ fun LazyItemScope.DiaryEntryItem(
     Card(
         modifier = modifier
             .animateItemPlacement(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(25.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
@@ -48,12 +51,26 @@ fun LazyItemScope.DiaryEntryItem(
                 .fillMaxWidth()
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
+
+                Image(
                     painterResource(entry.mood.icon),
-                    stringResource(entry.mood.title),
-                    tint = entry.mood.color,
-                    modifier = Modifier.size(30.dp)
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp),
                 )
+                Text(
+                    text = stringResource(entry.mood.title),
+                    color = entry.mood.color, // Set the desired text color
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(top = 4.dp, start = 2.dp) // Add appropriate spacing
+                )
+
+//                Image(
+//                    painter = painterResource(entry.mood.icon),
+//                    stringResource(entry.mood.title),
+//                    tint = entry.mood.color,
+//                    modifier = Modifier.size(30.dp)
+//                )
                 Spacer(Modifier.width(8.dp))
                 Text(
                     entry.title,

@@ -83,6 +83,7 @@
     <string name="awesome">Awesome</string>
     <string name="good">Good</string>
     <string name="okay">Okay</string>
+    <string name="sleepy">Sleepy</string>
     <string name="bad">Bad</string>
     <string name="terrible">Terrible</string>
     <string name="delete_entry">Delete entry</string>

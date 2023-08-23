@@ -1,6 +1,7 @@
 package com.implementing.feedfive.inappscreens.diary.chart
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -124,6 +125,14 @@ fun MoodCircularBar(
                                     )
                                 )
                                 Spacer(Modifier.width(8.dp))
+                                Image(
+                                    painter = painterResource(mood.icon),
+                                    contentDescription = stringResource(mood.title),
+                                    modifier = Modifier.size(strokeWidth.dp / 3)
+                                )
+
+                                Spacer(Modifier.width(2.dp))
+
                                 Icon(
                                     painter = painterResource(mood.icon),
                                     contentDescription = stringResource(mood.title),

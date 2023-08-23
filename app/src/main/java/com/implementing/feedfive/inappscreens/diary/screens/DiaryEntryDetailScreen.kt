@@ -4,7 +4,12 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.drawable.shapes.Shape
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -44,6 +50,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,6 +64,7 @@ import com.implementing.feedfive.inappscreens.diary.DiaryEvent
 import com.implementing.feedfive.inappscreens.diary.viewmodel.DiaryViewModel
 import com.implementing.feedfive.model.Diary
 import com.implementing.feedfive.navigation.Screen
+import com.implementing.feedfive.ui.theme.Shapes
 import com.implementing.feedfive.util.Mood
 import com.implementing.feedfive.util.fullDate
 import java.util.Calendar
@@ -182,11 +191,11 @@ fun DiaryEntryDetailsScreen(
                     )
                 }
         }
-    ) {
+    ) {paddingValues ->
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(12.dp)
+                .padding(top = 50.dp, start = 14.dp, end = 14.dp, bottom = 14.dp)
         ) {
             Text(
                 text = stringResource(R.string.mood),
@@ -263,7 +272,7 @@ fun EntryMoodSection(
     currentMood: Mood,
     onMoodChange: (Mood) -> Unit
 ) {
-    val moods = listOf(Mood.AWESOME, Mood.GOOD, Mood.OKAY, Mood.BAD, Mood.TERRIBLE)
+    val moods = listOf(Mood.AWESOME, Mood.GOOD, Mood.OKAY, Mood.SLEEPY, Mood.BAD, Mood.TERRIBLE)
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -288,17 +297,32 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
                 .clickable { onMoodChange() }
                 .padding(6.dp)
         ) {
-            Icon(
+
+            val borderColor = mood.color // Use entry.mood.color as the border color
+            val borderWidth = 2.dp
+
+            Image(
                 painter = painterResource(id = mood.icon),
                 contentDescription = stringResource(mood.title),
-                tint = if (chosen) mood.color else Color.Gray,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(50.dp)
+                    .border(border = BorderStroke
+                        (width = borderWidth,
+                        color = if (chosen) borderColor else Color.Transparent),
+                        CircleShape)
             )
+
+//            Icon(
+//                painter = painterResource(id = mood.icon),
+//                contentDescription = stringResource(mood.title),
+//                tint = if (chosen) mood.color else Color.Gray,
+//                modifier = Modifier.size(48.dp)
+//            )
+
             Spacer(Modifier.height(8.dp))
             Text(
                 text = stringResource(mood.title),
                 color = if (chosen) mood.color else Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
             )
         }
     }

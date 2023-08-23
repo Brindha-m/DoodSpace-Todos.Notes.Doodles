@@ -435,7 +435,7 @@ fun NoNotesMessage() {
         Spacer(modifier = Modifier.height(12.dp))
         Image(
             modifier = Modifier.size(125.dp),
-            painter = painterResource(id = R.drawable.notes_img),
+            painter = painterResource(id = R.drawable.note_img),
             contentDescription = stringResource(R.string.no_notes_message),
             alpha = 0.7f
         )

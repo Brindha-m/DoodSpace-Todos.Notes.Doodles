@@ -10,9 +10,11 @@ import com.implementing.feedfive.ui.theme.Orange
 import com.implementing.feedfive.ui.theme.Purple
 
 enum class Mood(@DrawableRes val icon: Int, val color: Color, @StringRes val title: Int, val value: Int) {
-    AWESOME(R.drawable.ic_very_happy, Green, R.string.awesome, 5),
-    GOOD(R.drawable.ic_happy, Blue, R.string.good, 4),
-    OKAY(R.drawable.ic_ok_face, Purple, R.string.okay, 3),
-    BAD(R.drawable.ic_sad, Orange, R.string.bad, 2),
-    TERRIBLE(R.drawable.ic_very_sad, Color.Red, R.string.terrible, 1)
+    AWESOME(R.drawable.img, Green, R.string.awesome, 6),
+    GOOD(R.drawable.img_1, Blue, R.string.good, 5),
+    OKAY(R.drawable.img_2, Purple, R.string.okay, 4),
+    SLEEPY(R.drawable.img_5, Orange, R.string.sleepy, 3),
+    BAD(R.drawable.img_3, Color(0xFF8B4513), R.string.bad, 2),
+    TERRIBLE(R.drawable.img_4, Color.Red, R.string.terrible, 1)
+
 }
