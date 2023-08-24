@@ -11,6 +11,7 @@
 
     <!-- For reminders -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- to start the alarms after restart. (By default, all alarms are canceled when a device shuts down) -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".FiveHiltMain"
@@ -34,6 +35,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".util.alarmUtils.BootBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".util.alarmUtils.AlarmReceiver"
+            android:enabled="true" />
+
+        <receiver
+            android:name=".util.alarmUtils.TaskActionButtonBroadcastReceiver"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

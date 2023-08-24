@@ -23,7 +23,7 @@ android {
     defaultConfig {
         applicationId = "com.implementing.feedfive"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -152,7 +152,8 @@ dependencies {
     // Model bottom sheet for task section
     implementation("androidx.compose.material3:material3:1.1.1")
 
-    implementation("io.github.oleksandrbalan:modalsheet:0.6.0")
+    // color picker for doodle section
+    implementation("com.raedapps:alwan:1.0.1")
 }
 
 
