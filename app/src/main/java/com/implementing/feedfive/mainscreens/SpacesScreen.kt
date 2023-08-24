@@ -1,6 +1,7 @@
 package com.implementing.feedfive.mainscreens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -25,6 +26,7 @@ import com.implementing.feedfive.R
 import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.navigation.components.SpaceRegularCard
 import com.implementing.feedfive.navigation.components.SpaceWideCard
+import com.implementing.feedfive.navigation.components.SpaceWideCardLeft
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +43,7 @@ fun SpacesScreen(
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 
             )
         }
@@ -49,10 +51,27 @@ fun SpacesScreen(
 
 
         LazyColumn {
+
             item {
-                Spacer(Modifier.height(60.dp))
+                Spacer(Modifier.height(50.dp))
+                Column {
+                    SpaceWideCard(
+                        title = "Doodle Space",
+                        image = R.drawable.img_9,
+                        backgroundColor = Brush.linearGradient(
+                            colorStops = arrayOf(
+                                0.48f to Color(0xFF1D1E1F), // More transparent white in the middle
+                                0.95f to Color(0xFFC9BDBD),  // Light gray (sky)
+                            )
+                        )
+                    ) {
+                        navController.navigate(Screen.DoodleScreen.route)
+                    }
+                }
 
+            }
 
+            item {
                 Row {
                     SpaceRegularCard(
                         modifier = Modifier.weight(1f, fill = true),
@@ -60,9 +79,9 @@ fun SpacesScreen(
                         image = R.drawable.note_img,
                         backgroundColor = Brush.verticalGradient(
                             colorStops = arrayOf(
-                                0f to Color(0xFFE59115), // Medium light shade at the start
-                                0.5f to Color(0xFFE5C96B), // Original color in the middle
-                                1f to Color(0xFFE9C96A) // Lighter shade at the end
+                                0f to Color(0xFFE49F4A), // Light grey at the start
+                                0.5f to Color(0xFFDBA86E), // Darker grey in the middle
+                                1f to Color(0xFF93929D) // Lighter shade at the end
                             )
                         )
 
@@ -72,13 +91,36 @@ fun SpacesScreen(
 
                     SpaceRegularCard(
                         modifier = Modifier.weight(1f, fill = true),
+                        title = stringResource(R.string.diary),
+                        image = R.drawable.diary_img,
+                        backgroundColor = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF56C2EB), // Light grey at the start
+                                0.5f to Color(0xFF5B93B4), // Darker grey in the middle
+                                1f to Color(0xFF93929D) // Dark grey at the end
+                            )
+                        )
+
+                    ) {
+                        navController.navigate(Screen.DiaryScreen.route)
+                    }
+
+                }
+            }
+
+
+            item {
+                Row {
+
+                    SpaceRegularCard(
+                        modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.tasks),
                         image = R.drawable.tasks_img,
                         backgroundColor = Brush.verticalGradient(
                             colorStops = arrayOf(
-                                0f to Color(0xFF506169), // Light grey at the start
-                                0.5f to Color(0xFF797878), // Darker grey in the middle
-                                1f to Color(0xFFB0BEC5) // Dark grey at the end
+                                0f to Color(0xFF221F3E), // Light grey at the start
+                                0.5f to Color(0xFF775A6D), // Darker grey in the middle
+                                1f to Color(0xFF93929D) // Dark grey at the end
                             )
                         )
                     ) {
@@ -86,34 +128,16 @@ fun SpacesScreen(
                             Screen.TasksScreen.route
                         )
                     }
-                }
-            }
-            item {
-                Row {
-                    SpaceRegularCard(
-                        modifier = Modifier.weight(1f, fill = true),
-                        title = stringResource(R.string.diary),
-                        image = R.drawable.diary_img,
-                        backgroundColor = Brush.verticalGradient(
-                            colorStops = arrayOf(
-                                0f to Color(0xFF4C8FB4), // Darker shade of the custom color
-                                0.5f to Color(0xFF4082A7), // Middle shade of the custom color (#4082A7)
-                                1f to Color(0xFF4082A7) // Lighter teal at the end
-                            )
-                        )
 
-                    ) {
-                        navController.navigate(Screen.DiaryScreen.route)
-                    }
                     SpaceRegularCard(
                         modifier = Modifier.weight(1f, fill = true),
                         title = stringResource(R.string.bookmarks),
                         image = R.drawable.bookmarks_img,
                         backgroundColor = Brush.verticalGradient(
                             colorStops = arrayOf(
-                                0f to Color(0xFFF06292), // Dark pink at the start
-                                0.5f to Color(0xFFEC407A), // Lighter pink in the middle
-                                1f to Color(0xFFFF4081) // Lightest pink at the end
+                                0f to Color(0xFF1D1A1A), // Dark pink at the start
+                                0.5f to Color(0xFF252424), // Lighter pink in the middle
+                                1f to Color(0xEB404041) // Dark grey at the end
                             )
                         )
 
@@ -122,21 +146,25 @@ fun SpacesScreen(
                     }
                 }
             }
+
             item {
-                SpaceWideCard(
-                    title = stringResource(R.string.calendar),
-                    image = R.drawable.calendar_img,
-                    backgroundColor = Brush.linearGradient(
-                        colorStops = arrayOf(
-                            0f to Color(0xFF4CAF50), // Dark green at the start
-                            0.5f to Color(0xFF66BB6A), // Lighter green in the middle
-                            1f to Color(0xFF81C784) // Lightest green at the end
+                Row {
+                    SpaceWideCardLeft(
+                        title = stringResource(R.string.calendar),
+                        image = R.drawable.calendar_img,
+                        backgroundColor = Brush.linearGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFFBBB9B9), // More transparent white in the middle
+                                0.55f to Color(0xFF1D1E1F),  // Light gray (sky)
+                            )
                         )
-                    )
-                ) {
-                    navController.navigate(Screen.CalendarScreen.route)
+                    ) {
+                        navController.navigate(Screen.CalendarScreen.route)
+                    }
                 }
+
             }
+
             item { Spacer(Modifier.height(60.dp)) }
         }
     }
@@ -152,3 +180,18 @@ fun SpacesScreenPreview() {
     )
 }
 
+
+/*
+Gradient Green
+
+0f to Color(0xFF141D1B), // Transparent white at the start
+0.5f to Color(0xFF3A6B5E), // More transparent white in the middle
+1f to Color(0xFF59AB93)  // Fully transparent white at the end
+
+Earth Gradient
+
+0f to Color(0xFFC9BDBD),  // Light gray (sky)
+0.4f to Color(0xFF035881), // More transparent white in the middle
+0.9f to Color(0xFF455A3C),
+1.3f to Color(0xFFCD853F),
+ */

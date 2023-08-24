@@ -9,14 +9,19 @@ sealed class Screen(val route: String) {
     object DashboardScreen : Screen("dashboard_screen")
     object SettingsScreen : Screen("settings_screen")
 
-    // Bookmark
+    /*
+       Bookmarks Section
+   */
+
     object BookmarksScreen : Screen("bookmarks_screen")
 
     object BookmarkDetailScreen : Screen("bookmark_detail_screen/{${Constants.BOOKMARK_ID_ARG}}")
 
     object BookmarkSearchScreen : Screen("bookmark_search_screen")
 
-    // Diary
+    /*
+       Diary Section
+   */
     object DiaryScreen : Screen("diary_screen")
 
     object DiaryDetailScreen : Screen("diary_detail_screen/{${Constants.DIARY_ID_ARG}}")
@@ -26,6 +31,9 @@ sealed class Screen(val route: String) {
     object DiaryChartScreen : Screen("diary_chart_screen")
 
 
+    /*
+       Notes Section
+   */
     object NotesScreen : Screen("notes_screen")
 
     object NoteDetailsScreen : Screen("note_detail_screen/{${Constants.NOTE_ID_ARG}}?${Constants.FOLDER_ID}={${Constants.FOLDER_ID}}")
@@ -35,10 +43,9 @@ sealed class Screen(val route: String) {
     object NoteFolderDetailsScreen : Screen("note_folder_details_screen/{${Constants.FOLDER_ID}}")
 
 
-
-    object CalendarScreen : Screen("calendar_screen")
-
-//    object TasksScreen : Screen("tasks_screen")
+    /*
+       Tasks Section
+   */
    object TasksScreen : Screen("tasks_screen?${Constants.ADD_TASK_ARG}={${Constants.ADD_TASK_ARG}}")
    object TaskDetailScreen : Screen("task_detail_screen/{${Constants.TASK_ID_ARG}}")
    object TaskSearchScreen : Screen("task_search_screen")
@@ -46,14 +53,15 @@ sealed class Screen(val route: String) {
 
 
 
-    object ImportExportScreen : Screen("import_export_screen")
-
-
-
     /*
-
-
-    object CalendarEventDetailsScreen : Screen("calendar_event_details_screen/{${Constants.CALENDAR_EVENT_ARG}}")
-    object ImportExportScreen : Screen("import_export_screen")
+        Calendar
     */
+
+    object CalendarScreen : Screen("calendar_screen")
+    object CalendarEventDetailsScreen : Screen("calendar_event_details_screen/{${Constants.CALENDAR_EVENT_ARG}}")
+
+    object DoodleScreen : Screen("doodle_screen")
+
+    object ImportExportScreen : Screen("import_export_screen")
+
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.implementing.feedfive.R
@@ -52,18 +53,20 @@ fun SpaceRegularCard(
             Modifier
                 .background(backgroundColor)
                 .clickable { onClick() }
-                .aspectRatio(1.0f)
-                .padding(18.dp),
+                .aspectRatio(1.2f)
+                .padding(15.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White)
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+                modifier = Modifier.padding(top = 3.dp, start = 3.dp)
+
             )
 
             Image(
                 modifier = Modifier
-                    .size(70.dp)
+                    .size(60.dp)
                     .align(Alignment.End),
                 painter = painterResource(id = image),
                 contentDescription = title)
@@ -90,19 +93,59 @@ fun SpaceWideCard(
                 .background(backgroundColor)
                 .fillMaxWidth()
                 .clickable { onClick() }
-                .padding(18.dp),
+                .padding(14.dp),
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.headlineMedium.copy(color = Color.White),
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+                modifier = Modifier.padding(top = 5.dp, start = 5.dp)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Image(
                 modifier = Modifier
                     .size(80.dp)
                     .align(Alignment.End),
+                painter = painterResource(id = image),
+                contentDescription = title)
+
+        }
+    }
+}
+
+@Composable
+fun SpaceWideCardLeft(
+    title: String,
+    image: Int,
+    backgroundColor: Brush,
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = Modifier.padding(8.dp).background(Color.Transparent),
+        shape = RoundedCornerShape(25.dp),
+//        colors = CardDefaults.cardColors(containerColor = Col),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+    ) {
+        Column(
+            Modifier
+                .background(backgroundColor)
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(14.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+                modifier = Modifier.padding(top = 5.dp, start = 5.dp).align(Alignment.End)
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Image(
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.Start),
                 painter = painterResource(id = image),
                 contentDescription = title)
 
