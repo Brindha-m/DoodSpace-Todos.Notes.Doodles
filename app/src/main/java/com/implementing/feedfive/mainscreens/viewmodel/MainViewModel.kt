@@ -8,14 +8,15 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.implementing.feedfive.domain.usecase.calendar.GetAllCalendarEventsUseCase
 import com.implementing.feedfive.domain.usecase.diary.GetAllDiaryEntryUseCase
 import com.implementing.feedfive.domain.usecase.settings.GetSettingsUseCase
 import com.implementing.feedfive.domain.usecase.tasks.GetAllTasksUseCase
 import com.implementing.feedfive.domain.usecase.tasks.UpdateTaskUseCase
+import com.implementing.feedfive.model.CalendarEvent
 import com.implementing.feedfive.model.Diary
 import com.implementing.feedfive.model.Task
 import com.implementing.feedfive.ui.theme.Jost
-import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
 import com.implementing.feedfive.util.Order
 import com.implementing.feedfive.util.OrderType
@@ -40,7 +41,7 @@ class MainViewModel @Inject constructor(
     private val getAllTasks: GetAllTasksUseCase,
     private val getAllEntriesUseCase: GetAllDiaryEntryUseCase,
     private val updateTask: UpdateTaskUseCase,
-//    private val getAllEventsUseCase: GetAllEventsUseCase
+    private val getAllCalendarEventsUseCase: GetAllCalendarEventsUseCase
 ): ViewModel() {
 
     var uiState by mutableStateOf(UiState())
@@ -53,22 +54,22 @@ class MainViewModel @Inject constructor(
     val font = getSettings(intPreferencesKey(Constants.APP_FONT_KEY), Jost.toInt())
     val blockScreenshots = getSettings(booleanPreferencesKey(Constants.BLOCK_SCREENSHOTS_KEY), false)
 
-//    fun onDashboardEvent(event: DashboardEvent) {
-//        when(event) {
-//            is DashboardEvent.ReadPermissionChanged -> {
-//                if (event.hasPermission)
-//                    getCalendarEvents()
-//            }
-//            is DashboardEvent.UpdateTask -> viewModelScope.launch {
-//                updateTask(event.task)
-//            }
-//            DashboardEvent.InitAll -> collectDashboardData()
-//        }
-//    }
+    fun onDashboardEvent(event: DashboardEvent) {
+        when(event) {
+            is DashboardEvent.ReadPermissionChanged -> {
+                if (event.hasPermission)
+                    getCalendarEvents()
+            }
+            is DashboardEvent.UpdateTask -> viewModelScope.launch {
+                updateTask(event.task)
+            }
+            DashboardEvent.InitAll -> collectDashboardData()
+        }
+    }
 
     data class UiState(
         val dashBoardTasks: List<Task> = emptyList(),
-//        val dashBoardEvents: Map<String, List<CalendarEvent>> = emptyMap(),
+        val dashBoardEvents: Map<String, List<CalendarEvent>> = emptyMap(),
         val summaryTasks: List<Task> = emptyList(),
         val dashBoardEntries: List<Diary> = emptyList()
     )
@@ -79,10 +80,11 @@ class MainViewModel @Inject constructor(
             stringSetPreferencesKey(Constants.EXCLUDED_CALENDARS_KEY),
             emptySet()
         ).first()
-//        val events = getAllEventsUseCase(excluded.toIntList())
-//        uiState = uiState.copy(
-//            dashBoardEvents = events
-//        )
+
+        val events = getAllCalendarEventsUseCase(excluded.toIntList())
+        uiState = uiState.copy(
+            dashBoardEvents = events
+        )
     }
 
     private fun collectDashboardData() = viewModelScope.launch {

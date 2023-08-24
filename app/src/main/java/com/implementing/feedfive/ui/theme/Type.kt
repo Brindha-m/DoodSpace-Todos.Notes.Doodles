@@ -30,6 +30,8 @@ val Mont = FontFamily(
 
 // Set of Material typography styles to start with
 fun getTypography(font: FontFamily) = Typography(
+
+    bodyMedium = TextStyle(fontFamily = font),
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,

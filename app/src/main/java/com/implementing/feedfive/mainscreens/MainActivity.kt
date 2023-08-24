@@ -12,10 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,10 +22,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.implementing.feedfive.navigation.Screen
+import com.implementing.feedfive.doodle_space.DoodleScreen
+import com.implementing.feedfive.doodle_space.contoller.DoodleController
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkDetailsScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarkSearchScreen
 import com.implementing.feedfive.inappscreens.bookmark.screens.BookmarksScreen
+import com.implementing.feedfive.inappscreens.calendar.screen.CalendarEventDetailsScreen
+import com.implementing.feedfive.inappscreens.calendar.screen.CalendarScreen
 import com.implementing.feedfive.inappscreens.diary.chart.DiaryChartScreen
 import com.implementing.feedfive.inappscreens.diary.screens.DiaryEntryDetailsScreen
 import com.implementing.feedfive.inappscreens.diary.screens.DiaryScreen
@@ -39,9 +41,9 @@ import com.implementing.feedfive.inappscreens.task.screens.TaskDetailScreen
 import com.implementing.feedfive.inappscreens.task.screens.TasksScreen
 import com.implementing.feedfive.inappscreens.task.screens.TasksSearchScreen
 import com.implementing.feedfive.mainscreens.viewmodel.MainViewModel
+import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.ui.theme.Jost
-import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
 import com.implementing.feedfive.util.ThemeSettings
 import com.implementing.feedfive.util.toFontFamily
@@ -153,6 +155,12 @@ class MainActivity : ComponentActivity() {
                         }
 
 
+
+                        composable(Screen.DoodleScreen.route) {
+                            DoodleScreen(doodleController = DoodleController())
+                        }
+
+
                         // Notes Section
                         composable(Screen.NotesScreen.route) {
                             NotesScreen(navController = navController)
@@ -230,6 +238,39 @@ class MainActivity : ComponentActivity() {
                             TaskDetailScreen(
                                 navController = navController,
                                 taskId = it.arguments?.getInt(Constants.TASK_ID_ARG)!!
+                            )
+                        }
+
+
+                        // Calendar Section
+
+                        composable(
+                            Screen.CalendarScreen.route,
+                            deepLinks = listOf(
+                                navDeepLink {
+                                    uriPattern = Constants.CALENDAR_SCREEN_URI
+                                }
+                            )
+                        ) {
+                            CalendarScreen(navController = navController)
+                        }
+
+
+                        composable(
+                            Screen.CalendarEventDetailsScreen.route,
+                            arguments = listOf(navArgument(Constants.CALENDAR_EVENT_ARG) {
+                                type = NavType.StringType
+                            }),
+                            deepLinks = listOf(
+                                navDeepLink {
+                                    uriPattern =
+                                        "${Constants.CALENDAR_DETAILS_SCREEN_URI}/{${Constants.CALENDAR_EVENT_ARG}}"
+                                }
+                            )
+                        ) {
+                            CalendarEventDetailsScreen(
+                                navController = navController,
+                                eventJson = it.arguments?.getString(Constants.CALENDAR_EVENT_ARG) ?: ""
                             )
                         }
 

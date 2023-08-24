@@ -14,6 +14,8 @@ import com.implementing.feedfive.domain.repository.alarm.AlarmRepository
 import com.implementing.feedfive.domain.repository.alarm.AlarmRepositoryImpl
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepository
 import com.implementing.feedfive.domain.repository.bookmark.BookmarkRepositoryImpl
+import com.implementing.feedfive.domain.repository.calendar.CalendarRepository
+import com.implementing.feedfive.domain.repository.calendar.CalendarRepositoryImpl
 import com.implementing.feedfive.domain.repository.diary.DiaryRepository
 import com.implementing.feedfive.domain.repository.diary.DiaryRepositoryImpl
 import com.implementing.feedfive.domain.repository.note.NoteRepository
@@ -45,16 +47,17 @@ object AppModule {
             .addMigrations(MIGRATION_5_6)
             .build()
 
-// Bookmark repo and dao
+    // Bookmark repo and dao
     @Singleton
     @Provides
     fun provideBookmarkDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.bookmarkDao()
 
     @Singleton
     @Provides
-    fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository = BookmarkRepositoryImpl(bookmarkDao)
+    fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository =
+        BookmarkRepositoryImpl(bookmarkDao)
 
-// Diary repo and dao
+    // Diary repo and dao
     @Singleton
     @Provides
     fun provideDiaryDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.diaryDao()
@@ -63,7 +66,7 @@ object AppModule {
     @Provides
     fun provideDiaryRepository(diaryDao: DiaryDao): DiaryRepository = DiaryRepositoryImpl(diaryDao)
 
-// Note repo and dao
+    // Note repo and dao
     @Singleton
     @Provides
     fun provideNoteDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.noteDao()
@@ -82,7 +85,7 @@ object AppModule {
     @Provides
     fun provideTaskRepository(taskDao: TaskDao): TaskRepository = TaskRepositoryImpl(taskDao)
 
-// Alarms dao and repository
+    // Alarms dao and repository
     @Singleton
     @Provides
     fun provideAlarmDao(feedFiveDatabase: FeedFiveDatabase) = feedFiveDatabase.alarmDao()
@@ -91,12 +94,19 @@ object AppModule {
     @Provides
     fun provideAlarmRepository(alarmDao: AlarmDao): AlarmRepository = AlarmRepositoryImpl(alarmDao)
 
+    // Calendar Repo only
+    @Singleton
+    @Provides
+    fun provideCalendarRepository(@ApplicationContext context: Context): CalendarRepository =
+        CalendarRepositoryImpl(context)
+
 
 // Setting Repo
 
     @Singleton
     @Provides
-    fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository = SettingsRepositoryImpl(context.dataStore)
+    fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository =
+        SettingsRepositoryImpl(context.dataStore)
 
     @Singleton
     @Provides
