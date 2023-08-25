@@ -6,7 +6,7 @@ import com.implementing.feedfive.model.CalendarEvent
 import com.implementing.feedfive.util.formatDateForMapping
 import javax.inject.Inject
 
-class GetAllEventsUseCase @Inject constructor(
+class GetAllCalendarEventsUseCase @Inject constructor(
     private val calendarRepository: CalendarRepository
 ) {
     suspend operator fun invoke(excluded: List<Int>, fromWidget: Boolean = false): Map<String, List<CalendarEvent>> {

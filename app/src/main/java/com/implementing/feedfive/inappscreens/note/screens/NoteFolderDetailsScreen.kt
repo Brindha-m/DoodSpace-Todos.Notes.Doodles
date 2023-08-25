@@ -91,7 +91,7 @@ fun NoteFolderDetailsScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
 //                elevation = 0.dp,
                 actions = {
                     IconButton(onClick = { openDeleteDialog = true }) {

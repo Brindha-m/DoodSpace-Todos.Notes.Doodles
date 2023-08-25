@@ -19,7 +19,7 @@ import androidx.glance.currentState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.implementing.feedfive.domain.usecase.calendar.GetAllEventsUseCase
+import com.implementing.feedfive.domain.usecase.calendar.GetAllCalendarEventsUseCase
 import com.implementing.feedfive.domain.usecase.settings.GetSettingsUseCase
 import com.implementing.feedfive.model.CalendarEvent
 import com.implementing.feedfive.util.Constants
@@ -53,7 +53,7 @@ class CalendarWidgetReceiver : GlanceAppWidgetReceiver() {
     private val coroutineScope = MainScope()
 
     @Inject
-    lateinit var getAllEventsUseCase: GetAllEventsUseCase
+    lateinit var getAllCalendarEventsUseCase: GetAllCalendarEventsUseCase
     @Inject
     lateinit var getSettings: GetSettingsUseCase
 
@@ -79,7 +79,7 @@ class CalendarWidgetReceiver : GlanceAppWidgetReceiver() {
                     stringSetPreferencesKey(Constants.EXCLUDED_CALENDARS_KEY),
                     emptySet()
                 ).first()
-                val events = gson.toJson(getAllEventsUseCase(includedCalendars.toIntList(), true), type)
+                val events = gson.toJson(getAllCalendarEventsUseCase(includedCalendars.toIntList(), true), type)
                 val glanceId =
                     GlanceAppWidgetManager(context).getGlanceIds(CalendarHomeWidget::class.java).firstOrNull()
 

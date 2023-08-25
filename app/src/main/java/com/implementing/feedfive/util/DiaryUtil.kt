@@ -14,7 +14,7 @@ enum class Mood(@DrawableRes val icon: Int, val color: Color, @StringRes val tit
     GOOD(R.drawable.img_1, Blue, R.string.good, 5),
     OKAY(R.drawable.img_2, Purple, R.string.okay, 4),
     SLEEPY(R.drawable.img_5, Orange, R.string.sleepy, 3),
-    BAD(R.drawable.img_3, Color(0xFF8B4513), R.string.bad, 2),
-    TERRIBLE(R.drawable.img_4, Color.Red, R.string.terrible, 1)
+    BAD(R.drawable.img_10, Color.Red, R.string.bad, 2),
+    TERRIBLE(R.drawable.img_4, Color(0xFF8B4513), R.string.terrible, 1)
 
 }

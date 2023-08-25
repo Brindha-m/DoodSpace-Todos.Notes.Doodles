@@ -85,7 +85,7 @@ fun BookmarksScreen(
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 
 //                backgroundColor = MaterialTheme.colors.background,
 //                elevation = 0.dp,

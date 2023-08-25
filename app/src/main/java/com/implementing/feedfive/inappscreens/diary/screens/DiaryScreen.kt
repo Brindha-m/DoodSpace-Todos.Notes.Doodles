@@ -71,7 +71,7 @@ fun DiaryScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
                 actions = {
                     IconButton(onClick = {

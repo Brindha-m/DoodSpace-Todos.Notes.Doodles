@@ -117,7 +117,7 @@ fun TasksScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
             )
         },
@@ -127,7 +127,7 @@ fun TasksScreen(
 
         BottomSheetScaffold(
             scaffoldState = scaffoldState,
-            sheetPeekHeight = 75.dp,
+            sheetPeekHeight = 80.dp,
             sheetContent = {
                 Text(
                     text = " Swipe Up to ➕ Add Tasks",

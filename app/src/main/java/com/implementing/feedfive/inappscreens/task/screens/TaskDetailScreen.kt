@@ -145,7 +145,7 @@ fun TaskDetailScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
             )
         }
