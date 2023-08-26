@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.implementing.feedfive.model.Diary
 import com.implementing.feedfive.util.fullDate
 
@@ -92,6 +93,7 @@ fun LazyItemScope.DiaryEntryItem(
             Text(
                 text = entry.createdDate.fullDate(),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                fontSize = 12.sp,
                 modifier = Modifier.align(Alignment.End)
             )
         }

@@ -26,6 +26,8 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -114,7 +116,7 @@ fun TasksScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.tasks),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
@@ -185,8 +187,9 @@ fun TasksScreen(
                             }) {
                                 Icon(
                                     modifier = Modifier.size(25.dp),
-                                    painter = painterResource(R.drawable.ic_setttings_slider),
-                                    contentDescription = stringResource(R.string.order_by)
+                                    painter = painterResource(R.drawable.filters_icon),
+                                    contentDescription = stringResource(R.string.order_by),
+                                    tint = Color.DarkGray
                                 )
                             }
                             IconButton(onClick = {
@@ -195,7 +198,8 @@ fun TasksScreen(
                                 Icon(
                                     modifier = Modifier.size(25.dp),
                                     painter = painterResource(id = R.drawable.ic_searchbook),
-                                    contentDescription = stringResource(R.string.search)
+                                    contentDescription = stringResource(R.string.search),
+                                    tint = Color.DarkGray
                                 )
                             }
                         }
@@ -330,7 +334,7 @@ fun TasksSettingsSection(
         }
         Divider()
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = showCompleted, onCheckedChange = { onShowCompletedChange(it) })
+            Checkbox(checked = showCompleted, onCheckedChange = { onShowCompletedChange(it) }, colors = CheckboxDefaults.colors(Color.DarkGray))
             Text(
                 text = stringResource(R.string.show_completed_tasks),
                 style = MaterialTheme.typography.bodyMedium,

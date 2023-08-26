@@ -80,7 +80,7 @@ fun DiaryScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.chart_diary),
                             contentDescription = stringResource(R.string.diary_chart),
-                            modifier = Modifier.size(25.dp)
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
@@ -125,14 +125,16 @@ fun DiaryScreen(
                     Icon(
                         modifier = Modifier.size(25.dp),
                         painter = painterResource(R.drawable.filters_icon),
-                        contentDescription = stringResource(R.string.order_by)
+                        contentDescription = stringResource(R.string.order_by),
+                        tint = Color.DarkGray
+
                     )
                 }
                 IconButton(onClick = {
                     navController.navigate(Screen.DiarySearchScreen.route)
                 }) {
                     Image(
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(30.dp),
                         painter = painterResource(id = R.drawable.search_diary),
                         contentDescription = stringResource(R.string.search)
                     )

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.implementing.feedfive.R
 import com.implementing.feedfive.inappscreens.task.SubTaskItem
 import com.implementing.feedfive.model.SubTask
@@ -64,7 +67,8 @@ fun AddTaskBottomSheetContent(
         SheetHandle(Modifier.align(Alignment.CenterHorizontally))
         Text(
             text = stringResource(R.string.add_task),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp
         )
         Spacer(Modifier.height(16.dp))
 
@@ -78,6 +82,7 @@ fun AddTaskBottomSheetContent(
                 .focusRequester(focusRequester),
         )
         Spacer(Modifier.height(12.dp))
+
         Column {
             subTasks.forEachIndexed { index, item ->
                 SubTaskItem(
@@ -103,32 +108,40 @@ fun AddTaskBottomSheetContent(
         ) {
             Text(
                 text = stringResource(R.string.add_sub_task),
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
             Icon(
-                modifier = Modifier.size(10.dp),
+                modifier = Modifier.size(15.dp),
                 painter = painterResource(id = R.drawable.ic_add),
                 contentDescription = stringResource(
                     id = R.string.add_sub_task
                 )
             )
         }
-        Spacer(Modifier.height(12.dp))
+        Divider()
+
+        Spacer(Modifier.height(13.dp))
+
         Text(
             text = stringResource(R.string.priority),
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(15.dp))
         PriorityTabRow(
             priorities = priorities,
             priority,
             onChange = { priority = it }
         )
         Spacer(Modifier.height(12.dp))
+        Divider()
+
+        Spacer(Modifier.height(12.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = dueDateExists, onCheckedChange = { dueDateExists = it })
+            Checkbox(checked = dueDateExists, onCheckedChange = { dueDateExists = it }, colors = CheckboxDefaults.colors(Color.DarkGray))
             Spacer(Modifier.width(4.dp))
             Text(
                 text = stringResource(R.string.due_date),
@@ -184,7 +197,8 @@ fun AddTaskBottomSheetContent(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(11.dp))
+
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
@@ -192,6 +206,8 @@ fun AddTaskBottomSheetContent(
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(Modifier.height(13.dp))
+
         Button(
             onClick = {
                 onAddTask(
@@ -238,16 +254,17 @@ fun PriorityTabRow(
     TabRow(
         selectedTabIndex = selectedPriority.toInt(),
         indicator = indicator,
-        modifier = Modifier.clip(RoundedCornerShape(14.dp))
+        modifier = Modifier.clip(RoundedCornerShape(14.dp)),
+        contentColor = Color.Black
     ) {
         priorities.forEachIndexed { index, it ->
             Tab(
-                text = { Text(stringResource(it.title)) },
+                text = { Text(stringResource(it.title), style = MaterialTheme.typography.bodyMedium) },
                 selected = selectedPriority.toInt() == index,
                 onClick = {
                     onChange(index.toPriority())
                 },
-                modifier = Modifier.background(it.color)
+                modifier = Modifier.background(it.color),
             )
         }
     }

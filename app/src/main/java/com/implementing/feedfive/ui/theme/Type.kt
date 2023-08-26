@@ -47,7 +47,7 @@ fun getTypography(font: FontFamily) = Typography(
 
     bodyLarge = TextStyle(
         fontFamily = font,
-        fontSize = 20.sp,
+        fontSize = 19.sp,
         fontWeight = FontWeight.SemiBold,
 
 

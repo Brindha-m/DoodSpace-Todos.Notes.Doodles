@@ -1,6 +1,7 @@
 package com.implementing.feedfive.inappscreens.note.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
@@ -52,6 +54,8 @@ import com.implementing.feedfive.model.Note
 import com.implementing.feedfive.model.NoteFolder
 import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.ui.theme.Orange
+import com.implementing.feedfive.ui.theme.Red
+import com.implementing.feedfive.ui.theme.teal
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -182,9 +186,10 @@ fun NoteDetailsScreen(
                 },
                 actions = {
                     if (state.note != null) IconButton(onClick = { openDeleteDialog = true }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_delete),
-                            contentDescription = stringResource(R.string.delete_task)
+                        Image(
+                            painter = painterResource(id = R.drawable.delete_icon),
+                            contentDescription = stringResource(R.string.delete_task),
+                            modifier = Modifier.size(26.dp)
                         )
                     }
                     IconButton(onClick = {
@@ -195,20 +200,20 @@ fun NoteDetailsScreen(
                     }) {
                         Icon(
                             painter = if (pinned) painterResource(id = R.drawable.ic_pin_filled)
-                            else painterResource(id = R.drawable.ic_pin),
+                            else painterResource(id = R.drawable.pin_note),
                             contentDescription = stringResource(R.string.pin_note),
                             modifier = Modifier.size(24.dp),
-                            tint = Orange
+                            tint = Red
                         )
                     }
                     IconButton(onClick = {
                         viewModel.onEvent(NoteEvent.ToggleReadingMode)
                     }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_read_mode),
+                            painter = painterResource(id = R.drawable.read_mode_note),
                             contentDescription = stringResource(R.string.reading_mode),
                             modifier = Modifier.size(24.dp),
-                            tint = if (readingMode) Color.Green else Color.Gray
+                            tint = if (readingMode) teal else Color.Gray
                         )
                     }
                 },
@@ -217,7 +222,7 @@ fun NoteDetailsScreen(
                         Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
             )
         },
@@ -265,13 +270,15 @@ fun NoteDetailsScreen(
             AlertDialog(
                 shape = RoundedCornerShape(25.dp),
                 onDismissRequest = { openDeleteDialog = false },
-                title = { Text(stringResource(R.string.delete_note_confirmation_title)) },
+                title = { Text(stringResource(R.string.delete_note_confirmation_title), style = MaterialTheme.typography.bodyMedium, fontSize = 17.sp) },
                 text = {
                     Text(
                         stringResource(
                             R.string.delete_note_confirmation_message,
                             state.note?.title!!
-                        )
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 14.sp
                     )
                 },
                 confirmButton = {
@@ -282,7 +289,7 @@ fun NoteDetailsScreen(
                             viewModel.onEvent(NoteEvent.DeleteNote(state.note!!))
                         },
                     ) {
-                        Text(stringResource(R.string.delete_note), color = Color.White)
+                        Text(stringResource(R.string.delete_note), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 },
                 dismissButton = {
@@ -291,7 +298,7 @@ fun NoteDetailsScreen(
                         onClick = {
                             openDeleteDialog = false
                         }) {
-                        Text(stringResource(R.string.cancel), color = Color.White)
+                        Text(stringResource(R.string.cancel), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             )
@@ -299,7 +306,7 @@ fun NoteDetailsScreen(
             AlertDialog(
                 shape = RoundedCornerShape(25.dp),
                 onDismissRequest = { openFolderDialog = false },
-                title = { Text(stringResource(R.string.change_folder)) },
+                title = { Text(stringResource(R.string.change_folder), style = MaterialTheme.typography.bodyMedium) },
                 text = {
                     FlowRow {
                         Row(
@@ -331,7 +338,7 @@ fun NoteDetailsScreen(
                                         folder = it
                                         openFolderDialog = false
                                     }
-                                    .background(if (folder?.id == it.id) MaterialTheme.colorScheme.onBackground else Color.Transparent),
+                                    .background(if (folder?.id == it.id) Color.LightGray else Color.Transparent),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -342,7 +349,7 @@ fun NoteDetailsScreen(
                                         top = 8.dp,
                                         bottom = 8.dp
                                     ),
-                                    tint = if (folder?.id == it.id) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background
+                                    tint = if (folder?.id == it.id) Color.Black else Color.LightGray
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
@@ -353,7 +360,7 @@ fun NoteDetailsScreen(
                                         bottom = 8.dp
                                     ),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = if (folder?.id == it.id) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background
+                                    color = if (folder?.id == it.id) Color.Red else Color(0xFFACA9A9)
                                 )
                             }
                         }
@@ -367,7 +374,7 @@ fun NoteDetailsScreen(
                             viewModel.onEvent(NoteEvent.DeleteNote(state.note!!))
                         },
                     ) {
-                        Text(stringResource(R.string.delete_note), color = Color.White)
+                        Text(stringResource(R.string.delete_note), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 },
                 dismissButton = {
@@ -376,7 +383,7 @@ fun NoteDetailsScreen(
                         onClick = {
                             openDialog = false
                         }) {
-                        Text(stringResource(R.string.cancel), color = Color.White)
+                        Text(stringResource(R.string.cancel), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             )

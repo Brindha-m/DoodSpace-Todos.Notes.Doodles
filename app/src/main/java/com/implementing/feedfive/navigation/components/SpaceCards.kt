@@ -185,9 +185,9 @@ fun SpaceRegularCardMiddle(
         Column(
             Modifier
                 .background(backgroundColor)
-                .fillMaxSize(.79f)
+                .fillMaxSize(.75f)
                 .clickable { onClick() }
-                .padding(28.dp),
+                .padding(25.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(

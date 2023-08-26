@@ -105,7 +105,7 @@ fun NotesScreen(
                         text = if (selectedTab == 0) stringResource(R.string.notes) else stringResource(
                             R.string.folders
                         ),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
@@ -145,21 +145,30 @@ fun NotesScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Tab(
-                    text = { Text(stringResource(R.string.notes)) },
                     selected = selectedTab == 0,
                     onClick = {
                         selectedTab = 0
+                    },
+                    text = {
+                        Text(stringResource(R.string.notes),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 )
                 Tab(
-                    text = { Text(stringResource(R.string.folders)) },
                     selected = selectedTab == 1,
                     onClick = {
                         selectedTab = 1
-                    }
+                    },
+                    text = {
+                        Text(stringResource(R.string.folders),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                   }
                 )
             }
             if (selectedTab == 0) {
@@ -173,17 +182,18 @@ fun NotesScreen(
                 {
                     IconButton(onClick = { orderSettingsVisible = !orderSettingsVisible }) {
                         Icon(
-                            modifier = Modifier.size(25.dp),
+                            modifier = Modifier.size(23.dp),
                             painter = painterResource(R.drawable.filters_icon),
-                            contentDescription = stringResource(R.string.order_by)
+                            contentDescription = stringResource(R.string.order_by),
+                            tint = Color.DarkGray
                         )
                     }
                     IconButton(onClick = {
                         navController.navigate(Screen.NoteSearchScreen.route)
                     }) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(id = R.drawable.ic_search),
+                        Image(
+                            modifier = Modifier.size(29.dp),
+                            painter = painterResource(id = R.drawable.folder_search),
                             contentDescription = stringResource(R.string.search)
                         )
                     }
@@ -298,7 +308,7 @@ fun FoldersTab(
     ) {
         items(folders) { folder ->
             Card(
-                modifier = Modifier.height(180.dp),
+                modifier = Modifier.height(200.dp),
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
@@ -476,7 +486,7 @@ fun CreateFolderDialog(
                     onCreate(name)
                 },
             ) {
-                Text(stringResource(R.string.create_folder), color = Color.White)
+                Text(stringResource(R.string.create_folder), style = MaterialTheme.typography.bodyMedium, color = Color.White)
             }
         },
         dismissButton = {
@@ -484,7 +494,7 @@ fun CreateFolderDialog(
                 shape = RoundedCornerShape(25.dp),
                 onClick = { onDismiss() },
             ) {
-                Text(stringResource(R.string.cancel), color = Color.White)
+                Text(stringResource(R.string.cancel), style = MaterialTheme.typography.bodyMedium)
             }
         }
     )

@@ -52,9 +52,9 @@ fun NoteItem(
             ){
                 if (note.pinned){
                     Icon(
-                        painter = painterResource(R.drawable.ic_pin_filled),
+                        painter = painterResource(R.drawable.pin_note_fill),
                         contentDescription = stringResource(R.string.pin_note),
-                        tint = Color.Green,
+                        tint = Color.Red,
                         modifier = Modifier
                             .size(16.dp)
                     )
@@ -64,6 +64,7 @@ fun NoteItem(
                     note.title,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     maxLines = 1,
+                    fontSize = 14.sp,
                     overflow = TextOverflow.Ellipsis
                 )
             }
@@ -72,7 +73,8 @@ fun NoteItem(
                 markdown = note.content,
                 maxLines = 14,
                 onClick = {onClick(note)},
-                fontSize = 12.sp
+                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

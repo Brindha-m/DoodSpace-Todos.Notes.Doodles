@@ -23,6 +23,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.implementing.feedfive.R
@@ -137,12 +140,18 @@ fun TaskDetailScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = {},
+                title = {
+                    Text(
+                        text = "Edit Task",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                    )
+                },
                 actions = {
                     IconButton(onClick = { openDialog = true }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_delete),
-                            contentDescription = stringResource(R.string.delete_task)
+                        Image(
+                            painter = painterResource(id = R.drawable.delete_icon),
+                            contentDescription = stringResource(R.string.delete_task),
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 },
@@ -162,7 +171,7 @@ fun TaskDetailScreen(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(start = 15.dp, bottom = 20.dp, top = 55.dp, end = 15.dp)
+                .padding(start = 16.dp, bottom = 20.dp, top = 67.dp, end = 16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -219,33 +228,44 @@ fun TaskDetailScreen(
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Icon(
-                    modifier = Modifier.size(10.dp),
+                    modifier = Modifier.size(15.dp),
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = stringResource(
                         id = R.string.add_sub_task
                     )
                 )
             }
+
+
             Spacer(Modifier.height(12.dp))
+            Divider()
             Text(
                 text = stringResource(R.string.priority),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
             )
-            Spacer(Modifier.height(12.dp))
+
+            Spacer(Modifier.height(15.dp))
+
             PriorityTabRow(
                 priorities = priorities,
                 priority,
                 onChange = { priority = it }
             )
             Spacer(Modifier.height(12.dp))
+            Divider()
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(checked = dueDateExists, onCheckedChange = {
+                Checkbox(
+                    checked = dueDateExists,
+                    onCheckedChange = {
                     dueDateExists = it
                     if (it)
                         dueDate = Calendar.getInstance().timeInMillis
-                })
+                    },
+                    colors = CheckboxDefaults.colors(Color.DarkGray)
+                )
                 Spacer(Modifier.width(4.dp))
                 Text(
                     text = stringResource(R.string.due_date),
@@ -317,13 +337,14 @@ fun TaskDetailScreen(
         AlertDialog(
             shape = RoundedCornerShape(25.dp),
             onDismissRequest = { openDialog = false },
-            title = { Text(stringResource(R.string.delete_task_confirmation_title)) },
+            title = { Text(stringResource(R.string.delete_task_confirmation_title), style = MaterialTheme.typography.bodyMedium, fontSize = 16.sp) },
             text = {
                 Text(
                     stringResource(
                         R.string.delete_task_confirmation_message,
                         uiState.task.title
-                    )
+                    ),
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
             confirmButton = {
@@ -334,7 +355,7 @@ fun TaskDetailScreen(
                         viewModel.onEvent(TaskEvent.DeleteTask(uiState.task))
                     },
                 ) {
-                    Text(stringResource(R.string.delete_task), color = Color.White)
+                    Text(stringResource(R.string.delete_task), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                 }
             },
             dismissButton = {
@@ -343,7 +364,7 @@ fun TaskDetailScreen(
                     onClick = {
                         openDialog = false
                     }) {
-                    Text(stringResource(R.string.cancel), color = Color.White)
+                    Text(stringResource(R.string.cancel), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                 }
             }
         )

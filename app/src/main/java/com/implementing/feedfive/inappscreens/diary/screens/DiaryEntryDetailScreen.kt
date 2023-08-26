@@ -55,6 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.implementing.feedfive.R
@@ -142,7 +143,7 @@ fun DiaryEntryDetailsScreen(
                         Image(
                             painter = painterResource(id = R.drawable.delete_icon),
                             contentDescription = stringResource(R.string.delete_entry),
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier.size(28.dp)
                         )
                     }
                 },
@@ -243,12 +244,13 @@ fun DiaryEntryDetailsScreen(
             AlertDialog(
                 shape = RoundedCornerShape(25.dp),
                 onDismissRequest = { openDialog = false },
-                title = { Text(stringResource(R.string.delete_diary_entry_confirmation_title)) },
+                title = { Text(stringResource(R.string.delete_diary_entry_confirmation_title), style = MaterialTheme.typography.bodyMedium, fontSize = 16.sp) },
                 text = {
                     Text(
                         stringResource(
                             R.string.delete_diary_entry_confirmation_message
-                        )
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 },
                 confirmButton = {
@@ -261,7 +263,8 @@ fun DiaryEntryDetailsScreen(
                     ) {
                         Text(
                             stringResource(R.string.delete_entry),
-                            color = Color.White
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 },
@@ -273,7 +276,8 @@ fun DiaryEntryDetailsScreen(
                         }) {
                         Text(
                             stringResource(R.string.cancel),
-                            color = Color.White
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }

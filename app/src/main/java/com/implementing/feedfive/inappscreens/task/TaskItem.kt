@@ -114,7 +114,8 @@ fun TaskCheckBox(
             Icon(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(id = R.drawable.ic_check),
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.White
             )
         }
     }

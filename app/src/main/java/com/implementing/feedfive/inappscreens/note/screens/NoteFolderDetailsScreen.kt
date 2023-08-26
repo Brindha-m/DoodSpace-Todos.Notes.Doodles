@@ -1,6 +1,7 @@
 package com.implementing.feedfive.inappscreens.note.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.implementing.feedfive.R
@@ -88,7 +90,7 @@ fun NoteFolderDetailsScreen(
                 title = {
                     Text(
                         text = folder?.name ?: "",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 navigationIcon = {
@@ -96,14 +98,22 @@ fun NoteFolderDetailsScreen(
                         Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
                 actions = {
                     IconButton(onClick = { openDeleteDialog = true }) {
-                        Icon(Icons.Default.Delete, stringResource(R.string.delete_folder))
+                        Image(
+                            painter = painterResource(id = R.drawable.delete_icon),
+                            contentDescription = stringResource(R.string.delete_folder),
+                            modifier = Modifier.size(24.dp)
+                        )
                     }
                     IconButton(onClick = { openEditDialog = true }) {
-                        Icon(Icons.Default.Edit, stringResource(R.string.delete_folder))
+                        Image(
+                            painter = painterResource(id = R.drawable.edit_ic),
+                            contentDescription = "Edit",
+                            modifier = Modifier.size(24.dp)
+                        )
                     }
                 }
             )
@@ -195,12 +205,13 @@ fun NoteFolderDetailsScreen(
             AlertDialog(
                 shape = RoundedCornerShape(25.dp),
                 onDismissRequest = { openDeleteDialog = false },
-                title = { Text(stringResource(R.string.delete_note_confirmation_title)) },
+                title = { Text(stringResource(R.string.delete_note_confirmation_title), style = MaterialTheme.typography.bodyMedium, fontSize = 16.sp) },
                 text = {
                     Text(
                         stringResource(
                             R.string.delete_folder_confirmation_message,
-                        )
+                        ),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 confirmButton = {
@@ -212,7 +223,7 @@ fun NoteFolderDetailsScreen(
                             openDeleteDialog = false
                         },
                     ) {
-                        Text(stringResource(R.string.delete_folder), color = Color.White)
+                        Text(stringResource(R.string.delete_folder), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 },
                 dismissButton = {
@@ -221,7 +232,7 @@ fun NoteFolderDetailsScreen(
                         onClick = {
                             openDeleteDialog = false
                         }) {
-                        Text(stringResource(R.string.cancel), color = Color.White)
+                        Text(stringResource(R.string.cancel), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             )
@@ -242,7 +253,8 @@ fun NoteFolderDetailsScreen(
                         label = {
                             Text(
                                 text = stringResource(id = R.string.name),
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primaryContainer
                             )
                         },
                     )
@@ -255,7 +267,7 @@ fun NoteFolderDetailsScreen(
                             openEditDialog = false
                         },
                     ) {
-                        Text(stringResource(R.string.save), color = Color.White)
+                        Text(stringResource(R.string.save), color = Color.White, style = MaterialTheme.typography.bodyMedium)
                     }
                 },
                 dismissButton = {
@@ -263,7 +275,7 @@ fun NoteFolderDetailsScreen(
                         shape = RoundedCornerShape(25.dp),
                         onClick = { openEditDialog = false },
                     ) {
-                        Text(stringResource(R.string.cancel), color = Color.White)
+                        Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.primaryContainer, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             )

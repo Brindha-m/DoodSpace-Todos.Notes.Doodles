@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
@@ -49,6 +50,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -99,7 +101,7 @@ fun CalendarScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.calendar),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 actions = {
@@ -234,7 +236,8 @@ fun NoReadCalendarPermissionMessage(
     onRequest: () -> Unit
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(start = 5.dp, end = 5.dp)
     ) {
         Text(
             text = stringResource(R.string.no_read_calendar_permission_message),
@@ -252,8 +255,15 @@ fun NoReadCalendarPermissionMessage(
             }
 
         } else {
-            TextButton(onClick = { onRequest() }) {
-                Text(text = stringResource(R.string.grant_permission))
+            TextButton(
+                onClick = { onRequest() },
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = Color(0xFF221F3E),
+                    contentColor = Color.White
+                )
+            ) {
+
+                Text(text = stringResource(R.string.grant_permission),style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -153,9 +154,10 @@ fun CalendarEventDetailsScreen(
                         title = {},
                         actions = {
                             IconButton(onClick = { openDeleteDialog = true }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_delete),
-                                    contentDescription = stringResource(R.string.delete_event)
+                                Image(
+                                    painter = painterResource(id = R.drawable.delete_icon),
+                                    contentDescription = stringResource(R.string.delete_event),
+                                    modifier = Modifier.size(24.dp)
                                 )
                             }
                         },

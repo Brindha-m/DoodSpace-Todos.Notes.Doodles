@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
@@ -75,7 +76,7 @@ fun MonthlyOrYearlyTab(
         modifier = Modifier.clip(RoundedCornerShape(14.dp))
     ) {
         Tab(
-            text = { Text(stringResource(R.string.last_30_days)) },
+            text = { Text(stringResource(R.string.last_30_days),style = MaterialTheme.typography.bodyMedium,) },
             selected = selected == stringResource(R.string.last_30_days),
             onClick = {
                 selected = getString(R.string.last_30_days)
@@ -83,7 +84,7 @@ fun MonthlyOrYearlyTab(
             },
         )
         Tab(
-            text = { Text(stringResource(R.string.last_year)) },
+            text = { Text(stringResource(R.string.last_year), style = MaterialTheme.typography.bodyMedium,) },
             selected = selected == stringResource(R.string.last_year),
             onClick = {
                 selected = getString(R.string.last_year)
@@ -100,6 +101,6 @@ fun AnimatedTabIndicator(modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(5.dp)
             .fillMaxSize()
-            .border(BorderStroke(2.dp, Color.White), RoundedCornerShape(8.dp))
+            .border(BorderStroke(2.dp, MaterialTheme.colorScheme.primary), RoundedCornerShape(8.dp))
     )
 }
