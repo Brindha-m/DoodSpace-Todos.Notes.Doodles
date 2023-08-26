@@ -158,7 +158,8 @@ fun NoteDetailsScreen(
                             Icon(
                                 painterResource(R.drawable.ic_folder),
                                 stringResource(R.string.folders),
-                                modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                                modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+                                tint = MaterialTheme.colorScheme.onBackground
                             )
                             Spacer(Modifier.width(8.dp))
                             Text(
@@ -172,7 +173,9 @@ fun NoteDetailsScreen(
                             Icon(
                                 painterResource(R.drawable.ic_create_folder),
                                 stringResource(R.string.folders),
-                                modifier = Modifier.padding(12.dp)
+                                modifier = Modifier.padding(12.dp),
+                                tint = MaterialTheme.colorScheme.onBackground
+
                             )
                         }
                     }
@@ -207,6 +210,11 @@ fun NoteDetailsScreen(
                             modifier = Modifier.size(24.dp),
                             tint = if (readingMode) Color.Green else Color.Gray
                         )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
@@ -334,7 +342,7 @@ fun NoteDetailsScreen(
                                         top = 8.dp,
                                         bottom = 8.dp
                                     ),
-                                    tint = if (folder?.id == it.id) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground
+                                    tint = if (folder?.id == it.id) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
@@ -345,7 +353,7 @@ fun NoteDetailsScreen(
                                         bottom = 8.dp
                                     ),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = if (folder?.id == it.id) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground
+                                    color = if (folder?.id == it.id) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background
                                 )
                             }
                         }

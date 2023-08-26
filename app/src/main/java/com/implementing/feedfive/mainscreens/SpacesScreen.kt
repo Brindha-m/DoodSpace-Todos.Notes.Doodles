@@ -1,9 +1,13 @@
 package com.implementing.feedfive.mainscreens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.implementing.feedfive.R
 import com.implementing.feedfive.navigation.Screen
 import com.implementing.feedfive.navigation.components.SpaceRegularCard
+import com.implementing.feedfive.navigation.components.SpaceRegularCardMiddle
 import com.implementing.feedfive.navigation.components.SpaceWideCard
 import com.implementing.feedfive.navigation.components.SpaceWideCardLeft
 
@@ -108,7 +113,6 @@ fun SpacesScreen(
                 }
             }
 
-
             item {
                 Row {
 
@@ -135,8 +139,8 @@ fun SpacesScreen(
                         image = R.drawable.bookmarks_img,
                         backgroundColor = Brush.verticalGradient(
                             colorStops = arrayOf(
-                                0f to Color(0xFF1D1A1A), // Dark pink at the start
-                                0.5f to Color(0xFF252424), // Lighter pink in the middle
+                                0.2f to Color(0xDA161515), // Dark pink at the start
+                                0.5f to Color(0xCE252424), // Lighter pink in the middle
                                 1f to Color(0xEB404041) // Dark grey at the end
                             )
                         )
@@ -148,21 +152,25 @@ fun SpacesScreen(
             }
 
             item {
-                Row {
-                    SpaceWideCardLeft(
-                        title = stringResource(R.string.calendar),
+                Row (
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(1f),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    SpaceRegularCardMiddle(
+                        title = "Calendar",
                         image = R.drawable.calendar_img,
                         backgroundColor = Brush.linearGradient(
                             colorStops = arrayOf(
-                                0f to Color(0xFFBBB9B9), // More transparent white in the middle
-                                0.55f to Color(0xFF1D1E1F),  // Light gray (sky)
+                                0f to Color(0xFFC9BDBD),  // Light gray (sky)
+                                0.4f to Color(0xFF035881), // More transparent white in the middle
+                                0.8f to Color(0xFF455A3C),
+                                1.2f to Color(0xFFCD853F),
                             )
                         )
                     ) {
                         navController.navigate(Screen.CalendarScreen.route)
                     }
                 }
-
             }
 
             item { Spacer(Modifier.height(60.dp)) }

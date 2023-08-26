@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,15 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.LinearGradient
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.implementing.feedfive.R
@@ -167,4 +163,47 @@ fun SpaceRegularCardPreview() {
             )
         )
     )
+}
+
+
+@Composable
+fun SpaceRegularCardMiddle(
+    title: String,
+    image: Int,
+    backgroundColor: Brush,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+
+    Card(
+        modifier = modifier.padding(8.dp).background(Color.Transparent),
+        shape = RoundedCornerShape(25.dp),
+//        colors = CardDefaults.cardColors(containerColor = gradientBrush),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
+
+    ) {
+        Column(
+            Modifier
+                .background(backgroundColor)
+                .fillMaxSize(.79f)
+                .clickable { onClick() }
+                .padding(28.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+//                modifier = Modifier.padding(top = 3.dp, start = 3.dp)
+
+            )
+
+            Image(
+                modifier = Modifier
+                    .size(72.dp)
+                    .align(Alignment.End),
+                painter = painterResource(id = image),
+                contentDescription = title)
+
+        }
+    }
 }

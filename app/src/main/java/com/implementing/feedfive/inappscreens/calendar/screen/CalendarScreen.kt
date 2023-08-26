@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -163,9 +164,9 @@ fun CalendarScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(onClick = { settingsVisible = !settingsVisible }) {
-                        Icon(
+                        Image(
                             modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.ic_settings_sliders),
+                            painter = painterResource(R.drawable.calen_filter),
                             contentDescription = stringResource(R.string.include_calendars)
                         )
                     }

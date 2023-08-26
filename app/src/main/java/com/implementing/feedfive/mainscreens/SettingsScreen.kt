@@ -1,12 +1,14 @@
 package com.implementing.feedfive.mainscreens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -44,6 +46,7 @@ import com.implementing.feedfive.inappscreens.settings.SettingsBasicLinkItem
 import com.implementing.feedfive.inappscreens.settings.SettingsItemCard
 import com.implementing.feedfive.inappscreens.settings.viewmodel.SettingsViewModel
 import com.implementing.feedfive.navigation.Screen
+import com.implementing.feedfive.ui.theme.Avenir
 import com.implementing.feedfive.ui.theme.Jost
 import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
@@ -105,30 +108,32 @@ fun SettingsScreen(
                     }
                 }
             }
-            item {
-                val screen = viewModel
-                    .getSettings(
-                        intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
-                        StartUpScreenSettings.SPACES.value
-                    ).collectAsState(
-                        initial = StartUpScreenSettings.SPACES.value
-                    )
-                StartUpScreenSettingsItem(
-                    screen.value,
-                    {
-                        viewModel.saveSettings(
-                            intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
-                            StartUpScreenSettings.SPACES.value
-                        )
-                    },
-                    {
-                        viewModel.saveSettings(
-                            intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
-                            StartUpScreenSettings.DASHBOARD.value
-                        )
-                    }
-                )
-            }
+
+//            item {
+//                val screen = viewModel
+//                    .getSettings(
+//                        intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
+//                        StartUpScreenSettings.SPACES.value
+//                    ).collectAsState(
+//                        initial = StartUpScreenSettings.SPACES.value
+//                    )
+//                StartUpScreenSettingsItem(
+//                    screen.value,
+//                    {
+//                        viewModel.saveSettings(
+//                            intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
+//                            StartUpScreenSettings.SPACES.value
+//                        )
+//                    },
+//                    {
+//                        viewModel.saveSettings(
+//                            intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY),
+//                            StartUpScreenSettings.DASHBOARD.value
+//                        )
+//                    }
+//                )
+//            }
+
             item {
                 val screen = viewModel
                     .getSettings(
@@ -202,13 +207,14 @@ fun SettingsScreen(
                     link = Constants.GITHUB_RELEASES_LINK
                 )
             }
-            item {
-                SettingsBasicLinkItem(
-                    title = R.string.project_on_github,
-                    icon = R.drawable.ic_github,
-                    link = Constants.PROJECT_GITHUB_LINK
-                )
-            }
+
+//            item {
+//                SettingsBasicLinkItem(
+//                    title = R.string.project_on_github,
+//                    icon = R.drawable.ic_github,
+//                    link = Constants.PROJECT_GITHUB_LINK
+//                )
+//            }
 
             item {
                 SettingsBasicLinkItem(
@@ -269,13 +275,14 @@ fun ThemeSettingsItem(theme: Int = 0, onClick: () -> Unit = {}) {
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.width(4.dp))
-            Icon(
+            Image(
                 painter = when (theme) {
-                    ThemeSettings.LIGHT.value -> painterResource(id = R.drawable.ic_sun)
-                    ThemeSettings.DARK.value -> painterResource(id = R.drawable.ic_dark)
+                    ThemeSettings.LIGHT.value -> painterResource(id = R.drawable.ic_lightmode)
+                    ThemeSettings.DARK.value -> painterResource(id = R.drawable.ic_darkmode)
                     else -> painterResource(id = R.drawable.ic_auto)
                 },
-                contentDescription = theme.toString()
+                contentDescription = theme.toString(),
+                modifier = Modifier.size(25.dp)
             )
         }
     }
@@ -359,9 +366,9 @@ fun AppFontSettingsItem(
     var expanded by remember { mutableStateOf(false) }
     val fonts = listOf(
         FontFamily.Default,
+        Avenir,
         Rubik,
-        Jost,
-        FontFamily.SansSerif
+        Jost
     )
     SettingsItemCard(
         cornerRadius = 16.dp,

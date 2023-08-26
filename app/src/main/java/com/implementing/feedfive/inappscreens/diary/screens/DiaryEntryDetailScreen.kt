@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.graphics.drawable.shapes.Shape
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -49,13 +47,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -64,7 +62,6 @@ import com.implementing.feedfive.inappscreens.diary.DiaryEvent
 import com.implementing.feedfive.inappscreens.diary.viewmodel.DiaryViewModel
 import com.implementing.feedfive.model.Diary
 import com.implementing.feedfive.navigation.Screen
-import com.implementing.feedfive.ui.theme.Shapes
 import com.implementing.feedfive.util.Mood
 import com.implementing.feedfive.util.fullDate
 import java.util.Calendar
@@ -139,28 +136,19 @@ fun DiaryEntryDetailsScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = {},
+                title = { Text(text = "Edit Entry", style = MaterialTheme.typography.titleLarge)},
                 actions = {
                     if (state.entry != null) IconButton(onClick = { openDialog = true }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_delete),
-                            contentDescription = stringResource(R.string.delete_entry)
+                        Image(
+                            painter = painterResource(id = R.drawable.delete_icon),
+                            contentDescription = stringResource(R.string.delete_entry),
+                            modifier = Modifier.size(30.dp)
                         )
                     }
-                    TextButton(onClick = {
-                        showDatePicker(
-                            Calendar.getInstance().apply { timeInMillis = date },
-                            context,
-                            onDateSelected = {
-                                date = it
-                            }
-                        )
-                    }) {
-                        Text(
-                            text = date.fullDate(),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -195,18 +183,18 @@ fun DiaryEntryDetailsScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(top = 50.dp, start = 14.dp, end = 14.dp, bottom = 14.dp)
+                .padding(top = 70.dp, start = 14.dp, end = 14.dp, bottom = 14.dp)
         ) {
             Text(
                 text = stringResource(R.string.mood),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.displayMedium,
                 modifier = Modifier.padding(start = 10.dp)
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(12.dp))
             EntryMoodSection(
                 currentMood = mood,
             ) { mood = it }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(9.dp))
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
@@ -215,7 +203,7 @@ fun DiaryEntryDetailsScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(9.dp))
 
             OutlinedTextField(
                 value = content,
@@ -224,6 +212,32 @@ fun DiaryEntryDetailsScreen(
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            Spacer(Modifier.height(15.dp))
+
+
+
+            TextButton(
+                elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFF12614F)),
+                modifier = Modifier.align(Alignment.End),
+                onClick = {
+                showDatePicker(
+                    Calendar.getInstance().apply { timeInMillis = date },
+                    context,
+                    onDateSelected = {
+                        date = it
+                    }
+                )
+            }) {
+
+                Text(
+                    text = date.fullDate(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.LightGray,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
         if (openDialog)
             AlertDialog(
@@ -304,11 +318,16 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
             Image(
                 painter = painterResource(id = mood.icon),
                 contentDescription = stringResource(mood.title),
-                modifier = Modifier.size(50.dp)
-                    .border(border = BorderStroke
-                        (width = borderWidth,
-                        color = if (chosen) borderColor else Color.Transparent),
-                        CircleShape)
+                modifier = Modifier
+                    .size(44.dp)
+                    .border(
+                        border = BorderStroke
+                            (
+                            width = borderWidth,
+                            color = if (chosen) borderColor else Color.Transparent
+                        ),
+                        CircleShape
+                    )
             )
 
 //            Icon(
@@ -319,8 +338,10 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
 //            )
 
             Spacer(Modifier.height(8.dp))
+
             Text(
                 text = stringResource(mood.title),
+                overflow = TextOverflow.Ellipsis,
                 color = if (chosen) mood.color else Color.Gray,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
             )

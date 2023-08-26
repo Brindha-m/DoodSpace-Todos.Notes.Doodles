@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -143,6 +144,12 @@ fun TaskDetailScreen(
                             painter = painterResource(id = R.drawable.ic_delete),
                             contentDescription = stringResource(R.string.delete_task)
                         )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Image(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
+//                        Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),

@@ -10,6 +10,7 @@ import com.implementing.feedfive.ui.theme.Green
 import com.implementing.feedfive.ui.theme.Orange
 import com.implementing.feedfive.ui.theme.Red
 import com.implementing.feedfive.ui.theme.Jost
+import com.implementing.feedfive.ui.theme.Rubik
 
 
 enum class ThemeSettings(val value: Int) {
@@ -124,8 +125,8 @@ fun Int.toFontFamily(): FontFamily {
     return when (this) {
         0 -> FontFamily.Default
         1 -> Avenir
-        2 -> FontFamily.Monospace
-        3 -> FontFamily.SansSerif
+        2 -> Rubik
+        3 -> Jost
         else -> FontFamily.Default
     }
 }
@@ -134,18 +135,18 @@ fun FontFamily.toInt(): Int {
     return when (this) {
         FontFamily.Default -> 0
         Avenir -> 1
-        FontFamily.Monospace -> 2
-        FontFamily.SansSerif -> 3
+        Rubik -> 2
+        Jost -> 3
         else -> 0
     }
 }
 
 fun FontFamily.getName(): String {
     return when (this) {
-        FontFamily.Default -> getString(R.string.font_system_default)
+        FontFamily.Default ->  getString(R.string.font_system_default)
+        Avenir -> "Avenir"
+        Rubik -> "Rubik"
         Jost -> "Jost"
-        FontFamily.Monospace -> "Monospace"
-        FontFamily.SansSerif -> "Sans Serif"
         else -> getString(R.string.font_system_default)
     }
 }

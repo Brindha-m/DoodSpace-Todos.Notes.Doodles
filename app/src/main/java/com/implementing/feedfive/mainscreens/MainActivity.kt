@@ -42,8 +42,10 @@ import com.implementing.feedfive.inappscreens.task.screens.TasksScreen
 import com.implementing.feedfive.inappscreens.task.screens.TasksSearchScreen
 import com.implementing.feedfive.mainscreens.viewmodel.MainViewModel
 import com.implementing.feedfive.navigation.Screen
+import com.implementing.feedfive.ui.theme.Avenir
 import com.implementing.feedfive.ui.theme.FeedFiveTheme
 import com.implementing.feedfive.ui.theme.Jost
+import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
 import com.implementing.feedfive.util.ThemeSettings
 import com.implementing.feedfive.util.toFontFamily

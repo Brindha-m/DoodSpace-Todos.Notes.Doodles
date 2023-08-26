@@ -68,7 +68,7 @@ fun DiaryScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.diary),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
@@ -78,9 +78,9 @@ fun DiaryScreen(
                         navController.navigate(Screen.DiaryChartScreen.route)
                     }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_chart),
+                            painter = painterResource(id = R.drawable.chart_diary),
                             contentDescription = stringResource(R.string.diary_chart),
-                            modifier = Modifier.size(34.dp)
+                            modifier = Modifier.size(25.dp)
                         )
                     }
                 }
@@ -124,16 +124,16 @@ fun DiaryScreen(
                 IconButton(onClick = { orderSettingsVisible = !orderSettingsVisible }) {
                     Icon(
                         modifier = Modifier.size(25.dp),
-                        painter = painterResource(R.drawable.ic_settings_sliders),
+                        painter = painterResource(R.drawable.filters_icon),
                         contentDescription = stringResource(R.string.order_by)
                     )
                 }
                 IconButton(onClick = {
                     navController.navigate(Screen.DiarySearchScreen.route)
                 }) {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        painter = painterResource(id = R.drawable.ic_search),
+                    Image(
+                        modifier = Modifier.size(32.dp),
+                        painter = painterResource(id = R.drawable.search_diary),
                         contentDescription = stringResource(R.string.search)
                     )
                 }

@@ -12,6 +12,9 @@ kotlin {
             languageSettings {
                 optIn("kotlin.RequiresOptIn")
             }
+            main {
+                resources.srcDirs("src/main/res/font")
+            }
         }
     }
 }

@@ -174,7 +174,7 @@ fun NotesScreen(
                     IconButton(onClick = { orderSettingsVisible = !orderSettingsVisible }) {
                         Icon(
                             modifier = Modifier.size(25.dp),
-                            painter = painterResource(R.drawable.ic_settings_sliders),
+                            painter = painterResource(R.drawable.filters_icon),
                             contentDescription = stringResource(R.string.order_by)
                         )
                     }

@@ -156,6 +156,11 @@ fun BookmarkDetailsScreen(
                             )
                         }
                 },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
 //                elevation = 0.dp,
             )

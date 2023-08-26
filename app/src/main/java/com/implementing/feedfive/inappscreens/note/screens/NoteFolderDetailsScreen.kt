@@ -91,6 +91,11 @@ fun NoteFolderDetailsScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
 //                elevation = 0.dp,
                 actions = {

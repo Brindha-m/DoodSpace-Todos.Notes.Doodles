@@ -55,7 +55,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun FeedFiveTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    fontFamily: FontFamily = Jost,
+    fontFamily: FontFamily = Avenir,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit

@@ -9,35 +9,58 @@ import androidx.compose.ui.unit.sp
 import com.implementing.feedfive.R
 
 val Avenir = FontFamily(
-    Font(R.font.avenirheavy),
-    Font(R.font.avenirmedium)
+    Font(R.font.avenir_heavy),
+    Font(R.font.avenir_medium)
 )
 
 val Jost = FontFamily(
     Font(R.font.jost_book),
-    Font(R.font.jost_medium, FontWeight.Bold)
+    Font(R.font.jost_medium)
 )
 
 val Rubik = FontFamily(
     Font(R.font.rubik_regular),
-    Font(R.font.rubik_bold, FontWeight.Bold)
+    Font(R.font.rubik_bold)
 )
 
-val Mont = FontFamily(
-    Font(R.font.montserrat_alternates_medium),
-    Font(R.font.montserrat_alternates_semibold)
-)
 
 // Set of Material typography styles to start with
 fun getTypography(font: FontFamily) = Typography(
 
     bodyMedium = TextStyle(fontFamily = font),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+
+    titleMedium = TextStyle(
+        fontFamily = font,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 96.sp
+    ),
+
+    // For diary
+
+    displayMedium = TextStyle(
+        fontFamily = font,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+
+    // Space Main headings
+
+    bodyLarge = TextStyle(
+        fontFamily = font,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.SemiBold,
+
+
+//        fontWeight = FontWeight.Normal,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
+    ),
+
+    // Top app bars
+    titleLarge = TextStyle(
+        fontFamily = font,
+        fontWeight = FontWeight.W500,
+        fontSize = 18.sp
     ),
 
     displayLarge = TextStyle(
@@ -45,24 +68,12 @@ fun getTypography(font: FontFamily) = Typography(
         fontSize = 16.sp
     ),
 
-    displayMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    ),
+
 
     displaySmall = TextStyle(
         fontSize = 14.sp
     ),
 
-    titleLarge = TextStyle(
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-
-    titleMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 96.sp
-    ),
 
     labelSmall  = TextStyle(
         fontSize = 15.sp

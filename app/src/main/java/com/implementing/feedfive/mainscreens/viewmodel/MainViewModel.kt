@@ -16,7 +16,9 @@ import com.implementing.feedfive.domain.usecase.tasks.UpdateTaskUseCase
 import com.implementing.feedfive.model.CalendarEvent
 import com.implementing.feedfive.model.Diary
 import com.implementing.feedfive.model.Task
+import com.implementing.feedfive.ui.theme.Avenir
 import com.implementing.feedfive.ui.theme.Jost
+import com.implementing.feedfive.ui.theme.Rubik
 import com.implementing.feedfive.util.Constants
 import com.implementing.feedfive.util.Order
 import com.implementing.feedfive.util.OrderType
