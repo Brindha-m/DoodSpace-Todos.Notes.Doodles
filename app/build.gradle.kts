@@ -4,7 +4,14 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    id("com.chrisney.enigma")
+
+
 }
+
+enigma.enabled = true
+enigma.injectFakeKeys = true
+
 // Ksp. plugin for compose navigation
 kotlin {
     sourceSets {
@@ -15,16 +22,16 @@ kotlin {
             main {
                 resources.srcDirs("src/main/res/font")
             }
+
         }
     }
 }
-
 android {
-    namespace = "com.implementing.feedfive"
+    namespace = "com.implementing.cozyspace"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.implementing.feedfive"
+        applicationId = "com.implementing.cozyspace"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
