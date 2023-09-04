@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -47,11 +48,12 @@ fun SpacesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            TopAppBar( modifier = Modifier.height(44.dp),
                 title = {
                     Box(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 6.dp))
+                        .padding(top = 5.dp)
+                    )
                     {
 
                         Image(
@@ -80,7 +82,7 @@ fun SpacesScreen(
                     }
 
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
 
                 )
         }

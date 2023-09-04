@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.implementing.cozyspace.R
@@ -46,12 +47,12 @@ fun LazyItemScope.DiaryEntryItem(
 ) {
     Card(
         modifier = modifier
-            .animateItemPlacement(),
+            .animateItemPlacement().fillMaxWidth(),
         shape = RoundedCornerShape(25.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
 //        colors = CardDefaults.cardColors(containerColor = Color(0xFF141414))
     ) {
-        Box()
+        Box(modifier = modifier.fillMaxWidth())
         {
 //            Image(painter = painterResource(id = R.drawable.img_12), contentDescription = "")
             Column(
@@ -65,17 +66,16 @@ fun LazyItemScope.DiaryEntryItem(
                     Image(
                         painterResource(entry.mood.icon),
                         contentDescription = "",
-                        modifier = Modifier.size(30.dp),
+                        modifier = Modifier.size(28.dp).alignByBaseline(), // Align the image to the baseline
                     )
+                    Spacer(modifier = Modifier.width(3.dp))
+
                     Text(
                         text = stringResource(entry.mood.title),
                         color = entry.mood.color, // Set the desired text color
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(
-                            top = 4.dp,
-                            start = 2.dp
-                        ) // Add appropriate spacing
+                        // Add appropriate spacing
                     )
 
 //                Image(

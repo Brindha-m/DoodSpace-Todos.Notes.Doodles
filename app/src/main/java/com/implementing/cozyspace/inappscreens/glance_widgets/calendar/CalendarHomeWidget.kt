@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.implementing.cozyspace.domain.usecase.calendar.GetAllCalendarEventsUseCase
 import com.implementing.cozyspace.domain.usecase.settings.GetSettingsUseCase
+import com.implementing.cozyspace.inappscreens.calendar.screen.items.CalendarHomeScreenWidget
 import com.implementing.cozyspace.model.CalendarEvent
 import com.implementing.cozyspace.util.Constants
 import com.implementing.cozyspace.util.toIntList
@@ -39,10 +40,10 @@ class CalendarHomeWidget : GlanceAppWidget() {
             val prefs = currentState<Preferences>()
             val events: Map<String, List<CalendarEvent>> = gson.fromJson(prefs[stringPreferencesKey("events")], type) ?: emptyMap()
             val hasPermission = prefs[booleanPreferencesKey("hasPermission")] ?: false
-//            CalendarHomeScreenWidget(
-//                events,
-//                hasPermission
-//            )
+            CalendarHomeScreenWidget(
+                events,
+                hasPermission
+            )
         }
     }
 }

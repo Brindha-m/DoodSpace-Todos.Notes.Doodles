@@ -37,6 +37,7 @@ private val DarkColorScheme = darkColorScheme(
     // save icon
     scrim = Color.DarkGray,
 
+    inverseOnSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -53,6 +54,9 @@ private val LightColorScheme = lightColorScheme(
 
     // save icon
     scrim = Color.White,
+// Calendar
+    inverseOnSurface = Color(0xFFBCABE6)
+
 
 )
 

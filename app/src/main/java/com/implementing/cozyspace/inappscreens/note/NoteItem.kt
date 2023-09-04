@@ -70,7 +70,6 @@ fun NoteItem(
             Spacer(Modifier.height(8.dp))
             MarkdownText(
                 markdown = note.content,
-                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 14,
                 onClick = {onClick(note)},
                 fontSize = 13.sp,

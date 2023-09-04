@@ -394,7 +394,7 @@ fun NoteDetailsScreen(
             if (readingMode) {
                 MarkdownText(
                     markdown = content.ifBlank { stringResource(R.string.note_content)},
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal),
+//                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
@@ -405,13 +405,14 @@ fun NoteDetailsScreen(
                         print("FROM MARKDOWN $content")
                         viewModel.onEvent(NoteEvent.ToggleReadingMode)
                     },
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+//                    style =  MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Thin),
+                    fontSize = 13.sp
                 )
                 {
 
                 }
             }
-
 
             else {
                 OutlinedTextField(
@@ -423,7 +424,8 @@ fun NoteDetailsScreen(
                     label = {
                         Text(
                             text = stringResource(R.string.note_content),
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 10.sp
                         )
                     },
                     shape = RoundedCornerShape(15.dp),

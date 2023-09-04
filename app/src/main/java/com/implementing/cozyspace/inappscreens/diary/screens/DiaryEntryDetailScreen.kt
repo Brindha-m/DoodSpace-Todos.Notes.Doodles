@@ -208,9 +208,11 @@ fun DiaryEntryDetailsScreen(
                 modifier = Modifier.padding(start = 10.dp)
             )
             Spacer(Modifier.height(12.dp))
+
             EntryMoodSection(
                 currentMood = mood,
             ) { mood = it }
+
             Spacer(Modifier.height(9.dp))
             OutlinedTextField(
                 value = title,
@@ -345,7 +347,7 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
                 painter = painterResource(id = mood.icon),
                 contentDescription = stringResource(mood.title),
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(32.dp)
                     .border(
                         border = BorderStroke
                             (
@@ -369,6 +371,7 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
                 text = stringResource(mood.title),
                 overflow = TextOverflow.Ellipsis,
                 color = if (chosen) mood.color else Color.Gray,
+                fontSize = 12.sp,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
             )
         }

@@ -98,6 +98,7 @@
     <string name="event_time">%1$s - %2$s</string>
     <string name="all_day">All day</string>
     <string name="no_read_calendar_permission_message">Read Calendar permission required for this feature to be available.\nPlease grant the permission</string>
+    <string name="no_read_calendar_permission_message_widget">Read Calendar permission required for this feature to be available.\nPlease grant the permission</string>
     <string name="no_write_calendar_permission_message">Write Calendar permission required for this feature to be available.\nPlease grant the permission</string>
     <string name="grant_permission">Grant permission</string>
     <string name="go_to_settings">Go to settings</string>

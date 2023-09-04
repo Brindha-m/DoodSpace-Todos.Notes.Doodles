@@ -41,6 +41,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,10 +66,12 @@ import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.calendar.CalendarEventsVM
 import com.implementing.cozyspace.inappscreens.calendar.screen.items.CalendarEventItem
 import com.implementing.cozyspace.inappscreens.calendar.viewmodel.CalendarViewModel
+import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.model.Calendar
 import com.implementing.cozyspace.model.CalendarEvent
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.util.Constants
+import com.implementing.cozyspace.util.ThemeSettings
 import com.implementing.cozyspace.util.monthName
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
@@ -78,8 +81,9 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun CalendarScreen(
     navController: NavHostController,
-    viewModel: CalendarViewModel = hiltViewModel()
+    viewModel: CalendarViewModel = hiltViewModel(),
 ) {
+
     val state = viewModel.uiState
     val context = LocalContext.current
     val lazyListState = rememberLazyListState()
@@ -94,6 +98,7 @@ fun CalendarScreen(
         }
     }
     val scope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -242,16 +247,19 @@ fun NoReadCalendarPermissionMessage(
         Text(
             text = stringResource(R.string.no_read_calendar_permission_message),
             style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.inverseOnSurface
         )
         Spacer(Modifier.height(12.dp))
         if (shouldShowRationale) {
-            TextButton(onClick = {
+            TextButton(
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF67509F), contentColor = Color.White),
+                onClick = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = Uri.fromParts("package", context.packageName, null)
                 context.startActivity(intent)
             }) {
-                Text(text = stringResource(R.string.go_to_settings))
+                Text(text = stringResource(R.string.go_to_settings), style = MaterialTheme.typography.bodyMedium)
             }
 
         } else {

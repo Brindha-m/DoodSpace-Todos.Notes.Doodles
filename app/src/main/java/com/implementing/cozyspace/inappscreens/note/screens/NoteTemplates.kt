@@ -44,7 +44,7 @@ val TRAVEL_DIARY_TEMPLATE = """
 
 📸 Cheese!
 
-![Image](https://github.com/Brindhamanick/cozy/blob/main/cat_travel.jpg?raw=true)
+![Image](link to your image with out "quotes)
 
 ---
 📝  Anything else to write about?
@@ -84,7 +84,7 @@ var LEARNING_DIARY_TEMPLATE = """
 
 📸 Insert an image that represents your learning journey here:
 
-![Image](https://github.com/Brindhamanick/cozy/blob/main/cat_learn.jpg?raw=true)
+![Image](link to your image with out "quotes)
 
 
 ---
