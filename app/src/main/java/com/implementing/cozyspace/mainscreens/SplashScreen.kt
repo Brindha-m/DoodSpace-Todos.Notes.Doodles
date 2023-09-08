@@ -36,7 +36,7 @@ fun AnimatedSplashScreen(navController: NavHostController) {
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(3100)
+        delay(2000)
         navController.popBackStack()
         navController.navigate(Screen.Main.route)
     }
@@ -54,6 +54,7 @@ fun Splash(alpha: Float) {
         Image(
             modifier = Modifier
                 .size(300.dp)
+                .align(Alignment.Center)
                 .alpha(alpha = alpha),
             painter = painterResource(id = R.drawable.dood_space),
             contentDescription = "Logo Icon",

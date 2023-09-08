@@ -3,7 +3,6 @@ package com.implementing.cozyspace.inappscreens.task.screens.widgets.dashboard
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -74,7 +74,15 @@ fun TasksDashboardWidget(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(20.dp))
-                    .background(if (isDark) Color.DarkGray else Color.LightGray),
+                    .background(
+                        Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF221F3E), // Light grey at the start
+                                0.5f to Color(0xFF775A6D), // Darker grey in the middle
+                                1f to Color(0xFF93929D) // Dark grey at the end
+                            )
+                        )),
+//                    .background(if (isDark) Color.DarkGray else Color.LightGray),
                 contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
@@ -83,7 +91,7 @@ fun TasksDashboardWidget(
                         Text(
                             text = stringResource(R.string.no_tasks_message_widget),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.fillMaxWidth().padding(5.dp),
+                            modifier = Modifier.fillMaxWidth().padding(15.dp),
                             textAlign = TextAlign.Center,
                             color = Color.White,
                             overflow = TextOverflow.Ellipsis

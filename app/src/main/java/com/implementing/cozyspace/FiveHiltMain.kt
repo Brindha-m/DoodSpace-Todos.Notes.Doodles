@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.google.firebase.FirebaseApp
 import com.implementing.cozyspace.util.Constants
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -37,6 +38,7 @@ class FiveHiltMain : Application(), Configuration.Provider {
         super.onCreate()
         appContext = this
         createRemindersNotificationChannel()
+        FirebaseApp.initializeApp(this)
     }
 
     // Notification
@@ -50,6 +52,7 @@ class FiveHiltMain : Application(), Configuration.Provider {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+
 
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -82,7 +83,15 @@ fun CalendarDashboardWidget(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(20.dp))
-                    .background(if (isDark) Color.DarkGray else Color.LightGray),
+                    .background(
+                        Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0f to Color(0xFF221F3E), // Light grey at the start
+                                0.5f to Color(0xFF775A6D), // Darker grey in the middle
+                                1f to Color(0xFF93929D) // Dark grey at the end
+                            )
+                        )),
+//                    .background(if (isDark) Color.DarkGray else Color.LightGray),
                 contentPadding = PaddingValues(vertical = 10.dp, horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -94,7 +103,7 @@ fun CalendarDashboardWidget(
                             Text(
                                 text = stringResource(R.string.no_events),
                                 modifier = Modifier.padding(16.dp),
-                                color = Color.LightGray,
+                                color = Color.White,
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }

@@ -3,6 +3,7 @@ package com.implementing.cozyspace.inappscreens.diary.chart
 import androidx.compose.foundation.Canvas
 import com.implementing.cozyspace.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +26,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -58,6 +62,15 @@ fun MoodCircularBar(
             Modifier.clickable {
                 onClick()
             }
+                .background(
+                    Brush.verticalGradient(
+                    colorStops = arrayOf(
+                        0f to Color(0xFF221F3E), // Light grey at the start
+                        0.5f to Color(0xFF775A6D), // Darker grey in the middle
+                        1f to Color(0xFF221F3E) // Dark grey at the end
+                    )
+                ))
+
         ) {
             val mostFrequentMood by remember(entries) {
                 derivedStateOf {
@@ -83,7 +96,8 @@ fun MoodCircularBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = Color.White
             )
             if (entries.isNotEmpty()) {
                 Box(
@@ -122,7 +136,8 @@ fun MoodCircularBar(
                                     stringResource(
                                         R.string.percent,
                                         (percentage * 100).toInt()
-                                    )
+                                    ),
+                                    color = Color.White
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Image(
@@ -154,13 +169,14 @@ fun MoodCircularBar(
                         ) {
                             append(stringResource(mostFrequentMood.title))
                         }
-                        append(stringResource(R.string.most_of_the_time))
+                        append(stringResource(R.string.most_of_the_time),)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             } else {
                 Text(
@@ -169,7 +185,8 @@ fun MoodCircularBar(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             }
         }

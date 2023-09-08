@@ -4,6 +4,7 @@ package com.implementing.cozyspace.inappscreens.diary.chart
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -38,15 +40,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.model.Diary
 import com.implementing.cozyspace.util.Mood
+import com.implementing.cozyspace.util.ThemeSettings
 
 @Composable
 fun MoodFlowChart(
     entries: List<Diary>,
-    monthly: Boolean = true
+    monthly: Boolean = true,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+    val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.AUTO.value)
+
     Card(
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -54,7 +62,15 @@ fun MoodFlowChart(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
+
         Column(
+            modifier = Modifier.background(
+                when (themeMode.value) {
+                    ThemeSettings.DARK.value -> Color.Black
+                    ThemeSettings.LIGHT.value -> Color.Transparent
+                    else -> {Color.Transparent}
+                }
+            ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(

@@ -19,7 +19,8 @@ val FOOD_DIARY_TEMPLATE = """
 ---
 📸 How does it look? Take a picture!
 
-![Image](https://github.com/Brindhamanick/cozy/blob/main/cat_food.jpg?raw=true)
+![Image](link to your image with out "quotes)
+
 
 🍽️ What would you like to eat next time?
 
@@ -133,6 +134,6 @@ var GRATITUDE_TEMPLATE = """
 
 📸 Pic with gratitude:
 
-![Image](https://github.com/Brindhamanick/cozy/blob/main/cat_gratitude.jpg?raw=true)
+![Image](link to your image with out "quotes)
 
 """.trimIndent()

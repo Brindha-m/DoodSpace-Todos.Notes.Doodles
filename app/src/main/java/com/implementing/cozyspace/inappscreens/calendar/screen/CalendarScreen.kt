@@ -248,7 +248,7 @@ fun NoReadCalendarPermissionMessage(
             text = stringResource(R.string.no_read_calendar_permission_message),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.inverseOnSurface
+//            color = MaterialTheme.colorScheme.inverseOnSurface
         )
         Spacer(Modifier.height(12.dp))
         if (shouldShowRationale) {
@@ -266,7 +266,7 @@ fun NoReadCalendarPermissionMessage(
             TextButton(
                 onClick = { onRequest() },
                 colors = ButtonDefaults.textButtonColors(
-                    containerColor = Color(0xFF221F3E),
+                    containerColor = Color(0xFF3C385C),
                     contentColor = Color.White
                 )
             ) {

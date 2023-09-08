@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.inappscreens.task.screens.widgets.dashboard
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.ui.theme.Blue
+import com.implementing.cozyspace.ui.theme.Green
 
 @Composable
 fun TasksSummaryCard(
@@ -50,14 +53,22 @@ fun TasksSummaryCard(
                 tasks.count { it.isCompleted }.toFloat() / tasks.size
             }
         }
-        Column {
+        Column(modifier = Modifier.background(
+            Brush.verticalGradient(
+                colorStops = arrayOf(
+                    0f to Color(0xFF221F3E), // Light grey at the start
+                    0.5f to Color(0xFF775A6D), // Darker grey in the middle
+                    1f to Color(0xFF221F3E) // Dark grey at the end
+                )
+            ))) {
             Text(
                 text = stringResource(R.string.tasks_summary),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = Color.White
             )
             if (tasks.isNotEmpty()) {
                 Box(
@@ -80,7 +91,7 @@ fun TasksSummaryCard(
                             style = Stroke(65f, cap = StrokeCap.Round)
                         )
                         drawArc(
-                            color = Blue,
+                            color = Green,
                             startAngle = 145f,
                             sweepAngle = percentage * 255f,
                             useCenter = false,
@@ -107,7 +118,8 @@ fun TasksSummaryCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             } else {
                 Text(
@@ -116,7 +128,8 @@ fun TasksSummaryCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             }
         }
