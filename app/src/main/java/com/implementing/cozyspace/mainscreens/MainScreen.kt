@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -65,8 +66,8 @@ fun MainScreen(
                 cornerRadius = shapeCornerRadius(cornerRadius = 30.dp),
                 ballAnimation = Parabolic(tween(300)),
                 indentAnimation = Height(tween(300)),
-                barColor = MaterialTheme.colorScheme.onSecondary,
-                ballColor = MaterialTheme.colorScheme.onTertiary
+                barColor = Color(0xFF141413),
+                ballColor = Color(0xFF67509F)
             ) {
                 navigationBarItems.forEach { item ->
                     Box(
@@ -79,8 +80,8 @@ fun MainScreen(
                             modifier = Modifier.size(22.dp),
                             painter = painterResource(id = item.icon),
                             contentDescription = "Bottom Bar",
-                            tint = if (selectedIndex == item.ordinal) MaterialTheme.colorScheme.inversePrimary
-                            else MaterialTheme.colorScheme.onPrimary
+                            tint = if (selectedIndex == item.ordinal) Color(0xFF7765A3)
+                            else Color.LightGray
                         )
                     }
                 }

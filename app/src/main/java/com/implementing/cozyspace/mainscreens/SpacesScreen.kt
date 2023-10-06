@@ -58,9 +58,9 @@ fun SpacesScreen(
 
                         Image(
                             painter = when (themeMode.value) {
-                                ThemeSettings.DARK.value -> painterResource(id = R.drawable.dood_space)
+                                ThemeSettings.DARK.value -> painterResource(id = R.drawable.dood_space_splash)
                                 ThemeSettings.LIGHT.value -> painterResource(id = R.drawable.dood_space_light)
-                                else -> {painterResource(id = R.drawable.dood_space_light) }
+                                else -> {painterResource(id = R.drawable.dood_space_light)}
                             },
                             contentDescription = null,
                             modifier = Modifier
@@ -69,22 +69,16 @@ fun SpacesScreen(
                         )
 
                         Image(
-                            painter = when (themeMode.value) {
-                                ThemeSettings.DARK.value -> painterResource(id = R.drawable.cozy_bg)
-                                ThemeSettings.LIGHT.value -> painterResource(id = R.drawable.cozy_bg_light)
-                                else -> {painterResource(id = R.drawable.cozy_bg_light) }
-                            },
+                            painter = painterResource(id = R.drawable.cozy_bg_light),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(120.dp)
+                                .size(118.dp)
                                 .align(Alignment.CenterStart)
                         )
                     }
 
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-
-                )
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),)
         }
     ) {
 
@@ -95,7 +89,7 @@ fun SpacesScreen(
                 Spacer(Modifier.height(50.dp))
                 Column {
                     SpaceWideCard(
-                        title = "Doodle Space",
+                        title = "Doodle Board",
                         image = R.drawable.img_9,
                         backgroundColor = Brush.linearGradient(
                             colorStops = arrayOf(

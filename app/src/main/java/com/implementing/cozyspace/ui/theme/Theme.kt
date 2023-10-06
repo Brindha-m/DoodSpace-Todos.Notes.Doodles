@@ -19,13 +19,14 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
 
+    background = Color.Black,
     /* tab container and texts color, add buttons, edit dialog */
+//    primary = PrimaryColor,
     primary = PrimaryColor,
     primaryContainer = Color.LightGray,
 
     secondary = SecondaryColor,
 //    surface = DarkGray,
-    background = Color.Black,
     onSurface = Color.White,
     onBackground = Color.White,
     /* Bottom navs */
@@ -43,18 +44,19 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
 
     /* tab container and texts color, add buttons */
-    primary = PrimaryLightColor,
+    primary = Color.DarkGray,
     primaryContainer = Color.Black,
 
     secondary = SecondaryColor,
     background = Color.White,
-    onTertiary = Color.DarkGray,
-    onSecondary = Color.DarkGray,
     onPrimary = Color.LightGray,
 
     // save icon
     scrim = Color.White,
 
+    // ball colors
+    onTertiary = Color(0xFF67509F),
+    onSecondary = Color(0xFF1B1A18),
 
 
 )
@@ -67,15 +69,16 @@ fun FeedFiveTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) DarkColorScheme else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

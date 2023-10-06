@@ -2,10 +2,10 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
     id("com.google.devtools.ksp")
     id("com.chrisney.enigma")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 enigma.enabled = true
@@ -33,12 +33,16 @@ android {
         applicationId = "com.implementing.cozyspace"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 6
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+
+        hilt {
+            enableAggregatingTask = true
         }
 /*
  No need of kapt, just create a kapt and ksp fun and sync and remove it
@@ -82,8 +86,8 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
@@ -91,6 +95,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.hilt:hilt-work:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -98,12 +103,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.compose.ui:ui:1.5.1")
+    implementation("androidx.compose.ui:ui:1.5.3")
     implementation("androidx.compose.ui:ui-tooling")
 
 
     // Compose navigation
-    implementation("androidx.navigation:navigation-compose:2.7.1")
+    implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Dagger Hilt
@@ -141,10 +146,10 @@ dependencies {
     // Compose Glance (Widgets)
 
     // For Glance support
-    implementation("androidx.glance:glance:1.0.0-rc01")
+    implementation("androidx.glance:glance:1.0.0")
 
     // For AppWidgets support
-    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")
+    implementation("androidx.glance:glance-appwidget:1.0.0")
 
     // For Wear-Tiles support
     implementation("androidx.glance:glance-wear-tiles:1.0.0-alpha05")
@@ -159,7 +164,7 @@ dependencies {
     implementation("com.exyte:animated-navigation-bar:1.0.0")
 
     // Model bottom sheet for task section
-    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("androidx.compose.material3:material3:1.1.2")
 
     // color picker for doodle section
     implementation("com.raedapps:alwan:1.0.1")
@@ -168,6 +173,12 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.2.1")
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+
+    // Play Store Update Toast cards
+    implementation("com.google.android.play:app-update:2.1.0")
+
+    // For Kotlin users also import the Kotlin extensions library for Play In-App Update:
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 
 }
 

@@ -216,6 +216,20 @@ fun NoteDetailsScreen(
                         DropdownMenuItem(
                             text = {
                                 Text(
+                                    "😎 Dood's Note Template",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            },
+                            onClick = {
+                                selectedTemplate = DOOD_MARKDOWN_TEMPLATE
+                                content = DOOD_MARKDOWN_TEMPLATE
+                                usingTemplate = false
+                            }
+                        )
+                        Divider()
+                        DropdownMenuItem(
+                            text = {
+                                Text(
                                     "🍨 Food Note Template",
                                     style = MaterialTheme.typography.bodyMedium
                                 )

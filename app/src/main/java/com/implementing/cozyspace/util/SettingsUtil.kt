@@ -14,9 +14,14 @@ import com.implementing.cozyspace.ui.theme.Rubik
 
 
 enum class ThemeSettings(val value: Int) {
-    LIGHT(0),
-    DARK(1),
-    AUTO(2)
+    LIGHT(1),
+    DARK(0),
+//    AUTO(2)
+}
+enum class TaskFrequency(@StringRes val title: Int, val value: Int) {
+    DAILY(R.string.every_day, 0),
+    WEEKLY(R.string.every_week, 1),
+    MONTHLY(R.string.every_month, 2)
 }
 
 enum class StartUpScreenSettings(val value: Int) {
@@ -148,6 +153,15 @@ fun FontFamily.getName(): String {
         Rubik -> "Rubik"
         Jost -> "Jost"
         else -> getString(R.string.font_system_default)
+    }
+}
+
+fun Int.toTaskFrequency(): TaskFrequency {
+    return when (this) {
+        0 -> TaskFrequency.DAILY
+        1 -> TaskFrequency.WEEKLY
+        2 -> TaskFrequency.MONTHLY
+        else -> TaskFrequency.DAILY
     }
 }
 

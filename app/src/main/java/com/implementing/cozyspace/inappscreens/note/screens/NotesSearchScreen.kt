@@ -73,21 +73,23 @@ fun NotesSearchScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(12.dp)
             ) {
-                items(state.searchNotes, key = {it.id}) { note ->
-                    NoteItem(
-                        note = note,
-                        onClick = {
-                            navController.navigate(
-                                Screen.NoteDetailsScreen.route.replace(
-                                    "{${Constants.NOTE_ID_ARG}}",
-                                    "${note.id}"
-                                ).replace(
-                                    "{${Constants.FOLDER_ID}}",
-                                    ""
+                items(state.searchNotes) { note ->
+                    key(note.id) {
+                        NoteItem(
+                            note = note,
+                            onClick = {
+                                navController.navigate(
+                                    Screen.NoteDetailsScreen.route.replace(
+                                        "{${Constants.NOTE_ID_ARG}}",
+                                        "${note.id}"
+                                    ).replace(
+                                        "{${Constants.FOLDER_ID}}",
+                                        "-1"
+                                    )
                                 )
-                            )
-                        }
-                    )
+                            }
+                        )
+                    }
                 }
             }
         } else {
@@ -107,7 +109,7 @@ fun NotesSearchScreen(
                                         "${note.id}"
                                     ).replace(
                                         "{${Constants.FOLDER_ID}}",
-                                        ""
+                                        "-1"
                                     )
                                 )
                             },

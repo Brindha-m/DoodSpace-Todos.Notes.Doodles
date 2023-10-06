@@ -19,5 +19,7 @@ val Purple = Color(0xFF6F4CAD)
 val Gray = Color(0xFF7E7979)
 val LightGray = Color(0xFFECECEC)
 
+val AppPrimaryColor = Color(0xFF0F0F0F)
+val AppOnPrimaryColor = Color.White.copy(alpha = 0.78F)
 
 val bgCard = Brush.verticalGradient(colors = listOf(Color.Blue, Color.White))

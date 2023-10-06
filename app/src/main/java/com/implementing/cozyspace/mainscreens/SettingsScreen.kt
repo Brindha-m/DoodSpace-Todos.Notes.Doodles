@@ -86,13 +86,18 @@ fun SettingsScreen(
             item {
                 val theme = viewModel
                     .getSettings(
-                        intPreferencesKey(Constants.SETTINGS_THEME_KEY), ThemeSettings.AUTO.value
+                        intPreferencesKey(Constants.SETTINGS_THEME_KEY), ThemeSettings.DARK.value
                     ).collectAsState(
-                        initial = ThemeSettings.AUTO.value
+                        initial = ThemeSettings.DARK.value
                     )
                 ThemeSettingsItem(theme.value) {
                     when (theme.value) {
-                        ThemeSettings.AUTO.value -> viewModel.saveSettings(
+//                        ThemeSettings.DARK.value -> viewModel.saveSettings(
+//                            intPreferencesKey(Constants.SETTINGS_THEME_KEY),
+//                            ThemeSettings.AUTO.value
+//                        )
+
+                        ThemeSettings.DARK.value -> viewModel.saveSettings(
                             intPreferencesKey(Constants.SETTINGS_THEME_KEY),
                             ThemeSettings.LIGHT.value
                         )
@@ -102,10 +107,7 @@ fun SettingsScreen(
                             ThemeSettings.DARK.value
                         )
 
-                        ThemeSettings.DARK.value -> viewModel.saveSettings(
-                            intPreferencesKey(Constants.SETTINGS_THEME_KEY),
-                            ThemeSettings.AUTO.value
-                        )
+
                     }
                 }
             }

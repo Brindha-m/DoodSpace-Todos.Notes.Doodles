@@ -51,7 +51,7 @@ fun BookmarkItem(
                 .padding(12.dp)
                 .fillMaxWidth()
         ) {
-            if (bookmark.title?.isNotBlank() == true){
+            if (bookmark.title.isNotBlank()){
                 Text(
                     bookmark.title,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),

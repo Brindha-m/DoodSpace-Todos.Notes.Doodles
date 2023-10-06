@@ -1,10 +1,16 @@
 package com.implementing.cozyspace.mainscreens
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +20,9 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +30,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.implementing.cozyspace.doodle_space.DoodleScreen
 import com.implementing.cozyspace.doodle_space.contoller.DoodleController
 import com.implementing.cozyspace.inappscreens.bookmark.screens.BookmarkDetailsScreen
@@ -44,20 +61,36 @@ import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.ui.theme.Avenir
 import com.implementing.cozyspace.ui.theme.FeedFiveTheme
-import com.implementing.cozyspace.ui.theme.Jost
 import com.implementing.cozyspace.util.Constants
 import com.implementing.cozyspace.util.ThemeSettings
 import com.implementing.cozyspace.util.toFontFamily
 import com.implementing.cozyspace.util.toInt
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    /* For In app update */
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.FLEXIBLE
+
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // in app updates
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
+
+        checkForAppUpdates()
+
         setContent {
             val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
             val font = viewModel.font.collectAsState(initial = Avenir.toInt())
@@ -65,6 +98,15 @@ class MainActivity : ComponentActivity() {
             val systemUiController = rememberSystemUiController()
 
             val startUpScreen = Screen.SpacesScreen.route
+
+            LaunchedEffect(true) {
+                if (!isNotificationPermissionGranted())
+                    ActivityCompat.requestPermissions(
+                        this@MainActivity,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        0
+                    )
+            }
 
             LaunchedEffect(blockScreenshots.value) {
                 if (blockScreenshots.value) {
@@ -171,6 +213,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.NotesScreen.route) {
                             NotesScreen(navController = navController)
                         }
+
                         composable(
                             Screen.NoteDetailsScreen.route,
                             arguments = listOf(navArgument(Constants.NOTE_ID_ARG) {
@@ -276,7 +319,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             CalendarEventDetailsScreen(
                                 navController = navController,
-                                eventJson = it.arguments?.getString(Constants.CALENDAR_EVENT_ARG) ?: ""
+                                eventJson = it.arguments?.getString(Constants.CALENDAR_EVENT_ARG)
+                                    ?: ""
                             )
                         }
 
@@ -290,5 +334,81 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Toast.makeText(
+                applicationContext,
+                "Download successful✅. Restarting in 5 seconds",
+                Toast.LENGTH_LONG
+            ).show()
+            lifecycleScope.launch {
+                delay(3.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
+    }
+
+    private fun checkForAppUpdates() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                else -> false
+            }
+            if (isUpdateAvailable && isUpdateAllowed) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    123
+                )
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 123) {
+            if (resultCode != RESULT_OK) {
+                println("Something Went Wrong..")
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (updateType == AppUpdateType.IMMEDIATE) {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+                if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        123
+                    )
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun isNotificationPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.S
+    }
+
+
 }
 

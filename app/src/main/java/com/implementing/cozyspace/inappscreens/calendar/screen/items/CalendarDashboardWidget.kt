@@ -1,6 +1,10 @@
 package com.implementing.cozyspace.inappscreens.calendar.screen.items
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import com.implementing.cozyspace.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,11 +12,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -131,7 +138,7 @@ fun CalendarDashboardWidget(
                 } else {
                     item {
                         LaunchedEffect(true) { onPermission(false) }
-                        NoReadCalendarPermissionMessage(
+                        NoReadCalendarPermissionMessageDashboard(
                             shouldShowRationale = readCalendarPermissionState.shouldShowRationale,
                             context
                         ) {
@@ -139,6 +146,54 @@ fun CalendarDashboardWidget(
                         }
                     }
                 }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun NoReadCalendarPermissionMessageDashboard(
+    shouldShowRationale: Boolean,
+    context: Context,
+    onRequest: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(start = 5.dp, end = 5.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.no_read_calendar_permission_message),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = Color.White
+//            color = MaterialTheme.colorScheme.inverseOnSurface
+        )
+        Spacer(Modifier.height(12.dp))
+        if (shouldShowRationale) {
+            TextButton(
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF67509F), contentColor = Color.White),
+                onClick = {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.fromParts("package", context.packageName, null)
+                    context.startActivity(intent)
+                }) {
+                Text(text = stringResource(R.string.go_to_settings), style = MaterialTheme.typography.bodyMedium)
+            }
+
+        } else {
+            TextButton(
+                onClick = { onRequest() },
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = Color(0xFF3C385C),
+                    contentColor = Color.White
+                )
+            ) {
+
+                Text(
+                    text = stringResource(R.string.grant_permission),
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }

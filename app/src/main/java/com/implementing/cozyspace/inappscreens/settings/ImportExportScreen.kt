@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.work.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -45,12 +46,17 @@ import com.implementing.cozyspace.FiveHiltMain
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.data.local.backup.ExportWorker
 import com.implementing.cozyspace.data.local.backup.ImportWorker
+import com.implementing.cozyspace.inappscreens.bookmark.viewmodel.BookmarksViewModel
+import com.implementing.cozyspace.inappscreens.settings.viewmodel.SettingsViewModel
+import com.implementing.cozyspace.navigation.Screen
 import java.util.UUID
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ImportExportScreen(navController: NavHostController) {
+fun ImportExportScreen(
+    navController: NavHostController,
+) {
 
     val writeStoragePermission = rememberPermissionState(
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE

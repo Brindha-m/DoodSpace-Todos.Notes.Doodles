@@ -53,7 +53,7 @@ fun MoodFlowChart(
     monthly: Boolean = true,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.AUTO.value)
+    val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
 
     Card(
         shape = RoundedCornerShape(24.dp),

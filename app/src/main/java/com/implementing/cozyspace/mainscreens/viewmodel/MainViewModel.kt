@@ -50,7 +50,7 @@ class MainViewModel @Inject constructor(
 
     private var refreshTasksJob : Job? = null
 
-    val themeMode = getSettings(intPreferencesKey(Constants.SETTINGS_THEME_KEY), ThemeSettings.AUTO.value)
+    val themeMode = getSettings(intPreferencesKey(Constants.SETTINGS_THEME_KEY), ThemeSettings.DARK.value)
     val defaultStartUpScreen = getSettings(intPreferencesKey(Constants.DEFAULT_START_UP_SCREEN_KEY), StartUpScreenSettings.SPACES.value)
     val font = getSettings(intPreferencesKey(Constants.APP_FONT_KEY), Avenir.toInt())
     val blockScreenshots = getSettings(booleanPreferencesKey(Constants.BLOCK_SCREENSHOTS_KEY), false)

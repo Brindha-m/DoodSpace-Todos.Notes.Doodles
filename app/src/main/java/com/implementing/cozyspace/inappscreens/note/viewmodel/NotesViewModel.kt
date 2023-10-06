@@ -183,7 +183,7 @@ class NotesViewModel @Inject constructor(
         val note: Note? = null,
         val notesOrder: Order = Order.DateModified(OrderType.ASC()),
         val error: String? = null,
-        val noteView: ItemView = ItemView.LIST,
+        val noteView: ItemView = ItemView.GRID,
         val navigateUp: Boolean = false,
         val readingMode: Boolean = true,
         val searchNotes: List<Note> = emptyList(),
