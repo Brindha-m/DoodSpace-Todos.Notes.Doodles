@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +21,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,7 +44,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,9 +72,11 @@ import com.implementing.cozyspace.model.SubTask
 import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.util.Priority
+import com.implementing.cozyspace.util.TaskFrequency
 import com.implementing.cozyspace.util.formatDateDependingOnDay
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.util.toPriority
+import com.implementing.cozyspace.util.toTaskFrequency
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,9 +100,17 @@ fun TaskDetailScreen(
     var dueDate by rememberSaveable { mutableStateOf(0L) }
     var dueDateExists by rememberSaveable { mutableStateOf(false) }
     var completed by rememberSaveable { mutableStateOf(false) }
+    var recurring by rememberSaveable { mutableStateOf(false) }
+    var frequency by rememberSaveable { mutableIntStateOf(0) }
     val subTasks = remember { mutableStateListOf<SubTask>() }
     val priorities = listOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     val context = LocalContext.current
+    val formattedDate by remember {
+        derivedStateOf {
+            dueDate.formatDateDependingOnDay()
+        }
+    }
+
 
     LaunchedEffect(uiState.task) {
         title = uiState.task.title
@@ -102,6 +120,8 @@ fun TaskDetailScreen(
         dueDateExists = uiState.task.dueDate != 0L
         completed = uiState.task.isCompleted
         subTasks.addAll(uiState.task.subTasks)
+        recurring = uiState.task.recurring
+        frequency = uiState.task.frequency
     }
 
     LaunchedEffect(uiState) {
@@ -126,7 +146,9 @@ fun TaskDetailScreen(
                 description = description,
                 dueDate = if (dueDateExists) dueDate else 0L,
                 priority = priority.toInt(),
-                subTasks = subTasks
+                subTasks = subTasks,
+                recurring = recurring,
+                frequency = frequency
             ),
             {
                 navController.popBackStack(Screen.TaskSearchScreen.route, false)
@@ -164,7 +186,9 @@ fun TaskDetailScreen(
                                 description = description,
                                 dueDate = if (dueDateExists) dueDate else 0L,
                                 priority = priority.toInt(),
-                                subTasks = subTasks
+                                subTasks = subTasks,
+                                recurring = recurring,
+                                frequency = frequency
                             ),
                             {
                                 navController.popBackStack(Screen.TaskSearchScreen.route, false)
@@ -298,57 +322,115 @@ fun TaskDetailScreen(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            if (dueDateExists)
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            val date =
-                                if (dueDate == 0L) Calendar.getInstance() else Calendar
-                                    .getInstance()
-                                    .apply { timeInMillis = dueDate }
-                            val tempDate = Calendar.getInstance()
-                            val timePicker = TimePickerDialog(
-                                context,
-                                { _, hour, minute ->
-                                    tempDate[Calendar.HOUR_OF_DAY] = hour
-                                    tempDate[Calendar.MINUTE] = minute
-                                    dueDate = tempDate.timeInMillis
-                                }, date[Calendar.HOUR_OF_DAY], date[Calendar.MINUTE], false
+            AnimatedVisibility(dueDateExists) {
+                Column {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                val date =
+                                    if (dueDate == 0L) Calendar.getInstance() else Calendar
+                                        .getInstance()
+                                        .apply { timeInMillis = dueDate }
+                                val tempDate = Calendar.getInstance()
+                                val timePicker = TimePickerDialog(
+                                    context,
+                                    { _, hour, minute ->
+                                        tempDate[Calendar.HOUR_OF_DAY] = hour
+                                        tempDate[Calendar.MINUTE] = minute
+                                        dueDate = tempDate.timeInMillis
+                                    }, date[Calendar.HOUR_OF_DAY], date[Calendar.MINUTE], false
+                                )
+                                val datePicker = DatePickerDialog(
+                                    context,
+                                    { _, year, month, day ->
+                                        tempDate[Calendar.YEAR] = year
+                                        tempDate[Calendar.MONTH] = month
+                                        tempDate[Calendar.DAY_OF_MONTH] = day
+                                        timePicker.show()
+                                    },
+                                    date[Calendar.YEAR],
+                                    date[Calendar.MONTH],
+                                    date[Calendar.DAY_OF_MONTH]
+                                )
+                                datePicker.show()
+                            }
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_alarm),
+                                stringResource(R.string.due_date)
                             )
-                            val datePicker = DatePickerDialog(
-                                context,
-                                { _, year, month, day ->
-                                    tempDate[Calendar.YEAR] = year
-                                    tempDate[Calendar.MONTH] = month
-                                    tempDate[Calendar.DAY_OF_MONTH] = day
-                                    timePicker.show()
-                                },
-                                date[Calendar.YEAR],
-                                date[Calendar.MONTH],
-                                date[Calendar.DAY_OF_MONTH]
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.due_date),
+                                style = MaterialTheme.typography.bodyMedium
                             )
-                            datePicker.show()
                         }
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_alarm),
-                            stringResource(R.string.due_date)
-                        )
-                        Spacer(Modifier.width(8.dp))
                         Text(
-                            text = stringResource(R.string.due_date),
+                            text = formattedDate,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    Text(
-                        text = dueDate.formatDateDependingOnDay(),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(checked = recurring,
+                            colors = CheckboxDefaults.colors(Color.DarkGray),
+                            onCheckedChange = {
+                                recurring = it
+                                if (!it) frequency = 0
+                            })
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.recurring),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    AnimatedVisibility(recurring) {
+                        var expanded by remember { mutableStateOf(false) }
+                        Box {
+                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                                TaskFrequency.values().forEach { f ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                text = stringResource(f.title),
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        },
+                                        onClick = {
+                                            expanded = false
+                                            frequency = f.ordinal
+                                        }
+                                    )
+                                }
+                            }
+                            Row(
+                                Modifier
+                                    .clickable { expanded = true }
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        frequency.toTaskFrequency().title
+                                    )
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = stringResource(R.string.recurring),
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
+                        }
+                    }
                 }
+
+            }
+
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(
                 value = description,
@@ -427,5 +509,7 @@ private fun taskChanged(
             task.description != newTask.description ||
             task.dueDate != newTask.dueDate ||
             task.priority != newTask.priority ||
-            task.subTasks != newTask.subTasks
+            task.subTasks != newTask.subTasks ||
+            task.recurring != newTask.recurring ||
+            task.frequency != newTask.frequency
 }

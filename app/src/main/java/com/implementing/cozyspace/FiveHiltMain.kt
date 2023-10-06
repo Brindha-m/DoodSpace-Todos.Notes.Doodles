@@ -3,14 +3,19 @@ package com.implementing.cozyspace
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ContentValues
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import com.implementing.cozyspace.util.Constants
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -22,7 +27,9 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Con
 class FiveHiltMain : Application(), Configuration.Provider {
     companion object {
         lateinit var appContext: Context
+        private const val TAG = "FiveHiltMain"
     }
+
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -39,6 +46,7 @@ class FiveHiltMain : Application(), Configuration.Provider {
         appContext = this
         createRemindersNotificationChannel()
         FirebaseApp.initializeApp(this)
+//        logRegToken()
     }
 
     // Notification
@@ -52,6 +60,24 @@ class FiveHiltMain : Application(), Configuration.Provider {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+
+    private fun logRegToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            val msg = "FCM Registration token: $token"
+            Log.d(TAG, msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
+
+    }
+
 
 
 }

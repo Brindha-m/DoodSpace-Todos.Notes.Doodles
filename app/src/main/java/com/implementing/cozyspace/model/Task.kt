@@ -10,6 +10,8 @@ data class Task (
     val description: String = "",
     val priority: Int = 0,
     val dueDate: Long = 0L,
+    val recurring: Boolean = false,
+    val frequency: Int = 0,
 
     @ColumnInfo(name = "is_completed")
     val isCompleted: Boolean = false,

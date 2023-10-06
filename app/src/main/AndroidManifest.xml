@@ -4,14 +4,18 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <!-- For reminders -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- to start the alarms after restart. (By default, all alarms are canceled when a device shuts down) -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+
     <!-- For the Calendar events features -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
-    <!-- For reminders -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- to start the alarms after restart. (By default, all alarms are canceled when a device shuts down) -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".FiveHiltMain"
@@ -162,6 +166,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_dood_space" />
 
 
     </application>

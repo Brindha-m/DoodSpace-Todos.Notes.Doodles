@@ -6,7 +6,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 public class EnigmaUtils {
-   private final static int[] data = {51, 122, 87, 97, 52, 105, 72, 69, 89, 105, 68, 116, 83, 100, 53, 48, 77, 42, 56, 104, 54, 113, 89, 55, 122, 122, 50, 73, 68, 120, 115, 51};
+   private final static int[] data = {102, 77, 81, 120, 110, 69, 52, 63, 54, 81, 120, 70, 33, 35, 48, 55, 52, 112, 113, 104, 113, 35, 72, 90, 49, 51, 55, 100, 104, 97, 106, 72};
    public static String enigmatization(byte[] enc) {
         try {
             byte[] keyValue  = keyToBytes(data);

@@ -35,13 +35,12 @@ object Constants {
     const val CALENDAR_EVENT_ARG = "calendar_event"
     const val FOLDER_ID = "folder_id"
 
-    // lINKS const val PROJECT_GITHUB_LINK = "https://github.com/mhss1/ByBrain"
-    const val PRIVACY_POLICY_LINK = "https://www.privacypolicies.com/live/79f3e2c0-64de-4070-9029-affc7956abe9"
+    const val PRIVACY_POLICY_LINK = "https://www.privacypolicies.com/live/ffd08ddf-adb9-4a74-813e-7c6333469a88"
     const val GITHUB_ISSUES_LINK = "mailto:heyvizhi@gmail.com"
     const val GITHUB_RELEASES_LINK = "https://play.google.com/store/apps/dev?id=8913689065798552649"
 
     // Backup
-    const val EXPORT_DIR = "Dood space Export"
+    const val EXPORT_DIR = "Dood Space Export"
     const val BACKUP_NOTES_FILE_NAME = "Dood_mycozyfive_notes.txt"
     const val BACKUP_TASKS_FILE_NAME = "Dood_mycozyfive_tasks.txt"
     const val BACKUP_DIARY_FILE_NAME = "Dood_mycozyfive_diary.txt"
