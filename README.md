@@ -45,4 +45,4 @@
 
 ### ➑ Lastly `Yes` your data will be encrypted and secure💯.
 
-With these features, Dood offers a versatile platform for organizing your life, boosting productivity, nurturing creativity, and tracking your emotions.
+#### With these features, Dood offers a versatile platform for organizing your life, boosting productivity, nurturing creativity, and tracking your emotions.
