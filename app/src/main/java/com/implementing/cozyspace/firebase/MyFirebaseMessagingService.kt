@@ -16,7 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.mainscreens.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-
+// Connect with your firebase account for FCM 
 @AndroidEntryPoint
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
