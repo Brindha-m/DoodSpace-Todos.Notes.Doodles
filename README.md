@@ -3,7 +3,7 @@
 ## Hello to all the Doods out there!😉
 - Experience a new level of productivity and inspiration throughout your day.
 - With Dood😎, you can effortlessly Manage tasks✔️, Craft notes📝, Bookmark🔖, Schedule events & maintain a Calendar, and Unleash your Artistic side on the doodle board🖌️.
-- Our Tech Stack 🚀 **Kotlin | Jetpack Compose 🚀 | Firebase (FCM) 🔥| MVVM**
+- Our Tech Stack 🚀 **`Kotlin | Jetpack Compose🚀 | Firebase(FCM)🔥| MVVM`**
 
 ###  Happy Doodling! 🚀
 
