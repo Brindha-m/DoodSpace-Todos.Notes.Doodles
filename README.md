@@ -1,4 +1,6 @@
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/61785be0-edca-4565-a703-f6038690cf5a" alt="Dood Image" width="250"/>
+
 # Dood Space 😎 
 ## Hello to all the Doods out there!😉
 - Experience a new level of productivity and inspiration throughout your day.
@@ -48,3 +50,5 @@
 ### ➑ Lastly `Yes` your data will be encrypted and secure💯.
 
 #### With these features, Dood offers a versatile platform for organizing your life, boosting productivity, nurturing creativity, and tracking your emotions.
+
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/61785be0-edca-4565-a703-f6038690cf5a" alt="Dood Image" width="200"/> 
