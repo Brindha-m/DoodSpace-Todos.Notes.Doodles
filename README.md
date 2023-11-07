@@ -1,6 +1,5 @@
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/61785be0-edca-4565-a703-f6038690cf5a" alt="Dood Image" width="200"/>
-
 # Dood Space 😎 
 ## Hello to all the Doods out there!😉
 - Experience a new level of productivity and inspiration throughout your day.
