@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.festive_animations.fireworks.FireworkCenterView
 import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.navigation.components.SpaceRegularCard
@@ -206,6 +207,8 @@ fun SpacesScreen(
             item { Spacer(Modifier.height(60.dp)) }
         }
     }
+
+    FireworkCenterView()
 
 }
 

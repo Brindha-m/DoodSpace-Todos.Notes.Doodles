@@ -3,20 +3,21 @@ package com.implementing.cozyspace.firebase
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.media.RingtoneManager
+import android.net.Uri
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.mainscreens.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+
+// Connect with your firebase account for FCM
 @AndroidEntryPoint
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
@@ -64,6 +65,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             .setSound(defaultSoundUri)
             .setPriority(1)
 
+
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             this,
@@ -73,10 +75,11 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         )
         notificationBuilder.setContentIntent(pendingIntent)
 
-        notificationManager.notify(0, notificationBuilder.build())
+        notificationManager.notify(1, notificationBuilder.build())
     }
 
     companion object {
         private const val TAG = "MyFirebaseMsgService"
     }
 }
+
