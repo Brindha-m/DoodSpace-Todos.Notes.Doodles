@@ -7,7 +7,7 @@
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
 
 ## Happy Doodling! 🚀
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/blob/master/dood.png?raw=true" alt="Dood Image" width="200"/>
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "452">
 
 ### Snapshots
 
