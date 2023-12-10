@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -33,8 +35,8 @@ android {
         applicationId = "com.implementing.cozyspace"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.6"
+        versionCode = 23
+        versionName = "1.0.23"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -43,6 +45,14 @@ android {
 
         hilt {
             enableAggregatingTask = true
+        }
+
+//        //add this in the build.gradle.kts(app) file
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] =
+                    "$projectDir/schemas"
+            }
         }
 /*
  No need of kapt, just create a kapt and ksp fun and sync and remove it
@@ -74,6 +84,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -85,11 +96,14 @@ android {
     }
 }
 
+
+
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -97,10 +111,13 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.hilt:hilt-work:1.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.firebase:firebase-config:21.5.0")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
@@ -147,6 +164,9 @@ dependencies {
     // Compose MarkDown
     implementation("com.github.jeziellago:compose-markdown:0.3.4")
 
+    implementation("com.github.idapgroup:Snowfall:0.8.1")
+
+
     // Compose Glance (Widgets)
 
     // For Glance support
@@ -179,7 +199,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
     // Add the dependencies for the In-App Messaging and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
@@ -192,9 +212,40 @@ dependencies {
     // For Kotlin users also import the Kotlin extensions library for Play In-App Update:
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
+    // Rating toast inside the app
+    implementation("com.google.android.play:review-ktx:2.0.1")
 
 
+    // Firebase Config for remote updates -- TODOS
+    implementation("com.google.firebase:firebase-config:21.5.0")
+
+
+    //constraint layout
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    //stream sdk
+    implementation("io.getstream:stream-chat-android-compose:5.4.0")
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
+
+    // sketchbook
+    implementation("io.getstream:sketchbook:1.0.4")
+
+    // network
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    // image loading
+    implementation("com.github.skydoves:landscapist-glide:2.2.12")
+
+    // moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    // konfetti
+    implementation("nl.dionsegijn:konfetti-compose:2.0.3")
+
+    // firebase
+    implementation("com.google.firebase:firebase-database")
+
+    implementation("com.jakewharton.timber:timber:5.0.1")
 }
-
-
-
