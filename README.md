@@ -7,7 +7,9 @@
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
 
 ## Happy Doodling! 🚀
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "452">
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "352">
+
+![dood christmas video](https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/9f26a3f0-bfa4-4a0a-ba07-8a6121fc897a)
 
 ### Snapshots
 
