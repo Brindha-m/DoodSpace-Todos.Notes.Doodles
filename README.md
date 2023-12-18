@@ -9,7 +9,10 @@
 ## Happy Doodling! 🚀
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "352">
 
-![dood christmas video](https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/9f26a3f0-bfa4-4a0a-ba07-8a6121fc897a)
+<br>
+
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/32d1a2f3-bb48-41df-b0e1-487eda83b6d2" height = "700">
+
 
 ### Snapshots
 
