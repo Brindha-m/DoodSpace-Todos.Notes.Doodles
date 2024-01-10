@@ -2,17 +2,24 @@ package com.implementing.cozyspace.mainscreens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,17 +27,30 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.idapgroup.snowfall.snowfall
+import com.idapgroup.snowfall.snowmelt
+import com.idapgroup.snowfall.types.FlakeType
 import com.implementing.cozyspace.R
-import com.implementing.cozyspace.festive_animations.fireworks.FireworkCenterView
+import com.implementing.cozyspace.festive_animations.ChristmasRide
 import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.navigation.components.SpaceRegularCard
@@ -38,22 +58,72 @@ import com.implementing.cozyspace.navigation.components.SpaceRegularCardMiddle
 import com.implementing.cozyspace.navigation.components.SpaceWideCard
 import com.implementing.cozyspace.util.ThemeSettings
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpacesScreen(
     navController: NavHostController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
+
+    val localContext = LocalContext.current
+    val reviewManager = remember {
+        ReviewManagerFactory.create(localContext)
+    }
+
+    val reviewInfo = rememberReviewTask(reviewManager)
+
+//    LaunchedEffect(key1 = reviewInfo) {
+//        reviewInfo?.let {
+//            reviewManager.launchReviewFlow(localContext as Activity, reviewInfo)
+//        }
+//    }
+
+
+/*
+    LaunchedEffect(true) {
+        val remoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 60 // Set your desired fetch interval
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Apply fetched values to your view model or directly to your composable
+                fireviewModel.updateFromMap(remoteConfig.all)
+                val updated = task.result
+                Log.d(TAG, "Config params updated: $updated")
+
+                // Activate the fetched config
+                remoteConfig.activate().addOnCompleteListener {
+                    Log.d(TAG, "Remote Config activated: $it")
+                }
+            } else {
+                // Handle errors
+                Log.e(TAG, "Fetch failed", task.exception)
+            }
+        }
+    }
+    */
+
     val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
 
     Scaffold(
+        modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding()
+            .statusBarsPadding()
+            .fillMaxSize(),
         topBar = {
-            TopAppBar( modifier = Modifier.height(44.dp),
+            TopAppBar(
+                modifier = Modifier.height(44.dp),
                 title = {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 5.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp)
+                            .background(Color.Transparent)
                     )
                     {
 
@@ -61,11 +131,13 @@ fun SpacesScreen(
                             painter = when (themeMode.value) {
                                 ThemeSettings.DARK.value -> painterResource(id = R.drawable.dood_space_splash)
                                 ThemeSettings.LIGHT.value -> painterResource(id = R.drawable.dood_space_light)
-                                else -> {painterResource(id = R.drawable.dood_space_light)}
+                                else -> {
+                                    painterResource(id = R.drawable.dood_space_light)
+                                }
                             },
                             contentDescription = null,
                             modifier = Modifier
-                                .size(105.dp)
+                                .size(135.dp)
                                 .align(Alignment.CenterEnd)
                         )
 
@@ -76,18 +148,22 @@ fun SpacesScreen(
                                 .size(118.dp)
                                 .align(Alignment.CenterStart)
                         )
+
+
                     }
 
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+            )
         }
     ) {
-
-
         LazyColumn {
 
             item {
-                Spacer(Modifier.height(50.dp))
+                Spacer(Modifier.height(41.dp))
+
+                ChristmasRide()
+
                 Column {
                     SpaceWideCard(
                         title = "Doodle Board",
@@ -203,18 +279,96 @@ fun SpacesScreen(
                     }
                 }
             }
+//            item {
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .fillMaxHeight(1f),
+//                    horizontalArrangement = Arrangement.Center
+//                ) {
+//                    SpaceRegularCardMiddle(
+//                        title = "Sketch Guess",
+//                        image = R.drawable.img_8,
+//                        backgroundColor = Brush.linearGradient(
+//                            colorStops = arrayOf(
+//                                0.48f to Color(0xFF1D1E1F), // More transparent white in the middle
+//                                0.95f to Color(0xFFC9BDBD),  // Light gray (sky)
+//                            )
+//                        )
+//                    ) {
+//                        navController.navigate(Screen.SketchGuess.route)
+//                    }
+//                }
+//            }
 
-            item { Spacer(Modifier.height(60.dp)) }
+            item {
+                Spacer(Modifier.height(65.dp))
+            }
         }
     }
 
-    FireworkCenterView()
+    ChristmasAnimation()
+//    FireworkCenterView(viewModel = fireviewModel, startAnimation = true)
 
 }
 
+@Composable
+fun ChristmasAnimation() {
+
+    val snowflake: List<Painter> = listOf(
+        painterResource(id = R.drawable.ic_snow_flakes),
+    )
+
+    val gifts: List<Painter> = listOf(
+        painterResource(id = R.drawable.gift_box),
+    )
+
+    Box(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxSize()
+            .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
+            .snowfall(
+                colors = listOf(Color(0xFF56C2EB)),
+                type = FlakeType.Custom(snowflake),
+                density = 0.002 // from 0.0 to 1.0,
+            )
+            .snowmelt(
+                colors = listOf(Color(0xFFF5E9E9)),
+//                colors = listOf(Color(0xFFF5E9E9)),
+                type = FlakeType.Custom(snowflake),
+                density = 0.002 // from 0.0 to 1.0,
+            )
+    )
+}
+
+@Composable
+fun rememberReviewTask(reviewManager: ReviewManager): ReviewInfo? {
+    var reviewInfo: ReviewInfo? by remember {
+        mutableStateOf(null)
+    }
+    reviewManager.requestReviewFlow().addOnCompleteListener {
+        if (it.isSuccessful) {
+            reviewInfo = it.result
+        }
+    }
+
+    return reviewInfo
+}
+
+/*
+@Composable
+fun ApplyRemoteConfigValues(remoteConfig: FirebaseRemoteConfig) {
+    val fireworksEnabled = remoteConfig.getBoolean("fireworks_enabled")
+
+    var startAnimation by remember { mutableStateOf(true) }
+
+    FireworkCenterView(startAnimation = startAnimation, fireworksEnabled = fireworksEnabled)
+    startAnimation = false
 
 
-
+}
+*/
 
 /*
 Gradient Green
