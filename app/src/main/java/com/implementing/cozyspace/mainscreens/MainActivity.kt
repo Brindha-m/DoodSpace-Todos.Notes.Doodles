@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
             appUpdateManager.registerListener(installStateUpdatedListener)
         }
 
-        checkForAppUpdates()
+//        checkForAppUpdates()
 
         setContent {
             val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity() {
                         arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                         0
                     )
+
             }
 
             LaunchedEffect(blockScreenshots.value) {
@@ -202,11 +203,17 @@ class MainActivity : ComponentActivity() {
                             DiaryChartScreen()
                         }
 
-
+                        // Doodle Screen
 
                         composable(Screen.DoodleScreen.route) {
                             DoodleScreen(doodleController = DoodleController())
                         }
+
+                        // Sketch Guess Screen
+
+//                        composable(Screen.SketchGuess.route) {
+//                            MainNavigation()
+//                        }
 
 
                         // Notes Section
@@ -349,6 +356,37 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    /* private fun firebase_config() {
+        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults) // Create an XML file in res/xml/ with default values
+        // Fetch Remote Config values
+        remoteConfig.fetchAndActivate().addOnCompleteListener { }
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
+                    Toast.makeText(
+                        this, "Fetch and activate succeeded",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // Apply fetched values
+                } else {
+                    Toast.makeText(
+                        this, "Fetch failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+    }
+
+*/
+
 
     private fun checkForAppUpdates() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->

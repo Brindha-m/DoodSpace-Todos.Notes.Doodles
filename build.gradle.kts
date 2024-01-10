@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath("com.google.gms:google-services:4.4.0")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.46")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.48")
         // Add the Enigma classpath
         classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
     }

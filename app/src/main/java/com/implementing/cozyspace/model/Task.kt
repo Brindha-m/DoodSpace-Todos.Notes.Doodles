@@ -13,6 +13,9 @@ data class Task (
     val recurring: Boolean = false,
     val frequency: Int = 0,
 
+    @ColumnInfo(name = "frequency_amount")
+    val frequencyAmount: Int = 1,
+
     @ColumnInfo(name = "is_completed")
     val isCompleted: Boolean = false,
 

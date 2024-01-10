@@ -4,6 +4,13 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 // Task Recurring
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE tasks ADD COLUMN frequency_amount INTEGER NOT NULL DEFAULT 1")
+    }
+}
+
+// Task Recurring
 val MIGRATION_6_7 = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("ALTER TABLE tasks ADD COLUMN recurring INTEGER NOT NULL DEFAULT 0")

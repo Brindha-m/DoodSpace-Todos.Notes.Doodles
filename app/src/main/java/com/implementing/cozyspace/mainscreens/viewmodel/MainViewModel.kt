@@ -17,7 +17,6 @@ import com.implementing.cozyspace.model.CalendarEvent
 import com.implementing.cozyspace.model.Diary
 import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.ui.theme.Avenir
-import com.implementing.cozyspace.ui.theme.Jost
 import com.implementing.cozyspace.util.Constants
 import com.implementing.cozyspace.util.Order
 import com.implementing.cozyspace.util.OrderType

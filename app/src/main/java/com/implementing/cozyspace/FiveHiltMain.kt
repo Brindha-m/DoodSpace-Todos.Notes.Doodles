@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -25,20 +24,22 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Con
 
 @HiltAndroidApp
 class FiveHiltMain : Application(), Configuration.Provider {
-    companion object {
-        lateinit var appContext: Context
-        private const val TAG = "FiveHiltMain"
-    }
-
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
-
-    override fun getWorkManagerConfiguration() =
-        Configuration.Builder()
+    // Add this property to fulfill the requirements of Configuration.Provider
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
+
+
+    companion object {
+        lateinit var appContext: Context
+        private const val TAG = "FiveHiltMain"
+
+    }
 
 
     override fun onCreate() {
@@ -48,8 +49,8 @@ class FiveHiltMain : Application(), Configuration.Provider {
         FirebaseApp.initializeApp(this)
         // To get the refreshed token, just comment the about func
 //        logRegToken()
-    }
 
+    }
     // Notification
     private fun createRemindersNotificationChannel() {
         val channel = NotificationChannel(
@@ -79,10 +80,38 @@ class FiveHiltMain : Application(), Configuration.Provider {
 
     }
 
+//    private fun firebase_config() {
+//        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+//        val configSettings = remoteConfigSettings {
+//            minimumFetchIntervalInSeconds = 3600
+//        }
+//        remoteConfig.setConfigSettingsAsync(configSettings)
+//        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults) // Create an XML file in res/xml/ with default values
+//        // Fetch Remote Config values
+//        remoteConfig.fetchAndActivate().addOnCompleteListener {  }
+//            .addOnCompleteListener() { task ->
+//                if (task.isSuccessful) {
+//                    val updated = task.result
+//                    Log.d(TAG, "Config params updated: $updated")
+//                    Toast.makeText(this, "Fetch and activate succeeded",
+//                        Toast.LENGTH_SHORT).show()
+//                } else {
+//                    Toast.makeText(this, "Fetch failed",
+//                        Toast.LENGTH_SHORT).show()
+//                }
+//
+//            }
+//    }
+
 
 
 }
 
+
+
 // for string resources where context is not available
 fun getString(@StringRes resId: Int, vararg args: String) =
     FiveHiltMain.appContext.getString(resId, *args)
+
+
+

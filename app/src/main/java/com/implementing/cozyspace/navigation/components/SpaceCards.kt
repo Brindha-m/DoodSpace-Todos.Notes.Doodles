@@ -26,6 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.festive_animations.shadow
+import com.implementing.cozyspace.ui.theme.TailwindCSSColor
 
 
 @Composable
@@ -49,6 +51,7 @@ fun SpaceRegularCard(
                 .background(backgroundColor)
                 .clickable { onClick() }
                 .aspectRatio(1.2f)
+                .fillMaxWidth()
                 .padding(15.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -117,7 +120,7 @@ fun SpaceWideCardLeft(
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.padding(8.dp).background(Color.Transparent),
+        modifier = Modifier.padding(5.dp).background(Color.Transparent),
         shape = RoundedCornerShape(25.dp),
 //        colors = CardDefaults.cardColors(containerColor = Col),
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),

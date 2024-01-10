@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.task.service
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.service.quicksettings.TileService
 import androidx.core.net.toUri
@@ -9,6 +10,7 @@ import com.implementing.cozyspace.util.Constants
 
 class AddTaskTileService: TileService() {
 
+    @SuppressLint("StartActivityAndCollapseDeprecated")
     override fun onClick() {
         super.onClick()
         val intent = Intent(

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.implementing.cozyspace.domain.usecase.tasks.UpdateTaskCompletedUseCase
-import com.implementing.cozyspace.domain.usecase.tasks.refreshTasksWidget
 import com.implementing.cozyspace.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
@@ -25,7 +24,6 @@ class TaskActionButtonBroadcastReceiver : BroadcastReceiver() {
                 updateTaskCompleted(taskId, true)
                 val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 manager.cancel(taskId)
-                context.refreshTasksWidget()
             }
         }
     }

@@ -62,6 +62,7 @@ sealed class Screen(val route: String) {
     object CalendarEventDetailsScreen : Screen("calendar_event_details_screen/{${Constants.CALENDAR_EVENT_ARG}}")
 
     object DoodleScreen : Screen("doodle_screen")
+    object SketchGuess : Screen("sketchguess_screen")
 
     object ImportExportScreen : Screen("import_export_screen")
 

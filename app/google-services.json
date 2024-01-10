@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "214748843502",
+    "project_id": "dood-space",
+    "storage_bucket": "dood-space.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214748843502:android:7fa44947b22c33ecc6d2ff",
+        "android_client_info": {
+          "package_name": "com.implementing.cozyspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214748843502-6gm7i85f6ffc1ap093te9dcp7ugef91t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOWtVKLT-OiLw6y_ljNX9dwu0E3M1njW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214748843502-6gm7i85f6ffc1ap093te9dcp7ugef91t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

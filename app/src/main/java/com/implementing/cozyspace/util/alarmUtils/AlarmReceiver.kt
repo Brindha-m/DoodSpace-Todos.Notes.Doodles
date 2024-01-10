@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.Calendar
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,11 +24,13 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var deleteAlarmUseCase: DeleteAlarmUseCase
+
     @Inject
     lateinit var addAlarmUseCase: AddAlarmUseCase
 
     @Inject
     lateinit var getTaskByIdUseCase: GetTaskByIdUseCase
+
     @Inject
     lateinit var updateTaskUseCase: UpdateTaskUseCase
 
@@ -36,6 +39,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val pendingResult = goAsync()
         scope.launch {
+
             val task =
                 intent?.getIntExtra(Constants.TASK_ID_EXTRA, 0)?.let { getTaskByIdUseCase(it) }
                     ?: kotlin.run {
@@ -50,13 +54,18 @@ class AlarmReceiver : BroadcastReceiver() {
             }
             val recurrenceJob = launch {
                 if (task.recurring) {
+                    val calendar = Calendar.getInstance().apply { timeInMillis = task.dueDate }
+                    when (task.frequency) {
+                        TaskFrequency.EVERY_MINUTES.value -> calendar.add(Calendar.MINUTE, task.frequencyAmount)
+                        TaskFrequency.HOURLY.value -> calendar.add(Calendar.HOUR, task.frequencyAmount)
+                        TaskFrequency.DAILY.value -> calendar.add(Calendar.DAY_OF_YEAR, task.frequencyAmount)
+                        TaskFrequency.WEEKLY.value -> calendar.add(Calendar.WEEK_OF_YEAR, task.frequencyAmount)
+                        TaskFrequency.MONTHLY.value -> calendar.add(Calendar.MONTH, task.frequencyAmount)
+                        TaskFrequency.ANNUAL.value -> calendar.add(Calendar.YEAR, task.frequencyAmount)
+                        else -> calendar.add(Calendar.DAY_OF_YEAR, task.frequencyAmount)
+                    }
                     val newTask = task.copy(
-                        dueDate = task.dueDate + when (task.frequency) {
-                            TaskFrequency.DAILY.value -> 24L * 60 * 60 * 1000
-                            TaskFrequency.WEEKLY.value -> 7L * 24 * 60 * 60 * 1000
-                            TaskFrequency.MONTHLY.value -> 30L * 24 * 60 * 60 * 1000
-                            else -> 24L * 60 * 60 * 1000
-                        }
+                        dueDate = calendar.timeInMillis,
                     )
                     updateTaskUseCase(newTask)
                     addAlarmUseCase(Alarm(newTask.id, newTask.dueDate))
@@ -68,3 +77,12 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 }
+
+
+/*
+private fun isScheduleExactAlarmPermissionGranted(context: Context?): Boolean {
+        val permission = "android.permission.SCHEDULE_EXACT_ALARM"
+        val permissionStatus = context?.let { ActivityCompat.checkSelfPermission(it, permission) }
+        return permissionStatus == PackageManager.PERMISSION_GRANTED
+    }
+ */

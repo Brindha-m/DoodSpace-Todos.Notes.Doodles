@@ -19,9 +19,12 @@ enum class ThemeSettings(val value: Int) {
 //    AUTO(2)
 }
 enum class TaskFrequency(@StringRes val title: Int, val value: Int) {
-    DAILY(R.string.every_day, 0),
-    WEEKLY(R.string.every_week, 1),
-    MONTHLY(R.string.every_month, 2)
+    EVERY_MINUTES(R.string.every_minute, 0),
+    HOURLY(R.string.every_hour, 1),
+    DAILY(R.string.every_day, 2),
+    WEEKLY(R.string.every_week, 3),
+    MONTHLY(R.string.every_month, 4),
+    ANNUAL(R.string.every_year, 5)
 }
 
 enum class StartUpScreenSettings(val value: Int) {
@@ -57,6 +60,12 @@ sealed class Order(val orderType: OrderType, val orderTitle: String){
             return this.copy(type = orderType)
         }
     }
+
+    data class DueDate(val type: OrderType = OrderType.ASC(), val title: String = getString(R.string.due_date)) : Order(type, title) {
+        override fun copy(orderType: OrderType): Order {
+            return this.copy(type = orderType)
+        }
+    }
 }
 
 enum class Priority( @StringRes val title: Int, val color: Color) {
@@ -64,6 +73,8 @@ enum class Priority( @StringRes val title: Int, val color: Color) {
     MEDIUM(R.string.medium, Orange),
     HIGH(R.string.high, Red)
 }
+
+
 
 enum class ItemView(@StringRes val title: Int, val value: Int) {
     LIST(R.string.list, 0),
@@ -113,6 +124,7 @@ fun Order.toInt(): Int {
                 is Order.DateCreated -> 1
                 is Order.DateModified -> 2
                 is Order.Priority -> 3
+                is Order.DueDate -> 8
             }
         }
         is OrderType.DESC -> {
@@ -121,6 +133,7 @@ fun Order.toInt(): Int {
                 is Order.DateCreated -> 5
                 is Order.DateModified -> 6
                 is Order.Priority -> 7
+                is Order.DueDate -> 9
             }
         }
     }
@@ -157,12 +170,7 @@ fun FontFamily.getName(): String {
 }
 
 fun Int.toTaskFrequency(): TaskFrequency {
-    return when (this) {
-        0 -> TaskFrequency.DAILY
-        1 -> TaskFrequency.WEEKLY
-        2 -> TaskFrequency.MONTHLY
-        else -> TaskFrequency.DAILY
-    }
+    return TaskFrequency.values().firstOrNull { it.value == this } ?: TaskFrequency.DAILY
 }
 
 fun Set<String>.toIntList() = this.toList().map { it.toInt() }

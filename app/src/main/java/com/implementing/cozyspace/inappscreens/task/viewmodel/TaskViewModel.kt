@@ -97,7 +97,6 @@ class TaskViewModel @Inject constructor(
 
             is TaskEvent.CompleteTask -> viewModelScope.launch {
                 completeTask(event.task.id, event.complete)
-                if (event.complete) deleteAlarm(event.task.id)
             }
             TaskEvent.ErrorDisplayed -> {
                 tasksUiState = tasksUiState.copy(error = null)
@@ -156,6 +155,8 @@ class TaskViewModel @Inject constructor(
                     task = getTaskUseCase(event.taskId)
                 )
             }
+
+            else -> {}
         }
     }
 

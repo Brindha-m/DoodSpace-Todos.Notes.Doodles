@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>fireworks_enabled</key>
+        <value>true</value>
+    </entry>
+    <!-- Add other parameters as needed -->
+</defaultsMap>

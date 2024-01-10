@@ -28,6 +28,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -40,8 +43,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -50,6 +58,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,6 +76,7 @@ import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.task.SubTaskItem
 import com.implementing.cozyspace.inappscreens.task.TaskCheckBox
 import com.implementing.cozyspace.inappscreens.task.TaskEvent
+import com.implementing.cozyspace.inappscreens.task.screens.widgets.NumberPicker
 import com.implementing.cozyspace.inappscreens.task.viewmodel.TaskViewModel
 import com.implementing.cozyspace.model.SubTask
 import com.implementing.cozyspace.model.Task
@@ -77,7 +87,10 @@ import com.implementing.cozyspace.util.formatDateDependingOnDay
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.util.toPriority
 import com.implementing.cozyspace.util.toTaskFrequency
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -102,6 +115,7 @@ fun TaskDetailScreen(
     var completed by rememberSaveable { mutableStateOf(false) }
     var recurring by rememberSaveable { mutableStateOf(false) }
     var frequency by rememberSaveable { mutableIntStateOf(0) }
+    var frequencyAmount by rememberSaveable { mutableIntStateOf(0) }
     val subTasks = remember { mutableStateListOf<SubTask>() }
     val priorities = listOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     val context = LocalContext.current
@@ -109,6 +123,18 @@ fun TaskDetailScreen(
         derivedStateOf {
             dueDate.formatDateDependingOnDay()
         }
+    }
+
+    val timeState = rememberTimePickerState()
+    val snackState = remember { SnackbarHostState() }
+    val snackScope = rememberCoroutineScope()
+    val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    val datePickerState = rememberDatePickerState()
+    val opendateDialog = remember { mutableStateOf(true) }
+    val confirmEnabled = remember {
+        derivedStateOf { datePickerState.selectedDateMillis != null }
     }
 
 
@@ -122,6 +148,7 @@ fun TaskDetailScreen(
         subTasks.addAll(uiState.task.subTasks)
         recurring = uiState.task.recurring
         frequency = uiState.task.frequency
+        frequencyAmount = uiState.task.frequencyAmount
     }
 
     LaunchedEffect(uiState) {
@@ -148,7 +175,8 @@ fun TaskDetailScreen(
                 priority = priority.toInt(),
                 subTasks = subTasks,
                 recurring = recurring,
-                frequency = frequency
+                frequency = frequency,
+                frequencyAmount = frequencyAmount
             ),
             {
                 navController.popBackStack(Screen.TaskSearchScreen.route, false)
@@ -328,36 +356,96 @@ fun TaskDetailScreen(
                         Modifier
                             .fillMaxWidth()
                             .clickable {
-                                val date =
-                                    if (dueDate == 0L) Calendar.getInstance() else Calendar
-                                        .getInstance()
-                                        .apply { timeInMillis = dueDate }
-                                val tempDate = Calendar.getInstance()
-                                val timePicker = TimePickerDialog(
-                                    context,
-                                    { _, hour, minute ->
-                                        tempDate[Calendar.HOUR_OF_DAY] = hour
-                                        tempDate[Calendar.MINUTE] = minute
-                                        dueDate = tempDate.timeInMillis
-                                    }, date[Calendar.HOUR_OF_DAY], date[Calendar.MINUTE], false
-                                )
-                                val datePicker = DatePickerDialog(
-                                    context,
-                                    { _, year, month, day ->
-                                        tempDate[Calendar.YEAR] = year
-                                        tempDate[Calendar.MONTH] = month
-                                        tempDate[Calendar.DAY_OF_MONTH] = day
-                                        timePicker.show()
-                                    },
-                                    date[Calendar.YEAR],
-                                    date[Calendar.MONTH],
-                                    date[Calendar.DAY_OF_MONTH]
-                                )
-                                datePicker.show()
+                                showTimePicker = true
                             }
                             .padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
+
+                        val date =
+                            if (dueDate == 0L) Calendar.getInstance() else Calendar
+                                .getInstance()
+                                .apply { timeInMillis = dueDate }
+
+                        if (showTimePicker) {
+
+                            TimePickerDialog(
+                                onCancel = { showTimePicker = false },
+                                onConfirm = {
+                                    val cal = Calendar.getInstance()
+                                    cal.set(Calendar.HOUR_OF_DAY, timeState.hour)
+                                    cal.set(Calendar.MINUTE, timeState.minute)
+                                    cal.isLenient = false
+                                    dueDate = cal.timeInMillis
+
+                                    date[Calendar.HOUR_OF_DAY]
+                                    date[Calendar.MINUTE]
+                                    false
+
+
+                                    snackScope.launch {
+                                        snackState.showSnackbar("Entered time: ${formatter.format(cal.time)}")
+                                    }
+                                    showTimePicker = false
+                                },
+                            ) {
+                                TimePicker(
+                                    state = timeState,
+                                    colors = TimePickerDefaults.colors(
+                                        timeSelectorSelectedContainerColor = Color(0xE18260BE),
+                                        selectorColor = Color(0xFFB79AE9),
+                                    )
+                                )
+                            }
+                        }
+
+
+                        if (opendateDialog.value) {
+
+                            DatePickerDialog(
+                                onDismissRequest = {
+                                    opendateDialog.value = false
+                                },
+                                confirmButton = {
+                                    TextButton(
+                                        onClick = {
+                                            opendateDialog.value = false
+                                            snackScope.launch {
+                                                snackState.showSnackbar(
+                                                    "Selected date timestamp: ${datePickerState.selectedDateMillis}"
+                                                )
+                                            }
+                                            showTimePicker = true
+
+                                            date[Calendar.YEAR]
+                                            date[Calendar.MONTH]
+                                            date[Calendar.DAY_OF_MONTH]
+
+                                        },
+                                        enabled = confirmEnabled.value
+                                    ) {
+                                        Text("OK")
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(
+                                        onClick = {
+                                            opendateDialog.value = false
+                                        }
+                                    ) {
+                                        Text("Cancel")
+                                    }
+                                }
+                            ) {
+                                DatePicker(
+                                    state = datePickerState,
+                                    colors = DatePickerDefaults.colors(
+                                        selectedDayContainerColor = Color(0xD78260BE)
+                                    )
+                                )
+                            }
+                        }
+
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_alarm),
@@ -390,40 +478,51 @@ fun TaskDetailScreen(
                         )
                     }
                     AnimatedVisibility(recurring) {
-                        var expanded by remember { mutableStateOf(false) }
-                        Box {
-                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                                TaskFrequency.values().forEach { f ->
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                text = stringResource(f.title),
-                                                style = MaterialTheme.typography.bodyMedium
-                                            )
-                                        },
-                                        onClick = {
-                                            expanded = false
-                                            frequency = f.ordinal
-                                        }
+                        var frequencyMenuExpanded by remember { mutableStateOf(false) }
+                        Column {
+                            Box {
+                                DropdownMenu(
+                                    expanded = frequencyMenuExpanded,
+                                    onDismissRequest = { frequencyMenuExpanded = false }) {
+                                    TaskFrequency.values().forEach { f ->
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(
+                                                    text = stringResource(f.title),
+                                                    style = MaterialTheme.typography.bodyMedium
+                                                )
+                                            },
+                                            onClick = {
+                                                frequencyMenuExpanded = false
+                                                frequency = f.ordinal
+                                            }
+                                        )
+                                    }
+                                }
+                                Row(
+                                    Modifier
+                                        .clickable { frequencyMenuExpanded = true }
+                                        .padding(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(
+                                            frequency.toTaskFrequency().title
+                                        )
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = stringResource(R.string.recurring),
+                                        modifier = Modifier.size(22.dp)
                                     )
                                 }
                             }
-                            Row(
-                                Modifier
-                                    .clickable { expanded = true }
-                                    .padding(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            Spacer(Modifier.height(8.dp))
+                            NumberPicker(
+                                stringResource(R.string.repeats_every),
+                                frequencyAmount
                             ) {
-                                Text(
-                                    text = stringResource(
-                                        frequency.toTaskFrequency().title
-                                    )
-                                )
-                                Icon(
-                                    imageVector = Icons.Default.ArrowDropDown,
-                                    contentDescription = stringResource(R.string.recurring),
-                                    modifier = Modifier.size(22.dp)
-                                )
+                                if (it > 0) frequencyAmount = it
                             }
                         }
                     }
@@ -511,5 +610,6 @@ private fun taskChanged(
             task.priority != newTask.priority ||
             task.subTasks != newTask.subTasks ||
             task.recurring != newTask.recurring ||
-            task.frequency != newTask.frequency
+            task.frequency != newTask.frequency ||
+            task.frequencyAmount != newTask.frequencyAmount
 }

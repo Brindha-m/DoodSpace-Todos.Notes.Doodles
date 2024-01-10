@@ -11,6 +11,5 @@ class UpdateTaskUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(task: Task) {
         tasksRepository.updateTask(task)
-        context.refreshTasksWidget()
     }
 }

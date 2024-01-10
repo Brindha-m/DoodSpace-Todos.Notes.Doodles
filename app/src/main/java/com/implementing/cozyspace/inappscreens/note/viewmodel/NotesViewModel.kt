@@ -73,7 +73,7 @@ class NotesViewModel @Inject constructor(
                 ),
                 getSettings(
                     intPreferencesKey(Constants.NOTE_VIEW_KEY),
-                    ItemView.LIST.value
+                    ItemView.GRID.value
                 ),
                 getAllFolders()
             ) { order, view, folders ->

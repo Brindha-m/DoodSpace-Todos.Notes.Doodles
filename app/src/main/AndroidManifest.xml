@@ -4,9 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <!-- For reminders -->
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+<!--    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>-->
+<!--   <uses-permission android:name="com.android.alarm.permission.EXACT_ALARM"/> -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- to start the alarms after restart. (By default, all alarms are canceled when a device shuts down) -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -31,6 +34,7 @@
         <activity
             android:name=".mainscreens.MainActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
             android:theme="@style/Theme.FeedFive">
             <intent-filter>
@@ -50,6 +54,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+<!--        <receiver-->
+<!--            android:name=".util.alarmUtils.BootBroadcastReceiver"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
 
         <receiver
             android:name=".util.alarmUtils.AlarmReceiver"
@@ -153,10 +165,19 @@
 <!--            android:enabled="@bool/glance_appwidget_available"-->
 <!--            android:exported="false" />-->
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove" />
+<!--        Workmanager-->
+
+<!--        <provider-->
+<!--            android:name="androidx.startup.InitializationProvider"-->
+<!--            android:authorities="${applicationId}.androidx-startup"-->
+<!--            android:exported="false"-->
+<!--            tools:node="merge">-->
+<!--            &lt;!&ndash; If you are using androidx.startup to initialize other components &ndash;&gt;-->
+<!--            <meta-data-->
+<!--                android:name="androidx.work.WorkManagerInitializer"-->
+<!--                android:value="androidx.startup"-->
+<!--                tools:node="remove" />-->
+<!--        </provider>-->
 
 <!--        Firebase cloud messaging Notification -->
         <service
@@ -170,6 +191,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_dood_space" />
+
 
 
     </application>

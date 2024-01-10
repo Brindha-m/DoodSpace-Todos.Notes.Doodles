@@ -45,7 +45,7 @@ fun NotificationManager.sendNotification(task: Task, context: Context, id: Int) 
     }
 
 //    val largeIconBitmap = BitmapFactory.decodeResource(reso, R.drawable.dood_space)
-    val largeIconBitmap = ContextCompat.getDrawable(context, R.drawable.ic_stat_dood_space)?.toBitmap()
+    val largeIconBitmap = ContextCompat.getDrawable(context, R.drawable.dood_nn_bmp)?.toBitmap()
 
 
     val notification = NotificationCompat.Builder(context, Constants.REMINDERS_CHANNEL_ID)
