@@ -55,6 +55,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -110,7 +111,7 @@ fun TaskDetailScreen(
     var title by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
     var priority by rememberSaveable { mutableStateOf(Priority.LOW) }
-    var dueDate by rememberSaveable { mutableStateOf(0L) }
+    var dueDate by rememberSaveable { mutableLongStateOf(0L) }
     var dueDateExists by rememberSaveable { mutableStateOf(false) }
     var completed by rememberSaveable { mutableStateOf(false) }
     var recurring by rememberSaveable { mutableStateOf(false) }
@@ -216,22 +217,16 @@ fun TaskDetailScreen(
                                 priority = priority.toInt(),
                                 subTasks = subTasks,
                                 recurring = recurring,
-                                frequency = frequency
+                                frequency = frequency,
+                                frequencyAmount = frequencyAmount
                             ),
                             {
                                 navController.popBackStack(Screen.TaskSearchScreen.route, false)
                                 navController.navigateUp()
                             }
                         ) {
-                            viewModel.onEvent(
-                                TaskEvent.UpdateTask(
-                                    it,
-                                    dueDate != uiState.task.dueDate
-                                )
-                            )
+                            viewModel.onEvent(TaskEvent.UpdateTask(it, dueDate != uiState.task.dueDate))
                         }
-
-                        navController.navigateUp()
                     })
                     {
                         Image(

@@ -112,44 +112,6 @@ fun SpaceWideCard(
     }
 }
 
-@Composable
-fun SpaceWideCardLeft(
-    title: String,
-    image: Int,
-    backgroundColor: Brush,
-    onClick: () -> Unit = {}
-) {
-    Card(
-        modifier = Modifier.padding(5.dp).background(Color.Transparent),
-        shape = RoundedCornerShape(25.dp),
-//        colors = CardDefaults.cardColors(containerColor = Col),
-        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-    ) {
-        Column(
-            Modifier
-                .background(backgroundColor)
-                .fillMaxWidth()
-                .clickable { onClick() }
-                .padding(14.dp),
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
-                modifier = Modifier.padding(top = 5.dp, start = 5.dp).align(Alignment.End)
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Image(
-                modifier = Modifier
-                    .size(80.dp)
-                    .align(Alignment.Start),
-                painter = painterResource(id = image),
-                contentDescription = title)
-
-        }
-    }
-}
 
 @Preview
 @Composable

@@ -14,9 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -47,7 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,12 +55,14 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.note.NoteEvent
+import com.implementing.cozyspace.inappscreens.note.screens.components.NoteContentFieldComponent
+import com.implementing.cozyspace.inappscreens.note.screens.components.NoteMarkdownFieldComponent
+import com.implementing.cozyspace.inappscreens.note.screens.components.NoteTextFieldComponent
 import com.implementing.cozyspace.inappscreens.note.viewmodel.NotesViewModel
 import com.implementing.cozyspace.model.Note
 import com.implementing.cozyspace.model.NoteFolder
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.ui.theme.Red
-import com.implementing.cozyspace.ui.theme.teal
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -397,54 +399,37 @@ fun NoteDetailsScreen(
                 .padding(paddingValues)
                 .padding(12.dp)
         ) {
-            OutlinedTextField(
+
+            NoteTextFieldComponent(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text(text = stringResource(R.string.title)) },
-                shape = RoundedCornerShape(15.dp),
-                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
             )
 
 
-
             if (readingMode) {
-                MarkdownText(
-                    markdown = content.ifBlank { stringResource(R.string.note_content)},
-//                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(vertical = 6.dp)
-                        .border(1.dp, Color.Gray, RoundedCornerShape(20.dp))
-                        .padding(10.dp),
+                NoteMarkdownFieldComponent(
+                    content = content.ifBlank { stringResource(R.string.note_content) },
                     onClick = {
                         print("FROM MARKDOWN $content")
                         viewModel.onEvent(NoteEvent.ToggleReadingMode)
                     },
-                    color = MaterialTheme.colorScheme.primary,
-//                    style =  MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Thin),
-                    fontSize = 13.sp
                 )
-                {
-
-                }
-            }
-
-            else {
-                OutlinedTextField(
+            } else {
+                NoteContentFieldComponent(
                     value = content,
                     onValueChange = {
-                             content = it
-                        print("From outline text ------ $content ")
+                        content = it
+//                        print("From outline text ------ $content ")
                     },
-                    label = {
-                        Text(
-                            text = stringResource(R.string.note_content),
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 10.sp
-                        )
-                    },
-                    shape = RoundedCornerShape(15.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(),

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -81,31 +79,31 @@ fun SpacesScreen(
 //    }
 
 
-/*
-    LaunchedEffect(true) {
-        val remoteConfig = Firebase.remoteConfig
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 60 // Set your desired fetch interval
-        }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Apply fetched values to your view model or directly to your composable
-                fireviewModel.updateFromMap(remoteConfig.all)
-                val updated = task.result
-                Log.d(TAG, "Config params updated: $updated")
+    /*
+        LaunchedEffect(true) {
+            val remoteConfig = Firebase.remoteConfig
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 60 // Set your desired fetch interval
+            }
+            remoteConfig.setConfigSettingsAsync(configSettings)
+            remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Apply fetched values to your view model or directly to your composable
+                    fireviewModel.updateFromMap(remoteConfig.all)
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
 
-                // Activate the fetched config
-                remoteConfig.activate().addOnCompleteListener {
-                    Log.d(TAG, "Remote Config activated: $it")
+                    // Activate the fetched config
+                    remoteConfig.activate().addOnCompleteListener {
+                        Log.d(TAG, "Remote Config activated: $it")
+                    }
+                } else {
+                    // Handle errors
+                    Log.e(TAG, "Fetch failed", task.exception)
                 }
-            } else {
-                // Handle errors
-                Log.e(TAG, "Fetch failed", task.exception)
             }
         }
-    }
-    */
+        */
 
     val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
 
@@ -279,27 +277,6 @@ fun SpacesScreen(
                     }
                 }
             }
-//            item {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .fillMaxHeight(1f),
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    SpaceRegularCardMiddle(
-//                        title = "Sketch Guess",
-//                        image = R.drawable.img_8,
-//                        backgroundColor = Brush.linearGradient(
-//                            colorStops = arrayOf(
-//                                0.48f to Color(0xFF1D1E1F), // More transparent white in the middle
-//                                0.95f to Color(0xFFC9BDBD),  // Light gray (sky)
-//                            )
-//                        )
-//                    ) {
-//                        navController.navigate(Screen.SketchGuess.route)
-//                    }
-//                }
-//            }
 
             item {
                 Spacer(Modifier.height(65.dp))
@@ -315,12 +292,13 @@ fun SpacesScreen(
 @Composable
 fun ChristmasAnimation() {
 
-    val snowflake: List<Painter> = listOf(
-        painterResource(id = R.drawable.ic_snow_flakes),
-    )
+//    val snowflake: List<Painter> = listOf(
+//        painterResource(id = R.drawable.ic_snow_flakes),
+//    )
 
-    val gifts: List<Painter> = listOf(
-        painterResource(id = R.drawable.gift_box),
+    val heart: List<Painter> = listOf(
+        painterResource(id = R.drawable.heart),
+
     )
 
     Box(
@@ -328,15 +306,21 @@ fun ChristmasAnimation() {
             .padding(10.dp)
             .fillMaxSize()
             .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
+//            .snowfall(
+////                colors = listOf(Color(0xFF56C2EB)),
+//                colors = listOf(Color(0xFFF64850)),
+//                type = FlakeType.Custom(heart),
+//                density = 0.002 // from 0.0 to 1.0,
+//            )
             .snowfall(
-                colors = listOf(Color(0xFF56C2EB)),
-                type = FlakeType.Custom(snowflake),
+                colors = listOf(Color(0xFFFD608B)),
+                type = FlakeType.Custom(heart),
                 density = 0.002 // from 0.0 to 1.0,
             )
             .snowmelt(
                 colors = listOf(Color(0xFFF5E9E9)),
 //                colors = listOf(Color(0xFFF5E9E9)),
-                type = FlakeType.Custom(snowflake),
+                type = FlakeType.Custom(heart),
                 density = 0.002 // from 0.0 to 1.0,
             )
     )

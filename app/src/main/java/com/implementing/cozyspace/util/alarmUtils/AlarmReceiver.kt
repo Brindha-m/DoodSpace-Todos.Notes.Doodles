@@ -56,9 +56,9 @@ class AlarmReceiver : BroadcastReceiver() {
                 if (task.recurring) {
                     val calendar = Calendar.getInstance().apply { timeInMillis = task.dueDate }
                     when (task.frequency) {
-                        TaskFrequency.EVERY_MINUTES.value -> calendar.add(Calendar.MINUTE, task.frequencyAmount)
-                        TaskFrequency.HOURLY.value -> calendar.add(Calendar.HOUR, task.frequencyAmount)
                         TaskFrequency.DAILY.value -> calendar.add(Calendar.DAY_OF_YEAR, task.frequencyAmount)
+                        TaskFrequency.HOURLY.value -> calendar.add(Calendar.HOUR, task.frequencyAmount)
+                        TaskFrequency.EVERY_MINUTES.value -> calendar.add(Calendar.MINUTE, task.frequencyAmount)
                         TaskFrequency.WEEKLY.value -> calendar.add(Calendar.WEEK_OF_YEAR, task.frequencyAmount)
                         TaskFrequency.MONTHLY.value -> calendar.add(Calendar.MONTH, task.frequencyAmount)
                         TaskFrequency.ANNUAL.value -> calendar.add(Calendar.YEAR, task.frequencyAmount)

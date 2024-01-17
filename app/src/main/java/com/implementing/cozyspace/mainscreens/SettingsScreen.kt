@@ -204,7 +204,7 @@ fun SettingsScreen(
 
             item {
                 SettingsBasicLinkItem(
-                    title = R.string.app_version,
+                    title = R.string.share_app,
                     icon = R.drawable.ic_code,
 //                    subtitle = BuildConfig.VERSION_NAME,
                     link = Constants.GITHUB_RELEASES_LINK

@@ -45,44 +45,43 @@ fun NoteItem(
     onClick: (Note) -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick(note) },
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(modifier = modifier) {
-            Canvas(modifier = Modifier.matchParentSize()) {
-                //define a rectangle path, which would be cut at one corner
-                val clipPath = Path().apply {
-                    val cutCornerSize: Dp = 20.dp
-                    lineTo(size.width - cutCornerSize.toPx(), 0f)
-                    lineTo(size.width, cutCornerSize.toPx())
-                    lineTo(size.width, size.height)
-                    lineTo(0f, size.height)
-                    close()
-                }
-
-                clipPath(clipPath) {
-                    val cornerRadius: Dp = 10.dp
-                    drawRoundRect(
-                        color = Color(0xFF4F709C),
-                        size = size,
-                        cornerRadius = CornerRadius(cornerRadius.toPx())
-                    )
-
-                    val cutCornerSize: Dp = 10.dp
-                    drawRoundRect(
-                        color = Color(
-                            ColorUtils.blendARGB(0xffffff, 0x000000, 0.2f)
-                        ),
-                        topLeft = Offset(size.width - cutCornerSize.toPx(), -100f),
-                        size = Size(cutCornerSize.toPx() + 100f, cutCornerSize.toPx() + 100f),
-                        cornerRadius = CornerRadius(cornerRadius.toPx())
-                    )
-                }
-            }
+//            Canvas(modifier = Modifier.matchParentSize()) {
+//                //define a rectangle path, which would be cut at one corner
+//                val clipPath = Path().apply {
+//                    val cutCornerSize: Dp = 20.dp
+//                    lineTo(size.width - cutCornerSize.toPx(), 0f)
+//                    lineTo(size.width, cutCornerSize.toPx())
+//                    lineTo(size.width, size.height)
+//                    lineTo(0f, size.height)
+//                    close()
+//                }
+//
+//                clipPath(clipPath) {
+//                    val cornerRadius: Dp = 10.dp
+//                    drawRoundRect(
+//                        color = Color(0xFF4F709C),
+//                        size = size,
+//                        cornerRadius = CornerRadius(cornerRadius.toPx())
+//                    )
+//
+//                    val cutCornerSize: Dp = 10.dp
+//                    drawRoundRect(
+//                        color = Color(
+//                            ColorUtils.blendARGB(0xffffff, 0x000000, 0.2f)
+//                        ),
+//                        topLeft = Offset(size.width - cutCornerSize.toPx(), -100f),
+//                        size = Size(cutCornerSize.toPx() + 100f, cutCornerSize.toPx() + 100f),
+//                        cornerRadius = CornerRadius(cornerRadius.toPx())
+//                    )
+//                }
+//            }
             Column(
                 modifier = Modifier
-                    .clickable { onClick(note) }
                     .padding(12.dp)
                     .fillMaxWidth()
             ) {

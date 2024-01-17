@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,8 +36,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.ui.theme.FeedFiveTheme
+import com.implementing.cozyspace.util.ThemeSettings
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,7 +55,7 @@ fun ChristmasRide() {
             animState.value = true
             delay(3000)
             animState.value = false
-            delay(2500)
+            delay(4000)
         }
     }
 
@@ -84,9 +86,12 @@ fun RunningCarScreenSkeletonPreviewDark() {
 
 @Composable
 fun RunningCarScreenSkeleton(
-    _animState: StateFlow<Boolean>
+    _animState: StateFlow<Boolean>,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val animState = _animState.collectAsState()
+
+    val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
 
     val animRotationZ by animateFloatAsState(
         targetValue = if (animState.value) 360f else 0f,
@@ -176,7 +181,7 @@ fun RunningCarScreenSkeleton(
                 val animatePositionSanta by transition.animateFloat(
                     initialValue = 1f,
                     targetValue = -1f,
-                    animationSpec = infiniteRepeatable(tween(300), RepeatMode.Reverse),
+                    animationSpec = infiniteRepeatable(tween(3000), RepeatMode.Restart),
                     label = ""
                 )
 
@@ -193,13 +198,7 @@ fun RunningCarScreenSkeleton(
                             translationX = animatePositionBackground
                         },
                     contentScale = ContentScale.Inside,
-                        colorFilter = ColorFilter.tint(
-                            if (isSystemInDarkTheme()) {
-                                Color(0xFF2B2B2B)
-                            } else {
-                                Color(0xFFE6E6E6)
-                            }
-                        )
+                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
                 )
 
                 Image(
@@ -216,30 +215,21 @@ fun RunningCarScreenSkeleton(
                         .background(Color.Transparent),
                     contentScale = ContentScale.Inside,
                     colorFilter = ColorFilter.tint(
-                        if (isSystemInDarkTheme()) {
-                            Color(0xFFD4D4D4)
-                        } else {
-                            Color(0xFF3D3D3D)
-                        }
+                        Color(0xFF3D3D3D)
                     )
                 )
                 Row {
-                    
-                    Spacer(modifier = Modifier.padding(horizontal = 0.dp))
-
                     Image(
-                        painterResource(id = R.drawable.christmasnewyear),
+                        painterResource(id = R.drawable.febvalfinal),
                         contentDescription = "Santa",
                         Modifier
-                            .size(82.dp)
+                            .size(76.dp)
                             .graphicsLayer {
                                 translationX = animateSantaPositionX
                                 translationY = animatePositionSanta
                             }
                     )
                 }
-
-
 
             }
         }

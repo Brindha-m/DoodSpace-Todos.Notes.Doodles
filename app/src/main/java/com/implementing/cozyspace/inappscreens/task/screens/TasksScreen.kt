@@ -148,7 +148,7 @@ fun TasksScreen(
             }
             LaunchedEffect(true) {
                 if (addTask) scope.launch {
-                    scaffoldState.bottomSheetState.hasExpandedState
+                    scaffoldState.bottomSheetState.hasPartiallyExpandedState
                     focusRequester.requestFocus()
                 }
             }

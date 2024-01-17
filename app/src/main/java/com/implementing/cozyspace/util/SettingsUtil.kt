@@ -19,9 +19,9 @@ enum class ThemeSettings(val value: Int) {
 //    AUTO(2)
 }
 enum class TaskFrequency(@StringRes val title: Int, val value: Int) {
-    EVERY_MINUTES(R.string.every_minute, 0),
+    DAILY(R.string.every_day, 0),
     HOURLY(R.string.every_hour, 1),
-    DAILY(R.string.every_day, 2),
+    EVERY_MINUTES(R.string.every_minute, 2),
     WEEKLY(R.string.every_week, 3),
     MONTHLY(R.string.every_month, 4),
     ANNUAL(R.string.every_year, 5)
