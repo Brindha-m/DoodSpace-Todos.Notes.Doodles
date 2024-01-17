@@ -7,7 +7,11 @@
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
 
 ## Happy Doodling! 🚀
+
+### 📢 Dood's Special Corner
+
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "352">
+<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/d076314e-0f9f-4088-bd9e-8d9b1e7e196b" width = "352">
 
 <br>
 
@@ -57,6 +61,8 @@
 
 
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/32d1a2f3-bb48-41df-b0e1-487eda83b6d2" height = "700">
+
+<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/1b63e94a-e158-462b-820c-014b758daa8c" height = "700">
 
 
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/blob/master/dood.png?raw=true" alt="Dood Image" width="200"/> 
