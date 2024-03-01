@@ -59,8 +59,7 @@
 #### With these features, Dood offers a versatile platform for organizing your life, boosting productivity, nurturing creativity, and tracking your emotions.
 
 ### What's New on Dood
-
-<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/1b63e94a-e158-462b-820c-014b758daa8c" height = "700">
+<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/282dd779-adcf-4e5b-a381-85ae845e885b" height = "700">
 
 
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/blob/master/dood.png?raw=true" alt="Dood Image" width="200"/> 
