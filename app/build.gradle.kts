@@ -35,8 +35,8 @@ android {
         applicationId = "com.implementing.cozyspace"
         minSdk = 26
         targetSdk = 34
-        versionCode = 25
-        versionName = "1.1.24"
+        versionCode = 26
+        versionName = "1.2.24"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -111,8 +111,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.hilt:hilt-work:1.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.firebase:firebase-config:21.6.0")
-    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-config:21.6.2")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -126,12 +126,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling")
 
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
 
 
     // Compose navigation
-    implementation("androidx.navigation:navigation-compose:2.7.6")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
@@ -145,8 +145,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
 
     // Coroutines - Light weight thread, asynchronous
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     // Gson - Json to Java Objects
     implementation("com.google.code.gson:gson:2.10.1")
@@ -154,18 +154,18 @@ dependencies {
     // Preference - Datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    // Accompanist
+    // Accompanist - let this be of the same version for permission
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation("com.google.accompanist:accompanist-permissions:0.23.1")
     implementation("com.google.accompanist:accompanist-flowlayout:0.23.1")
 
     //Moshi - modern JSON library for Android
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
 
     // Compose MarkDown
     implementation("com.github.jeziellago:compose-markdown:0.3.4")
 
-    implementation("com.github.idapgroup:Snowfall:0.8.1")
+    implementation("com.github.idapgroup:Snowfall:0.8.2")
 
 
     // Compose Glance (Widgets)
@@ -189,19 +189,19 @@ dependencies {
     /** Animated Compose Bottom navigation */
     implementation("com.exyte:animated-navigation-bar:1.0.0")
 
-    // Model bottom sheet for task section
+    // Model bottom sheet for task section - time,date picker
     implementation("androidx.compose.material3:material3:1.1.2")
 
     // color picker for doodle section
     implementation("com.raedapps:alwan:1.0.1")
 
     // Firebase Notification
-    implementation("com.google.firebase:firebase-messaging:23.4.0")
-    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
 
     // Add the dependencies for the In-App Messaging and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
@@ -219,7 +219,7 @@ dependencies {
 
 
     // Firebase Config for remote updates -- TODOS
-    implementation("com.google.firebase:firebase-config:21.6.0")
+    implementation("com.google.firebase:firebase-config:21.6.2")
 
 
     //constraint layout

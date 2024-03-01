@@ -48,7 +48,7 @@ class FiveHiltMain : Application(), Configuration.Provider {
         createRemindersNotificationChannel()
         FirebaseApp.initializeApp(this)
         // To get the refreshed token, just comment the about func
-//        logRegToken()
+        logRegToken()
 
     }
     // Notification

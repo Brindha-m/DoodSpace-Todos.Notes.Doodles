@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.task.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -83,6 +84,7 @@ import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.util.Priority
 import com.implementing.cozyspace.util.TaskFrequency
 import com.implementing.cozyspace.util.formatDateDependingOnDay
+import com.implementing.cozyspace.util.formatTime
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.util.toPriority
 import com.implementing.cozyspace.util.toTaskFrequency
@@ -91,6 +93,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+@SuppressLint("StringFormatInvalid")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskBottomSheetContent(
@@ -109,23 +112,15 @@ fun AddTaskBottomSheetContent(
     var frequencyAmount by rememberSaveable { mutableIntStateOf(0) }
     val priorities = listOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     val context = LocalContext.current
-    val formattedDate by remember {
-        derivedStateOf {
-            dueDate.timeInMillis.formatDateDependingOnDay()
-        }
-    }
+
 
     val timeState = rememberTimePickerState()
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    var showTimePicker by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(true) }
 
-    val datePickerState = rememberDatePickerState()
-    val openDialog = remember { mutableStateOf(true) }
-    val confirmEnabled = remember {
-        derivedStateOf { datePickerState.selectedDateMillis != null }
-    }
+    var openDialog by remember { mutableStateOf(true) }
 
 
     Column(
@@ -216,12 +211,15 @@ fun AddTaskBottomSheetContent(
                 onCheckedChange = { dueDateExists = it },
                 colors = CheckboxDefaults.colors(Color.DarkGray)
             )
+
             Spacer(Modifier.width(4.dp))
             Text(
                 text = stringResource(R.string.due_date),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
+
+
         AnimatedVisibility(dueDateExists) {
             Column {
                 Row(
@@ -229,34 +227,35 @@ fun AddTaskBottomSheetContent(
                         .fillMaxWidth()
                         .clickable {
                             showTimePicker = true
+                            openDialog = true
                         }
                         .padding(8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    val date =
-                        if (dueDate.timeInMillis == 0L) Calendar.getInstance() else dueDate
 
                     if (showTimePicker) {
-
                         TimePickerDialog(
                             onCancel = { showTimePicker = false },
                             onConfirm = {
+
+                                // Construct the Calendar object with the selected time
                                 val cal = Calendar.getInstance()
-                                cal.set(Calendar.HOUR_OF_DAY, timeState.hour)
-                                cal.set(Calendar.MINUTE, timeState.minute)
-                                cal.isLenient = false
-                                dueDate = cal
+                                // Update the dueDate with the selected time
+                                dueDate.set(Calendar.HOUR_OF_DAY, timeState.hour)
+                                dueDate.set(Calendar.MINUTE, timeState.minute)
 
-                                date[Calendar.HOUR_OF_DAY]
-                                date[Calendar.MINUTE]
-                                false
-
-
+                                // Show Snackbar with selected time
+                                val formattedTime = SimpleDateFormat(
+                                    "yyyy-MM-dd hh:mm a",
+                                    Locale.getDefault()
+                                ).format(cal.time)
                                 snackScope.launch {
-                                    snackState.showSnackbar("Entered time: ${formatter.format(cal.time)}")
+                                    snackState.showSnackbar("Selected time: $formattedTime")
                                 }
+
+                                // Close the time picker
                                 showTimePicker = false
-                            },
+                            }
                         ) {
                             TimePicker(
                                 state = timeState,
@@ -269,27 +268,35 @@ fun AddTaskBottomSheetContent(
                     }
 
 
-                    if (openDialog.value) {
+                    if (openDialog) {
+                        val datePickerState = rememberDatePickerState()
+                        val confirmEnabled = remember {
+                            derivedStateOf { datePickerState.selectedDateMillis != null }
+                        }
 
                         DatePickerDialog(
                             onDismissRequest = {
-                                openDialog.value = false
+                                openDialog = false
                             },
                             confirmButton = {
                                 TextButton(
                                     onClick = {
-                                        openDialog.value = false
+                                        val selectedDateMillis = datePickerState.selectedDateMillis ?: Calendar.getInstance().timeInMillis
+                                        // Update the dueDate with the selected date
+                                        dueDate = Calendar.getInstance().apply { timeInMillis = selectedDateMillis }
+
+                                        openDialog = false
+                                        // Show the time picker after selecting the date
+                                        showTimePicker = true
+                                        // Show Snackbar with selected date
                                         snackScope.launch {
                                             snackState.showSnackbar(
-                                                "Selected date timestamp: ${datePickerState.selectedDateMillis}"
+                                                context.getString(
+                                                    R.string.selected_date,
+                                                    dueDate.timeInMillis.formatDateDependingOnDay()
+                                                )
                                             )
                                         }
-                                        showTimePicker = true
-
-                                        date[Calendar.YEAR]
-                                        date[Calendar.MONTH]
-                                        date[Calendar.DAY_OF_MONTH]
-
                                     },
                                     enabled = confirmEnabled.value
                                 ) {
@@ -299,18 +306,31 @@ fun AddTaskBottomSheetContent(
                             dismissButton = {
                                 TextButton(
                                     onClick = {
-                                        openDialog.value = false
+                                        openDialog = false
                                     }
                                 ) {
                                     Text("Cancel")
                                 }
                             }
                         ) {
+                            val minDate = Calendar.getInstance().apply {
+                                // Clear the time fields to set the time to midnight
+                                set(Calendar.HOUR_OF_DAY, 0)
+                                set(Calendar.MINUTE, 0)
+                                set(Calendar.SECOND, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }.timeInMillis
+
                             DatePicker(
                                 state = datePickerState,
                                 colors = DatePickerDefaults.colors(
                                     selectedDayContainerColor = Color(0xD78260BE)
-                                )
+                                ),
+                                dateValidator = { date ->
+                                    // Check if the date is after or equal to the minimum date
+                                    date >= minDate
+                                },
+
                             )
                         }
                     }
@@ -327,8 +347,9 @@ fun AddTaskBottomSheetContent(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
+
                     Text(
-                        text = formattedDate,
+                        text = dueDate.timeInMillis.formatDateDependingOnDay(),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -482,57 +503,6 @@ fun PriorityTabRow(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TimePickerWithDialog() {
-    var selectedHour by remember { mutableIntStateOf(0) }
-    var selectedMinute by remember { mutableIntStateOf(0) }
-    var showDialog by remember { mutableStateOf(false) }
-    val timeState = rememberTimePickerState(
-        initialHour = selectedHour,
-        initialMinute = selectedMinute
-    )
-
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .background(color = Color.LightGray.copy(alpha = .3f))
-                    .padding(top = 28.dp, start = 20.dp, end = 20.dp, bottom = 12.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TimePicker(state = timeState)
-                Row(
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(), horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog = false }) {
-                        Text(text = "Dismiss")
-                    }
-                    TextButton(onClick = {
-                        showDialog = false
-                        selectedHour = timeState.hour
-                        selectedMinute = timeState.minute
-                    }) {
-                        Text(text = "Confirm")
-                    }
-                }
-            }
-        }
-    }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(onClick = { showDialog = true }) {
-            Text(text = "Show Time Picker")
-        }
-        Text(text = "Time is ${timeState.hour} : ${timeState.minute}")
-    }
-}
 
 @Composable
 fun AnimatedTabIndicator(modifier: Modifier = Modifier) {
