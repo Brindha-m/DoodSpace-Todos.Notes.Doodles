@@ -9,10 +9,11 @@
 ## Happy Doodling! 🚀
 
 ### 📢 Dood's Special Corner
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/52823de6-6854-4d42-ab2b-bdc341e470a7" width = "210">
 
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "300">
-<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/d076314e-0f9f-4088-bd9e-8d9b1e7e196b" width = "300">
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/52823de6-6854-4d42-ab2b-bdc341e470a7" width = "300">
+<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/d076314e-0f9f-4088-bd9e-8d9b1e7e196b" width = "210">
+
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "210">
 
 <br>
 
