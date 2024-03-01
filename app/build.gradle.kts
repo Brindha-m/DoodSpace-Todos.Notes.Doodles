@@ -10,6 +10,7 @@ plugins {
     id("kotlin-kapt")
 }
 
+
 enigma.enabled = true
 enigma.injectFakeKeys = true
 
