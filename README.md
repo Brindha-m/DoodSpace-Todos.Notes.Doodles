@@ -20,6 +20,12 @@
 
 <br>
 
+### Recent Campaign..
+
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "512"/>
+
+<br>
+
 ### Snapshots
 
 | Screenshot 1 | Screenshot 2 | Screenshot 3 | Screenshot 4 | Screenshot 5 | Screenshot 6 |
@@ -65,7 +71,6 @@
 ### What's New on Dood
 
 <img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a3e3c9a-9ec9-45bf-9714-4ef1095d8043" height ="700"/>
-
 
 
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/blob/master/dood.png?raw=true" alt="Dood Image" width="200"/> 
