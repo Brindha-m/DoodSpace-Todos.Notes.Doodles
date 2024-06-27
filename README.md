@@ -22,7 +22,7 @@
 
 ### Recent Campaign..
 
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "512"/>
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "412"/>
 
 <br>
 
