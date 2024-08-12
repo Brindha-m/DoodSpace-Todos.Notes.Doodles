@@ -73,7 +73,9 @@ fun FeedFiveTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) DarkColorScheme else dynamicLightColorScheme(context)
+//            if (darkTheme) DarkColorScheme else dynamicLightColorScheme(context)
+            if (darkTheme) DarkColorScheme else LightColorScheme
+
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme

@@ -56,7 +56,7 @@ fun Splash(alpha: Float) {
                 .size(305.dp)
                 .align(Alignment.Center)
                 .alpha(alpha = alpha),
-            painter = painterResource(id = R.drawable.doodvalensplashh),
+            painter = painterResource(id = R.drawable.dood_space_splash),
             contentDescription = "Logo Icon",
         )
 

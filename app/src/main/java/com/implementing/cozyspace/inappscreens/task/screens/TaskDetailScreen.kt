@@ -1,8 +1,6 @@
 package com.implementing.cozyspace.inappscreens.task.screens
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -40,6 +38,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -90,6 +89,9 @@ import com.implementing.cozyspace.util.toPriority
 import com.implementing.cozyspace.util.toTaskFrequency
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale
 
@@ -120,23 +122,17 @@ fun TaskDetailScreen(
     val subTasks = remember { mutableStateListOf<SubTask>() }
     val priorities = listOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     val context = LocalContext.current
-    val formattedDate by remember {
-        derivedStateOf {
-            dueDate.formatDateDependingOnDay()
-        }
-    }
+
 
     val timeState = rememberTimePickerState()
+
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
     var showTimePicker by remember { mutableStateOf(false) }
 
-    val datePickerState = rememberDatePickerState()
-    val opendateDialog = remember { mutableStateOf(true) }
-    val confirmEnabled = remember {
-        derivedStateOf { datePickerState.selectedDateMillis != null }
-    }
+    var opendateDialog by remember { mutableStateOf(true) }
+
 
 
     LaunchedEffect(uiState.task) {
@@ -352,30 +348,24 @@ fun TaskDetailScreen(
                             .fillMaxWidth()
                             .clickable {
                                 showTimePicker = true
+                                opendateDialog = true
                             }
                             .padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-
-                        val date =
-                            if (dueDate == 0L) Calendar.getInstance() else Calendar
-                                .getInstance()
-                                .apply { timeInMillis = dueDate }
 
                         if (showTimePicker) {
 
                             TimePickerDialog(
                                 onCancel = { showTimePicker = false },
                                 onConfirm = {
-                                    val cal = Calendar.getInstance()
-                                    cal.set(Calendar.HOUR_OF_DAY, timeState.hour)
-                                    cal.set(Calendar.MINUTE, timeState.minute)
-                                    cal.isLenient = false
-                                    dueDate = cal.timeInMillis
 
-                                    date[Calendar.HOUR_OF_DAY]
-                                    date[Calendar.MINUTE]
-                                    false
+                                    val cal = Calendar.getInstance().apply {
+                                        timeInMillis = dueDate // Set the calendar's time to the current dueDate
+                                        set(Calendar.HOUR_OF_DAY, timeState.hour)
+                                        set(Calendar.MINUTE, timeState.minute)
+                                    }
+                                    dueDate = cal.timeInMillis
 
 
                                     snackScope.launch {
@@ -395,26 +385,35 @@ fun TaskDetailScreen(
                         }
 
 
-                        if (opendateDialog.value) {
+                        if (opendateDialog) {
+
+                            val minDate = Calendar.getInstance().apply {
+                                // Clear the time fields to set the time to midnight
+                                set(Calendar.HOUR_OF_DAY, 0)
+                                set(Calendar.MINUTE, 0)
+                                set(Calendar.SECOND, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }.timeInMillis
+
+                            val datePickerState = rememberDatePickerState(
+                                selectableDates = PresentAndFutureSelectableDates
+                            )
+                            val confirmEnabled = remember {
+                                derivedStateOf { datePickerState.selectedDateMillis != null }
+                            }
 
                             DatePickerDialog(
                                 onDismissRequest = {
-                                    opendateDialog.value = false
+                                    opendateDialog = false
                                 },
                                 confirmButton = {
                                     TextButton(
                                         onClick = {
-                                            opendateDialog.value = false
-                                            snackScope.launch {
-                                                snackState.showSnackbar(
-                                                    "Selected date timestamp: ${datePickerState.selectedDateMillis}"
-                                                )
-                                            }
-                                            showTimePicker = true
+                                            val selectedDateMillis = datePickerState.selectedDateMillis ?: Calendar.getInstance().timeInMillis
+                                            dueDate = selectedDateMillis
 
-                                            date[Calendar.YEAR]
-                                            date[Calendar.MONTH]
-                                            date[Calendar.DAY_OF_MONTH]
+                                            opendateDialog = false
+                                            showTimePicker = true
 
                                         },
                                         enabled = confirmEnabled.value
@@ -425,19 +424,22 @@ fun TaskDetailScreen(
                                 dismissButton = {
                                     TextButton(
                                         onClick = {
-                                            opendateDialog.value = false
+                                            opendateDialog = false
                                         }
                                     ) {
                                         Text("Cancel")
                                     }
                                 }
                             ) {
+
                                 DatePicker(
                                     state = datePickerState,
                                     colors = DatePickerDefaults.colors(
                                         selectedDayContainerColor = Color(0xD78260BE)
+                                    ),
+
+
                                     )
-                                )
                             }
                         }
 
@@ -453,7 +455,7 @@ fun TaskDetailScreen(
                             )
                         }
                         Text(
-                            text = formattedDate,
+                            text = dueDate.formatDateDependingOnDay(),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -607,4 +609,22 @@ private fun taskChanged(
             task.recurring != newTask.recurring ||
             task.frequency != newTask.frequency ||
             task.frequencyAmount != newTask.frequencyAmount
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+object PresentAndFutureSelectableDates : SelectableDates {
+    @ExperimentalMaterial3Api
+    override fun isSelectableDate(date: Long): Boolean {
+        // Get the current date
+        val currentDate = LocalDate.now()
+        // Convert the provided date to LocalDate
+        val providedDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()
+        // Return true if the provided date is after or equal to the current date
+        return providedDate.isEqual(currentDate) || providedDate.isAfter(currentDate)
+    }
+
+    override fun isSelectableYear(year: Int): Boolean {
+        // All years starting from the current year are selectable
+        return year >= LocalDate.now().year
+    }
 }
