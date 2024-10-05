@@ -10,21 +10,24 @@
 
 ### 📢 Dood's Special Corner
 
-<img src= "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/3e0f57fb-70df-4833-8416-1e55ad1da952" width="210">
+<img src= "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/3e0f57fb-70df-4833-8416-1e55ad1da952" width="190">
 
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/52823de6-6854-4d42-ab2b-bdc341e470a7" width = "210">
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/52823de6-6854-4d42-ab2b-bdc341e470a7" width = "190">
 
-<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/d076314e-0f9f-4088-bd9e-8d9b1e7e196b" width = "210">
+<img src = "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/d076314e-0f9f-4088-bd9e-8d9b1e7e196b" width = "190">
 
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "210">
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/e46406cd-e622-42a1-a16f-f11247e86bca" width = "190">
 
 <br>
 
 ### Recent Campaign..
 
-<img src="https://github.com/user-attachments/assets/337d4da9-161d-4aca-873b-da4131b3198d" width = "412"/>
-<img src="https://github.com/user-attachments/assets/f479f82a-9ac2-4e99-b390-85167284e86d" width = "412"/>
-<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "412"/>
+<img src="https://github.com/user-attachments/assets/337d4da9-161d-4aca-873b-da4131b3198d" width = "350"/>
+<img src="https://github.com/user-attachments/assets/f479f82a-9ac2-4e99-b390-85167284e86d" width = "350"/>
+<img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "350"/>
+
+### SpaceWeek Special
+<img src="https://github.com/user-attachments/assets/ce82e54f-2787-487b-b29f-756e03a1752b" width = "450"/>
 
 
 <br>
