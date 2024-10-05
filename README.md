@@ -8,6 +8,15 @@
 
 ## Happy Doodling! 🚀
 
+----
+###  A Week of Space-tacular discoveries! [World Space Week]
+
+<img src="https://github.com/user-attachments/assets/712662ce-7bdb-43ab-9a84-1dcf0e5f751a" width ="400">
+<img src="https://github.com/user-attachments/assets/ce82e54f-2787-487b-b29f-756e03a1752b" width = "400"/>
+
+-----
+
+
 ### 📢 Dood's Special Corner
 
 <img src= "https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/3e0f57fb-70df-4833-8416-1e55ad1da952" width="190">
@@ -25,10 +34,6 @@
 <img src="https://github.com/user-attachments/assets/337d4da9-161d-4aca-873b-da4131b3198d" width = "350"/>
 <img src="https://github.com/user-attachments/assets/f479f82a-9ac2-4e99-b390-85167284e86d" width = "350"/>
 <img src="https://github.com/Brindha-m/DoodSpace-Todos.Notes.Doodles/assets/72887609/4a541db4-debd-41e3-9587-938ff559d1a8" width = "350"/>
-
-### SpaceWeek Special
-<img src="https://github.com/user-attachments/assets/ce82e54f-2787-487b-b29f-756e03a1752b" width = "450"/>
-
 
 <br>
 
