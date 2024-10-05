@@ -36,8 +36,8 @@ android {
         applicationId = "com.implementing.cozyspace"
         minSdk = 26
         targetSdk = 34
-        versionCode = 26
-        versionName = "1.2.24"
+        versionCode = 31
+        versionName = "1.11.24"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -102,8 +102,8 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
@@ -123,7 +123,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.compose.ui:ui:1.5.4")
+    implementation("androidx.compose.ui:ui:1.7.3")
     implementation("androidx.compose.ui:ui-tooling")
 
     // debugImplementation because LeakCanary should only run in debug builds.
@@ -137,8 +137,8 @@ dependencies {
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
-    implementation("androidx.hilt:hilt-work:1.1.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
@@ -157,9 +157,9 @@ dependencies {
 
     // Accompanist - let this be of the same version for permission
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
-    implementation("com.google.accompanist:accompanist-permissions:0.23.1")
+//    implementation("com.google.accompanist:accompanist-permissions:0.23.1")
     implementation("com.google.accompanist:accompanist-flowlayout:0.23.1")
-
+    implementation ("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
     //Moshi - modern JSON library for Android
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
 
@@ -191,18 +191,18 @@ dependencies {
     implementation("com.exyte:animated-navigation-bar:1.0.0")
 
     // Model bottom sheet for task section - time,date picker
-    implementation("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.compose.material3:material3:1.3.0")
 
     // color picker for doodle section
     implementation("com.raedapps:alwan:1.0.1")
 
     // Firebase Notification
-    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation("com.google.firebase:firebase-messaging:24.0.2")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
 
     // Add the dependencies for the In-App Messaging and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
@@ -220,7 +220,7 @@ dependencies {
 
 
     // Firebase Config for remote updates -- TODOS
-    implementation("com.google.firebase:firebase-config:21.6.2")
+    implementation("com.google.firebase:firebase-config:22.0.0")
 
 
     //constraint layout
