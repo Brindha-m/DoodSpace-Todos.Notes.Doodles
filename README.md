@@ -10,10 +10,10 @@
 
 ####  A Week of Space-tacular discoveries!🌌 [World Space Week]
 
-<img src="https://github.com/user-attachments/assets/712662ce-7bdb-43ab-9a84-1dcf0e5f751a" width ="400">
-<img src="https://github.com/user-attachments/assets/ce82e54f-2787-487b-b29f-756e03a1752b" width = "400"/>
+<img src="https://github.com/user-attachments/assets/712662ce-7bdb-43ab-9a84-1dcf0e5f751a" width ="300">
+<img src="https://github.com/user-attachments/assets/ce82e54f-2787-487b-b29f-756e03a1752b" width = "300"/>
 
-<img src="https://github.com/user-attachments/assets/f13c589a-b4ee-46c0-a446-0cd4e9f233b4" width = "400"/>
+<img src="https://github.com/user-attachments/assets/f13c589a-b4ee-46c0-a446-0cd4e9f233b4" width = "300"/>
 
 
 -----
