@@ -1,7 +1,7 @@
 
 # Dood Space 😎 
 ## Hello to all the Doods out there!😉
-- Experience a new level of productivity and inspiration throughout your day.
+- Experience a new level of productivity and inspiration throughout your day. Purely Offline & No ads📢🚫.
 - With Dood😎, you can effortlessly Manage tasks✔️, Craft notes📝, Bookmark🔖, Schedule events & maintain a Calendar, and Unleash your Artistic side on the doodle board🖌️.
 - Our Tech Stack 🎯 **Kotlin | Jetpack Compose🚀 | Firebase(FCM)🔥| MVVM | Material 3**
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.implementing.cozyspace)
