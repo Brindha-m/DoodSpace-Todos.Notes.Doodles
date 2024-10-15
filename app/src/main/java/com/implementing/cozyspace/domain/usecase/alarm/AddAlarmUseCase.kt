@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.domain.usecase.alarm
 
 import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import com.implementing.cozyspace.domain.repository.alarm.AlarmRepository
 import com.implementing.cozyspace.model.Alarm

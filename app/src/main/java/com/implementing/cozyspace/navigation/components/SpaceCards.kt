@@ -49,22 +49,24 @@ fun SpaceRegularCard(
         Column(
             Modifier
                 .background(backgroundColor)
-                .clickable { onClick() }
-                .aspectRatio(1.2f)
                 .fillMaxWidth()
-                .padding(15.dp),
+                .clickable { onClick() }
+//                .aspectRatio(1.2f)
+                .padding(18.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
-                modifier = Modifier.padding(top = 3.dp, start = 3.dp)
+                modifier = Modifier.padding(top = 5.dp, start = 5.dp)
 
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
+
             Image(
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(70.dp)
                     .align(Alignment.End),
                 painter = painterResource(id = image),
                 contentDescription = title)

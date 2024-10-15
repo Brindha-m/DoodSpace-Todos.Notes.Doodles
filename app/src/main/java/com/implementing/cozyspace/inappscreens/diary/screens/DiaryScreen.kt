@@ -103,7 +103,7 @@ fun DiaryScreen(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ic_add),
                     contentDescription = stringResource(R.string.add_entry),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.scrim
                 )
             }
         }

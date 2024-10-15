@@ -12,6 +12,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -134,7 +137,7 @@ fun NoteFolderDetailsScreen(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ic_add),
                     contentDescription = stringResource(R.string.add_note),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.scrim
                 )
             }
         }
@@ -169,12 +172,16 @@ fun NoteFolderDetailsScreen(
                 }
             }
         } else {
-            LazyVerticalGrid(
-                modifier = Modifier.padding(top = 80.dp, start = 15.dp, end = 15.dp),
-                columns = GridCells.Adaptive(150.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Adaptive(150.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
+                contentPadding = PaddingValues(
+                    top = 20.dp,
+                    bottom = 24.dp,
+                    start = 12.dp,
+                    end = 12.dp
+                )
+            ){
                 items(uiState.folderNotes) { note ->
                     key(note.id) {
 
@@ -192,7 +199,7 @@ fun NoteFolderDetailsScreen(
                                 )
                             },
 //                            modifier = Modifier.padding(bottom = 12.dp)
-                            modifier = Modifier.animateItemPlacement().height(120.dp)
+                            modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null).height(120.dp)
                         )
                     }
                 }

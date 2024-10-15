@@ -235,10 +235,9 @@ fun DiaryEntryDetailsScreen(
             Spacer(Modifier.height(15.dp))
 
 
-
             TextButton(
                 elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFF12614F)),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFF221F3E)),
                 modifier = Modifier.align(Alignment.End),
                 onClick = {
                     showDatePicker(

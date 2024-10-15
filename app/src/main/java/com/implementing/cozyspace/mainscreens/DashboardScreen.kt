@@ -126,7 +126,7 @@ fun DashboardScreen(
             item {
                 MoodFlowChart(
                     entries = viewModel.uiState.dashBoardEntries,
-                    monthly = true
+                    monthly = false
                 )
 
             }

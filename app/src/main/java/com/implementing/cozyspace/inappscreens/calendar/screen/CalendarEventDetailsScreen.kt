@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.inappscreens.calendar.screen
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -56,7 +57,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.gson.Gson
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.calendar.CalendarEventsVM
@@ -84,9 +87,9 @@ fun CalendarEventDetailsScreen(
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState
-    val writeCalendarPermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.WRITE_CALENDAR
-    )
+    val writeCalendarPermissionState =
+        rememberPermissionState(permission = Manifest.permission.WRITE_CALENDAR)
+
     var openDeleteDialog by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
     val event by remember {
@@ -133,7 +136,7 @@ fun CalendarEventDetailsScreen(
     var location by rememberSaveable { mutableStateOf(event?.location ?: "") }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    if (writeCalendarPermissionState.hasPermission) {
+    if (writeCalendarPermissionState.status.isGranted) {
         LaunchedEffect(true) { viewModel.onEvent(CalendarEventsVM.ReadPermissionChanged(true)) }
         LaunchedEffect(state) {
             if (state.navigateUp) {
@@ -147,30 +150,47 @@ fun CalendarEventDetailsScreen(
                 viewModel.onEvent(CalendarEventsVM.ErrorDisplayed)
             }
         }
+
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
-                if (eventJson.isNotBlank())
-                    TopAppBar(
-                        title = {
-                            Text(text = "Edit Event", style = MaterialTheme.typography.titleLarge)
-                        },
-                        actions = {
-                            IconButton(onClick = { openDeleteDialog = true }) {
+                val topBarContent = if (eventJson.isNotBlank()) {
+                    // Edit Event Mode
+                    Pair("Edit an Event", true)
+                } else {
+                    // Add Event Mode
+                    Pair("Add an Event", false)
+                }
+
+
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = topBarContent.first,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    actions = {
+                        if (eventJson.isNotBlank()) {
+                            IconButton(onClick = { openDeleteDialog = topBarContent.second }) {
                                 Image(
                                     painter = painterResource(id = R.drawable.delete_icon),
                                     contentDescription = stringResource(R.string.delete_event),
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Image(painter = painterResource(id = R.drawable.backarrow_ic), contentDescription = "back")
-                            }
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-                    )
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.backarrow_ic),
+                                contentDescription = "back"
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                )
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = {
@@ -199,7 +219,7 @@ fun CalendarEventDetailsScreen(
                         modifier = Modifier.size(25.dp)
                     )
                 }
-            }) {paddingValues ->
+            }) { paddingValues ->
 
             DeleteEventDialog(openDeleteDialog,
                 onDelete = { viewModel.onEvent(CalendarEventsVM.DeleteEvent(event!!)) },
@@ -240,9 +260,15 @@ fun CalendarEventDetailsScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                OutlinedTextField(value = location,
+                OutlinedTextField(
+                    value = location,
                     onValueChange = { location = it },
-                    label = { Text(text = stringResource(R.string.location), style = MaterialTheme.typography.bodyMedium) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.location),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
                     shape = RoundedCornerShape(15.dp),
                     modifier = Modifier.fillMaxWidth(),
                     leadingIcon = {
@@ -253,9 +279,15 @@ fun CalendarEventDetailsScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                OutlinedTextField(value = description,
+                OutlinedTextField(
+                    value = description,
                     onValueChange = { description = it },
-                    label = { Text(text = stringResource(R.string.description), style = MaterialTheme.typography.bodyMedium) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.description),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
                     shape = RoundedCornerShape(15.dp),
                     modifier = Modifier.fillMaxWidth(),
                     leadingIcon = {
@@ -270,7 +302,7 @@ fun CalendarEventDetailsScreen(
     } else {
         LaunchedEffect(true) { viewModel.onEvent(CalendarEventsVM.ReadPermissionChanged(false)) }
         NoWriteCalendarPermissionMessage(
-            shouldShowRationale = writeCalendarPermissionState.shouldShowRationale,
+            shouldShowRationale = writeCalendarPermissionState.status.shouldShowRationale,
             context = context
         ) {
             writeCalendarPermissionState.launchPermissionRequest()
@@ -285,7 +317,9 @@ fun NoWriteCalendarPermissionMessage(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(15.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp)
     ) {
         Text(
             text = stringResource(R.string.no_write_calendar_permission_message),
@@ -303,13 +337,18 @@ fun NoWriteCalendarPermissionMessage(
             }
 
         } else {
-            TextButton(onClick = { onRequest() },
+            TextButton(
+                onClick = { onRequest() },
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = Color(0xFF221F3E),
                     contentColor = Color.White
-                ))
+                )
+            )
             {
-                Text(text = stringResource(R.string.grant_permission), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.grant_permission),
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }
@@ -413,7 +452,10 @@ fun EventTimeSection(
                 )
             }
             Switch(checked = allDay,
-                colors = SwitchDefaults.colors(checkedThumbColor = Color(0xFF876BCE), checkedTrackColor = MaterialTheme.colorScheme.primary),
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color(0xFF876BCE),
+                    checkedTrackColor = MaterialTheme.colorScheme.primary
+                ),
                 onCheckedChange = { onAllDayChange(it) })
         }
         Row(

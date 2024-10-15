@@ -98,7 +98,7 @@ fun MoodFlowChart(
                             .filter { it.value.size == max }
                             .maxByOrNull {
                                 it.key.value
-                            }?.key ?: Mood.OKAY
+                            }?.key ?: Mood.AWESOME
                     }
                 }
                 val moods = listOf(Mood.AWESOME, Mood.GOOD, Mood.OKAY, Mood.SLEEPY, Mood.BAD, Mood.TERRIBLE)

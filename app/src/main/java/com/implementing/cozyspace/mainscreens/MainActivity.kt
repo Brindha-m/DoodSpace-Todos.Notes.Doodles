@@ -84,10 +84,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // in app updates
-        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
-        if (updateType == AppUpdateType.FLEXIBLE) {
-            appUpdateManager.registerListener(installStateUpdatedListener)
-        }
+//        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+//        if (updateType == AppUpdateType.FLEXIBLE) {
+//            appUpdateManager.registerListener(installStateUpdatedListener)
+//        }
 
 //        checkForAppUpdates()
 
@@ -100,10 +100,12 @@ class MainActivity : ComponentActivity() {
             val startUpScreen = Screen.SpacesScreen.route
 
             LaunchedEffect(true) {
-                if (!isNotificationPermissionGranted())
+                if (!isNotificationPermissionGranted() && !isAlarmManagerPermissionGranted())
                     ActivityCompat.requestPermissions(
                         this@MainActivity,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS,
+                            Manifest.permission.SCHEDULE_EXACT_ALARM
+                        ),
                         0
                     )
 
@@ -378,6 +380,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 123) {
@@ -410,11 +413,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
+     */
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        if (updateType == AppUpdateType.FLEXIBLE) {
+//            appUpdateManager.unregisterListener(installStateUpdatedListener)
+//        }
+//    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun isNotificationPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.S
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun isAlarmManagerPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.SCHEDULE_EXACT_ALARM
         ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.S
     }
 

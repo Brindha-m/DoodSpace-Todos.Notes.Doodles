@@ -1,8 +1,10 @@
 package com.implementing.cozyspace.festive_animations
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -84,6 +87,7 @@ fun RunningCarScreenSkeletonPreviewDark() {
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RunningCarScreenSkeleton(
     _animState: StateFlow<Boolean>,
@@ -97,7 +101,7 @@ fun RunningCarScreenSkeleton(
         targetValue = if (animState.value) 360f else 0f,
         animationSpec = tween(
             durationMillis = 2000,
-            easing = FastOutSlowInEasing
+            easing = LinearOutSlowInEasing
         ), label = ""
     )
 
@@ -181,54 +185,113 @@ fun RunningCarScreenSkeleton(
                 val animatePositionSanta by transition.animateFloat(
                     initialValue = 1f,
                     targetValue = -1f,
-                    animationSpec = infiniteRepeatable(tween(3000), RepeatMode.Restart),
+                    animationSpec = infiniteRepeatable(tween(3000, easing = LinearOutSlowInEasing)),
                     label = ""
                 )
 
+                // Animation for the image moving from left to right
+                val animateSantaPositionXLeftToRight by updateTransition.animateFloat(
+                    label = "background",
+                    transitionSpec = {
+                        tween(
+                            2000,
+                            easing = CubicBezierEasing(0.0f, 0.0f, 0.5f, 1.0f)
+                        )
+                    }
+                ) { state ->
+                    when (state) {
+                        true -> 0f // Move towards the center
+                        else -> -800f // Move from right to the center
+                    }
+                }
+
+                // Animation for the image moving from right to left
+                val animateSantaPositionXRightToLeft by updateTransition.animateFloat(
+                    label = "background",
+                    transitionSpec = {
+                        tween(
+                            2000,
+                            easing = CubicBezierEasing(0.0f, 0.0f, 0.5f, 1.0f)
+                        )
+                    }
+                ) { state ->
+                    when (state) {
+                        true -> 0f // Move towards the center
+                        else -> -700f // Move from right to the center
+                    }
+                }
 
                 Image(
-                    painterResource(id = R.drawable.scrolling_background),
+//                    painterResource(id = R.drawable.scrolling_foreground),
+                    painterResource(id = R.drawable.spaceweekfg),
+                    "foreground",
+                        Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(bottom = 15.dp, top = 18.dp)
+                            .height(48.dp)
+                            .requiredWidth(1600.dp)
+                            .graphicsLayer {
+                                translationX = animatePositionSanta
+                            },
+//                        .background(Color.Transparent),
+                        contentScale = ContentScale.Inside,
+//                    colorFilter = ColorFilter.tint(
+////                        Color(0x003D3D3D)
+//                                // color road
+//                                Color(0xFF3D3D3D)
+//                    )
+                )
+
+                /* background **/
+
+                Image(
+//                    painterResource(id = R.drawable.scrolling_background),
+                    painterResource(id = R.drawable.spaceweekbg),
                     "background",
                     Modifier
                         .align(Alignment.BottomStart)
-                        .padding(bottom = 32.dp)
+                        .padding(bottom = 15.dp, top = 18.dp)
                         .height(48.dp)
                         .requiredWidth(1280.dp)
                         .graphicsLayer {
                             translationX = animatePositionBackground
                         },
                     contentScale = ContentScale.Inside,
-                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
+//                    colorFilter = ColorFilter.tint(Color(0x00E6E6E6))
+                    /* color road */
+//                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
+
                 )
 
-                Image(
-                    painterResource(id = R.drawable.scrolling_foreground),
-                    "foreground",
-                    Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(bottom = 28.dp)
-                        .height(48.dp)
-                        .requiredWidth(1600.dp)
-                        .graphicsLayer {
-                            translationX = animatePositionForeground
-                        }
-                        .background(Color.Transparent),
-                    contentScale = ContentScale.Inside,
-                    colorFilter = ColorFilter.tint(
-                        Color(0xFF3D3D3D)
-                    )
-                )
+
+
+
+
+
                 Row {
+//                    Image(
+//                        painterResource(id = R.drawable.running),
+//                        contentDescription = "Santa",
+//                        Modifier
+//                            .size(54.dp)
+//                            .graphicsLayer {
+//                                translationX = animateSantaPositionX
+//                                translationY = animatePositionSanta
+//                            }
+//                    )
+
                     Image(
-                        painterResource(id = R.drawable.febvalfinal),
-                        contentDescription = "Santa",
+                        painterResource(id = R.drawable.spaceweekastronaut),
+                        contentDescription = "Santa/Astronaut",
                         Modifier
-                            .size(76.dp)
+                            .size(40.dp)
                             .graphicsLayer {
                                 translationX = animateSantaPositionX
                                 translationY = animatePositionSanta
                             }
+//
                     )
+
                 }
 
             }

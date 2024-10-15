@@ -41,7 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.work.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.implementing.cozyspace.FiveHiltMain
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.data.local.backup.ExportWorker
@@ -122,9 +124,9 @@ fun ImportExportScreen(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray, contentColor = Color.White ),
                 onClick = {
-                    if (Build.VERSION.SDK_INT < 29 && !writeStoragePermission.hasPermission) {
+                    if (Build.VERSION.SDK_INT < 34 && !writeStoragePermission.status.isGranted) {
                         writeStoragePermission.launchPermissionRequest()
-                    } else if (Build.VERSION.SDK_INT < 29 && !writeStoragePermission.hasPermission && !writeStoragePermission.shouldShowRationale) {
+                    } else if (Build.VERSION.SDK_INT < 34 && !writeStoragePermission.status.isGranted && !writeStoragePermission.status.shouldShowRationale) {
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         intent.data = Uri.fromParts(
                             "package",
@@ -146,11 +148,11 @@ fun ImportExportScreen(
                     .padding(12.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                if (Build.VERSION.SDK_INT >= 29 || writeStoragePermission.hasPermission)
+                if (Build.VERSION.SDK_INT >= 29 || writeStoragePermission.status.isGranted)
                     Icon(painterResource(id = R.drawable.ic_export), null)
                 Text(
                     text = stringResource(
-                        if (Build.VERSION.SDK_INT < 29 && !writeStoragePermission.hasPermission)
+                        if (Build.VERSION.SDK_INT < 29 && !writeStoragePermission.status.isGranted)
                             R.string.grant_permission_to_export
                         else
                             R.string.export

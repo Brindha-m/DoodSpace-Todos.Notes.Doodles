@@ -33,6 +33,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -138,7 +139,8 @@ fun NotesScreen(
                         R.drawable.ic_create_folder
                     ),
                     contentDescription = stringResource(R.string.add_note),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.scrim
+
                 )
             }
         },
@@ -237,7 +239,7 @@ fun NotesScreen(
                                         )
                                     )
                                 },
-                                modifier = Modifier.animateItemPlacement()
+                                modifier = Modifier.animateItem()
                             )
                         }
                     }
@@ -387,7 +389,7 @@ fun NotesSettingsSection(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         FlowRow {
             orderTypes.forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -405,7 +407,7 @@ fun NotesSettingsSection(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         Text(
             text = stringResource(R.string.view_as),
             style = MaterialTheme.typography.bodyMedium,
@@ -458,7 +460,7 @@ fun NoNotesMessage() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CreateFolderDialog(
     onCreate: (String) -> Unit,

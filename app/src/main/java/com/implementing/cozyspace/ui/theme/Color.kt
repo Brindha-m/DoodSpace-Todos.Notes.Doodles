@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.ui.theme
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -73,3 +74,31 @@ object TailwindCSSColor {
     val Pink700 = Color(0xFFBE185D)
     val Pink900 = Color(0xFF831843)
 }
+
+
+//fun gradientBrushColor(
+//    vararg colorStops: Pair<Float, Color> = arrayOf(
+//        0f to Blue,
+//        0.4f to Purple,
+//        1f to DarkOrange,
+//    )
+//) = Brush.linearGradient(
+//    colorStops = colorStops,
+//    start = Offset.Zero,
+//    end = Offset.Infinite
+//)
+//
+//@Preview
+//@Composable
+//private fun GradientColorPreview() {
+//    MyBrainTheme(useDynamicColors = false) {
+//        Box(
+//            Modifier
+//                .size(100.dp)
+//                .drawBehind {
+//                    drawRect(gradientBrushColor())
+//                }
+//
+//        )
+//    }
+//}

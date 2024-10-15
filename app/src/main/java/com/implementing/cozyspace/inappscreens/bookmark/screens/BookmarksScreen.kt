@@ -107,7 +107,7 @@ fun BookmarksScreen(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ic_add),
                     contentDescription = stringResource(R.string.add_bookmark),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.scrim
                 )
             }
         },

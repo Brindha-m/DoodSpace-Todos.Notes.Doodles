@@ -158,9 +158,14 @@ fun SpacesScreen(
         LazyColumn {
 
             item {
-                Spacer(Modifier.height(41.dp))
+                Spacer(Modifier.height(30.dp))
+
+               /**  This is the animation on top
+                ***/
 
                 ChristmasRide()
+
+
 
                 Column {
                     SpaceWideCard(
@@ -284,7 +289,8 @@ fun SpacesScreen(
         }
     }
 
-    ChristmasAnimation()
+//    ChristmasAnimation()
+
 //    FireworkCenterView(viewModel = fireviewModel, startAnimation = true)
 
 }
@@ -296,14 +302,35 @@ fun ChristmasAnimation() {
 //        painterResource(id = R.drawable.ic_snow_flakes),
 //    )
 
-    val heart: List<Painter> = listOf(
-        painterResource(id = R.drawable.heart),
-
+    val trophy = listOf(
+        painterResource(id = R.drawable.trophyipl),
     )
+    val game1 = listOf(
+        painterResource(id = R.drawable.rugby)
+    )
+    val game2 = listOf(
+        painterResource(id = R.drawable.pingpong)
+    )
+    val game3 = listOf(
+        painterResource(id = R.drawable.football),
+        painterResource(id = R.drawable.shuttlecock),
+    )
+    val game4 = listOf(
+        painterResource(id = R.drawable.cricket)
+    )
+    val game5 = listOf(
+        painterResource(id = R.drawable.bowarrow),
+    )
+
+
+
+
+
+
 
     Box(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(9.dp)
             .fillMaxSize()
             .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
 //            .snowfall(
@@ -313,16 +340,39 @@ fun ChristmasAnimation() {
 //                density = 0.002 // from 0.0 to 1.0,
 //            )
             .snowfall(
-                colors = listOf(Color(0xFFFD608B)),
-                type = FlakeType.Custom(heart),
-                density = 0.002 // from 0.0 to 1.0,
+                type = FlakeType.Custom(game1),
+                colors = listOf(Color(0xFFce775f)),
+                density = 0.0004 // from 0.0 to 1.0,
+            )
+            .snowfall(
+                type = FlakeType.Custom(game3),
+                colors = listOf(Color(0xFFFFFFFF)),
+                density = 0.0009 // from 0.0 to 1.0,
             )
             .snowmelt(
-                colors = listOf(Color(0xFFF5E9E9)),
-//                colors = listOf(Color(0xFFF5E9E9)),
-                type = FlakeType.Custom(heart),
+                type = FlakeType.Custom(game2),
+                colors = listOf(Color(0xFF3AB2FC)),
+                density = 0.001 // from 0.0 to 1.0,
+            )
+            .snowmelt(
+                type = FlakeType.Custom(game5),
+                colors = listOf(Color(0xFFBA8959)),
                 density = 0.002 // from 0.0 to 1.0,
             )
+            .snowfall(
+                type = FlakeType.Custom(game4),
+                colors = listOf(Color(0xFFf4b37d)),
+                density = 0.0004 // from 0.0 to 1.0,
+            )
+            .snowmelt(
+//                colors = listOf(Color(0xFFF5E9E9)),
+                colors = listOf(Color(0xFFfdae33)),
+                type = FlakeType.Custom(trophy),
+                density = 0.001 // from 0.0 to 1.0,
+            )
+
+
+
     )
 }
 

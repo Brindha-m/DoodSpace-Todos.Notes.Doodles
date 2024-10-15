@@ -106,7 +106,7 @@ fun LazyItemScope.DiaryEntryItem(
                     text = entry.createdDate.fullDate(),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     fontSize = 12.sp,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 )
             }
         }

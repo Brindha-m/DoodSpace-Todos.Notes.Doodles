@@ -104,21 +104,21 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("androidx.activity:activity-compose:1.9.2")
+    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.hilt:hilt-work:1.1.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.firebase:firebase-config:21.6.2")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.firebase:firebase-config:22.0.0")
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
@@ -131,7 +131,7 @@ dependencies {
 
 
     // Compose navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.8.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Dagger Hilt
@@ -157,7 +157,6 @@ dependencies {
 
     // Accompanist - let this be of the same version for permission
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
-//    implementation("com.google.accompanist:accompanist-permissions:0.23.1")
     implementation("com.google.accompanist:accompanist-flowlayout:0.23.1")
     implementation ("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
     //Moshi - modern JSON library for Android
@@ -168,6 +167,8 @@ dependencies {
 
     implementation("com.github.idapgroup:Snowfall:0.8.2")
 
+    // Biometric
+    implementation("androidx.biometric:biometric:1.4.0-alpha02")
 
     // Compose Glance (Widgets)
 
@@ -175,14 +176,14 @@ dependencies {
     implementation("androidx.glance:glance:1.0.0")
 
     // For AppWidgets support
-    implementation("androidx.glance:glance-appwidget:1.0.0")
+    implementation("androidx.glance:glance-appwidget:1.1.0")
 
     // For Wear-Tiles support
     implementation("androidx.glance:glance-wear-tiles:1.0.0-alpha05")
 
     // WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("androidx.startup:startup-runtime:1.1.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+    implementation("androidx.startup:startup-runtime:1.2.0")
 
     // Compose live data
     implementation("androidx.compose.runtime:runtime-livedata")
@@ -198,7 +199,7 @@ dependencies {
 
     // Firebase Notification
     implementation("com.google.firebase:firebase-messaging:24.0.2")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Import the BoM for the Firebase platform

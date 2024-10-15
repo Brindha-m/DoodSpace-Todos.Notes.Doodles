@@ -31,6 +31,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -60,7 +61,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.gson.Gson
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.calendar.CalendarEventsVM
@@ -129,7 +132,7 @@ fun CalendarScreen(
             )
         },
         floatingActionButton = {
-            if (readCalendarPermissionState.hasPermission)
+            if (readCalendarPermissionState.status.isGranted)
                 FloatingActionButton(
                     onClick = {
                         navController.navigate(
@@ -145,7 +148,7 @@ fun CalendarScreen(
                         modifier = Modifier.size(25.dp),
                         painter = painterResource(R.drawable.ic_add),
                         contentDescription = stringResource(R.string.add_event),
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.scrim
                     )
                 }
         },
@@ -158,11 +161,11 @@ fun CalendarScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            if (readCalendarPermissionState.hasPermission) {
+            if (readCalendarPermissionState.status.isGranted) {
                 LaunchedEffect(true) {
                     viewModel.onEvent(
                         CalendarEventsVM
-                            .ReadPermissionChanged(readCalendarPermissionState.hasPermission)
+                            .ReadPermissionChanged(readCalendarPermissionState.status.isGranted)
                     )
                 }
                 Row(
@@ -223,7 +226,7 @@ fun CalendarScreen(
                 }
             } else {
                 NoReadCalendarPermissionMessage(
-                    shouldShowRationale = readCalendarPermissionState.shouldShowRationale,
+                    shouldShowRationale = readCalendarPermissionState.status.shouldShowRationale,
                     context
                 ) {
                     readCalendarPermissionState.launchPermissionRequest()
@@ -326,7 +329,7 @@ fun CalendarSettingsSection(
     onCalendarClicked: (Calendar) -> Unit
 ) {
     Column {
-        Divider()
+        HorizontalDivider()
         Text(
             text = stringResource(R.string.include_calendars),
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),

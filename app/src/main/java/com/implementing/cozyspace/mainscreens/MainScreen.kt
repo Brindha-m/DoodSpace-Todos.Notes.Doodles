@@ -28,7 +28,9 @@ import com.exyte.animatednavbar.animation.balltrajectory.Parabolic
 import com.exyte.animatednavbar.animation.indendshape.Height
 import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
 import com.exyte.animatednavbar.utils.noRippleClickable
+import com.google.android.play.core.appupdate.AppUpdateManager
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.app_lock.AppLockManager
 import com.implementing.cozyspace.navigation.BottomNavItem
 import com.implementing.cozyspace.navigation.Screen
 
@@ -37,9 +39,11 @@ import com.implementing.cozyspace.navigation.Screen
 @Composable
 fun MainScreen(
     startUpScreen: String,
-    mainNavController: NavHostController
+    mainNavController: NavHostController,
 ) {
     val navController = rememberNavController()
+
+    lateinit var appLockManager: AppLockManager
 
     val bottomNavItems = listOf(
         BottomNavItem.Dashboard, BottomNavItem.Spaces, BottomNavItem.Settings
@@ -91,7 +95,7 @@ fun MainScreen(
         // Display different content based on the selectedIndex
         when (navigationBarItems[selectedIndex]) {
             NavigationBarItems.Dashboard -> DashboardScreen(navController = mainNavController)
-            NavigationBarItems.Settings -> SettingsScreen(navController = mainNavController)
+            NavigationBarItems.Settings -> SettingsScreen(navController = mainNavController, appLockManager = appLockManager)
             NavigationBarItems.Spaces -> SpacesScreen(navController = mainNavController)
             else -> {}
         }

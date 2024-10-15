@@ -31,8 +31,7 @@ fun LazyItemScope.CalendarEventItem(
     onClick: (CalendarEvent) -> Unit
 ) {
     Card(
-        modifier = modifier
-            .animateItemPlacement(),
+        modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {

@@ -32,7 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.implementing.cozyspace.inappscreens.calendar.screen.NoReadCalendarPermissionMessage
 import com.implementing.cozyspace.model.CalendarEvent
 
@@ -103,7 +105,7 @@ fun CalendarDashboardWidget(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (readCalendarPermissionState.hasPermission) {
+                if (readCalendarPermissionState.status.isGranted) {
                     if (events.isEmpty()) {
                         item {
                             LaunchedEffect(true) { onPermission(true) }
@@ -139,7 +141,7 @@ fun CalendarDashboardWidget(
                     item {
                         LaunchedEffect(true) { onPermission(false) }
                         NoReadCalendarPermissionMessageDashboard(
-                            shouldShowRationale = readCalendarPermissionState.shouldShowRationale,
+                            shouldShowRationale = readCalendarPermissionState.status.shouldShowRationale,
                             context
                         ) {
                             readCalendarPermissionState.launchPermissionRequest()

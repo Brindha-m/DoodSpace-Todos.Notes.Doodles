@@ -32,6 +32,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -269,7 +270,9 @@ fun AddTaskBottomSheetContent(
 
 
                     if (openDialog) {
-                        val datePickerState = rememberDatePickerState()
+                        val datePickerState = rememberDatePickerState(
+                            selectableDates = PresentAndFutureSelectableDates
+                        )
                         val confirmEnabled = remember {
                             derivedStateOf { datePickerState.selectedDateMillis != null }
                         }
@@ -326,11 +329,6 @@ fun AddTaskBottomSheetContent(
                                 colors = DatePickerDefaults.colors(
                                     selectedDayContainerColor = Color(0xD78260BE)
                                 ),
-                                dateValidator = { date ->
-                                    // Check if the date is after or equal to the minimum date
-                                    date >= minDate
-                                },
-
                             )
                         }
                     }

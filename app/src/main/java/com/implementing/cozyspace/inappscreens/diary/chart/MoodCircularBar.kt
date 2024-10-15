@@ -25,9 +25,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,11 +46,12 @@ import com.implementing.cozyspace.model.Diary
 import com.implementing.cozyspace.util.Mood
 
 
+
 @Composable
 fun MoodCircularBar(
     modifier: Modifier = Modifier,
     entries: List<Diary>,
-    strokeWidth: Float = 85f,
+    strokeWidth: Float = 75f,
     showPercentage: Boolean = true,
     onClick: () -> Unit = {}
 ) {
@@ -107,6 +111,7 @@ fun MoodCircularBar(
                     contentAlignment = Alignment.Center
                 ) {
                     var currentAngle = remember { 90f }
+
                     Canvas(
                         modifier = Modifier
                             .fillMaxSize()
@@ -119,7 +124,11 @@ fun MoodCircularBar(
                                 sweepAngle = percentage * 360f,
                                 useCenter = false,
                                 size = Size(size.width, size.width),
-                                style = Stroke(strokeWidth)
+                                style = Stroke(
+                                    width = strokeWidth,
+                                    cap = StrokeCap.Round,
+                                    join = StrokeJoin.Miter
+                                )
                             )
                             currentAngle += percentage * 360f
                         }
@@ -233,6 +242,10 @@ fun MoodCircularBarPreview() {
             Diary(
                 id = 5,
                 mood = Mood.TERRIBLE,
+            ),
+            Diary(
+                id = 6,
+                mood = Mood.SLEEPY,
             ),
             Diary(
                 id = 5,

@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.mainscreens
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -29,10 +31,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -41,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.implementing.cozyspace.inappscreens.settings.SettingsBasicLinkItem
 import com.implementing.cozyspace.inappscreens.settings.SettingsItemCard
@@ -56,14 +62,24 @@ import com.implementing.cozyspace.util.getName
 import com.implementing.cozyspace.util.toFontFamily
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.app_lock.AppLockManager
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
+    appLockManager: AppLockManager,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -172,6 +188,7 @@ fun SettingsScreen(
                 }
             }
 
+
             item {
                 SettingsItemCard(
                     cornerRadius = 16.dp,
@@ -189,6 +206,32 @@ fun SettingsScreen(
                             text = stringResource(R.string.import_data),
                             style = MaterialTheme.typography.bodyMedium
                         )
+                    }
+                }
+            }
+
+            item {
+                val block = viewModel
+                    .getSettings(
+                        booleanPreferencesKey(Constants.LOCK_APP_KEY),
+                        false
+                    ).collectAsStateWithLifecycle(false)
+                SettingsSwitchCard(
+                    text = stringResource(R.string.lock_app),
+                    checked = block.value,
+                    iconPainter = painterResource(R.drawable.ic_lock)
+                ) {
+                    if (appLockManager.canUseFeature()) {
+                        viewModel.saveSettings(
+                            booleanPreferencesKey(Constants.LOCK_APP_KEY),
+                            it
+                        )
+                    } else {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                context.getString(R.string.no_auth_method)
+                            )
+                        }
                     }
                 }
             }
@@ -439,7 +482,44 @@ fun BlockScreenshotsSettingsItem(
             style = MaterialTheme.typography.bodyMedium
         )
         Switch(checked = block,
-            colors = SwitchDefaults.colors(checkedThumbColor = Color(0xFF876BCE), checkedTrackColor = MaterialTheme.colorScheme.primary),
+            colors = SwitchDefaults.colors(checkedThumbColor = Color(0xFF876BCE), checkedTrackColor =Color(
+                0xFF231B20
+            )
+            ),
             onCheckedChange = { onBlockClick(it) })
+    }
+}
+
+@Composable
+fun SettingsSwitchCard(
+    text: String,
+    checked: Boolean,
+    iconPainter: Painter? = null,
+    onCheck: (Boolean) -> Unit = {}
+) {
+    SettingsItemCard(
+        cornerRadius = 14.dp,
+        onClick = {
+            onCheck(!checked)
+        },
+        vPadding = 6.dp
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            iconPainter?.let {
+                Icon(
+                    painter = it,
+                    contentDescription = text,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(Modifier.width(10.dp))
+            }
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        Switch(checked = checked, onCheckedChange = {
+            onCheck(it)
+        })
     }
 }
