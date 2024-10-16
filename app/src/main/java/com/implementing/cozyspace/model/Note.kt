@@ -27,7 +27,7 @@ data class Note(
     val content: String = "",
 
     @ColumnInfo(name = "created_date")
-    val createdDate: Long = 0L,
+    val createdDate: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "updated_date")
     val updatedDate: Long = 0L,

@@ -11,6 +11,7 @@ import com.implementing.cozyspace.data.local.dao.TaskDao
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_5_6
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_6_7
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_7_8
+import com.implementing.cozyspace.data.local.room.migration.MIGRATION_9_10
 import com.implementing.cozyspace.dataStore
 import com.implementing.cozyspace.domain.repository.alarm.AlarmRepository
 import com.implementing.cozyspace.domain.repository.alarm.AlarmRepositoryImpl
@@ -46,7 +47,7 @@ object AppModule {
             FeedFiveDatabase.DATABASE_NAME
         )
 //            .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
+            .addMigrations(MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_9_10)
             .build()
 
     // Bookmark repo and dao

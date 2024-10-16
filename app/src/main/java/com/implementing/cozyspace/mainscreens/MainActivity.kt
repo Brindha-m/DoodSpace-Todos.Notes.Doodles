@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -91,6 +92,7 @@ class MainActivity : ComponentActivity() {
 
 //        checkForAppUpdates()
 
+//        enableEdgeToEdge()
         setContent {
             val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
             val font = viewModel.font.collectAsState(initial = Avenir.toInt())

@@ -3,6 +3,36 @@ package com.implementing.cozyspace.data.local.room.migration
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+val MIGRATION_9_10 = object : Migration(9, 10) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Step 1: Create a new table without the 'image_uri' column
+        database.execSQL("""
+            CREATE TABLE notes_new (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                folder_id INTEGER,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL,
+                created_date INTEGER NOT NULL,
+                updated_date INTEGER NOT NULL,
+                pinned INTEGER NOT NULL DEFAULT 0,
+                FOREIGN KEY (folder_id) REFERENCES note_folders(id) ON DELETE CASCADE ON UPDATE NO ACTION
+            )
+        """)
+
+        // Step 2: Copy data from the old 'notes' table into the new 'notes_new' table
+        database.execSQL("""
+            INSERT INTO notes_new (id, folder_id, title, content, created_date, updated_date, pinned)
+            SELECT id, folder_id, title, content, created_date, updated_date, pinned
+            FROM notes
+        """)
+
+        // Step 3: Drop the old 'notes' table that had 'image_uri'
+        database.execSQL("DROP TABLE notes")
+
+        // Step 4: Rename 'notes_new' table to 'notes'
+        database.execSQL("ALTER TABLE notes_new RENAME TO notes")
+    }
+}
 // Task Recurring
 val MIGRATION_7_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {

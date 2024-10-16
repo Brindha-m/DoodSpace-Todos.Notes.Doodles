@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
+import coil.ImageLoader
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.model.Note
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -107,11 +109,14 @@ fun NoteItem(
                     )
                 }
                 Spacer(Modifier.height(8.dp))
+
                 MarkdownText(
                     markdown = note.content,
                     maxLines = 14,
                     onClick = { onClick(note) },
+                    imageLoader = myImageLoader(),
                     fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                 )
 
@@ -120,3 +125,11 @@ fun NoteItem(
     }
 }
 
+
+@Composable
+fun myImageLoader(): ImageLoader {
+    val context = LocalContext.current
+    return ImageLoader.Builder(context)
+        .crossfade(true)
+        .build()
+}

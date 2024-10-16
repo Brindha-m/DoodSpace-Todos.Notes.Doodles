@@ -62,7 +62,6 @@ import com.implementing.cozyspace.util.getName
 import com.implementing.cozyspace.util.toFontFamily
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.R
-import com.implementing.cozyspace.app_lock.AppLockManager
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -70,7 +69,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
-    appLockManager: AppLockManager,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
 
@@ -221,18 +219,18 @@ fun SettingsScreen(
                     checked = block.value,
                     iconPainter = painterResource(R.drawable.ic_lock)
                 ) {
-                    if (appLockManager.canUseFeature()) {
-                        viewModel.saveSettings(
-                            booleanPreferencesKey(Constants.LOCK_APP_KEY),
-                            it
-                        )
-                    } else {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                context.getString(R.string.no_auth_method)
-                            )
-                        }
-                    }
+//                    if (appLockManager.canUseFeature()) {
+//                        viewModel.saveSettings(
+//                            booleanPreferencesKey(Constants.LOCK_APP_KEY),
+//                            it
+//                        )
+//                    } else {
+//                        scope.launch {
+//                            snackbarHostState.showSnackbar(
+//                                context.getString(R.string.no_auth_method)
+//                            )
+//                        }
+//                    }
                 }
             }
 

@@ -84,6 +84,7 @@ fun NotesScreen(
     navController: NavHostController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
+
     val uiState = viewModel.notesUiState
     var orderSettingsVisible by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableStateOf(0) }
@@ -124,7 +125,7 @@ fun NotesScreen(
                                 "${-1}"
                             ).replace(
                                 "{${Constants.FOLDER_ID}}",
-                                "-1"
+                                "${-1}"
                             )
                         )
                     } else {

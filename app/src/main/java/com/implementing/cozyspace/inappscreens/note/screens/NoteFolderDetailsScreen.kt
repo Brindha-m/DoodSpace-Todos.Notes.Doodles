@@ -175,6 +175,7 @@ fun NoteFolderDetailsScreen(
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Adaptive(150.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(paddingValues),
                 contentPadding = PaddingValues(
                     top = 20.dp,
                     bottom = 24.dp,

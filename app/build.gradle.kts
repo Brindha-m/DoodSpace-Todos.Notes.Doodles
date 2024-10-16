@@ -167,8 +167,8 @@ dependencies {
 
     implementation("com.github.idapgroup:Snowfall:0.8.2")
 
-    // Biometric
-    implementation("androidx.biometric:biometric:1.4.0-alpha02")
+//    // Biometric
+//    implementation("androidx.biometric:biometric:1.4.0-alpha02")
 
     // Compose Glance (Widgets)
 
@@ -226,5 +226,9 @@ dependencies {
 
     //constraint layout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    //    Coil is to load the images
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-gif:2.2.2")
 
 }

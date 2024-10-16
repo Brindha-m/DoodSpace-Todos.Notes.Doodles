@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.note.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -64,6 +65,8 @@ class NotesViewModel @Inject constructor(
     private var getNotesJob: Job? = null
     private var getFolderNotesJob: Job? = null
 
+
+
     init {
         viewModelScope.launch {
             combine(
@@ -95,7 +98,7 @@ class NotesViewModel @Inject constructor(
                     addNote(
                         event.note.copy(
                             createdDate = System.currentTimeMillis(),
-                            updatedDate = System.currentTimeMillis()
+                            updatedDate = System.currentTimeMillis(),
                         )
                     )
                     notesUiState.copy(navigateUp = true)
@@ -129,8 +132,10 @@ class NotesViewModel @Inject constructor(
                 )
             }
             is NoteEvent.ErrorDisplayed -> notesUiState = notesUiState.copy(error = null)
-            NoteEvent.ToggleReadingMode -> notesUiState =
+
+            is NoteEvent.ToggleReadingMode -> notesUiState =
                 notesUiState.copy(readingMode = !notesUiState.readingMode)
+
             is NoteEvent.PinNote -> viewModelScope.launch {
                 updateNote(notesUiState.note?.copy(pinned = !notesUiState.note?.pinned!!)!!)
             }
@@ -174,6 +179,9 @@ class NotesViewModel @Inject constructor(
                 val folder = getAllFolders().first().firstOrNull { it.id == event.id }
                 notesUiState = notesUiState.copy(folder = folder)
             }
+
+
+
         }
     }
 
@@ -189,7 +197,7 @@ class NotesViewModel @Inject constructor(
         val searchNotes: List<Note> = emptyList(),
         val folders: List<NoteFolder> = emptyList(),
         val folderNotes: List<Note> = emptyList(),
-        val folder: NoteFolder? = null
+        val folder: NoteFolder? = null,
     )
 
     private fun getNotes(order: Order) {
