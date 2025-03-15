@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.task.screens.widgets
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -90,23 +91,25 @@ fun TaskWidgetItem(
                 Spacer(GlanceModifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        modifier = GlanceModifier.size(10.dp),
+                        modifier = GlanceModifier.size(8.dp),
                         provider = if (task.dueDate.isDueDateOverdue()) ImageProvider(R.drawable.ic_alarm_red) else ImageProvider(
                             R.drawable.ic_alarm
                         ),
                         contentDescription = "",
                     )
                     Spacer(GlanceModifier.width(3.dp))
+
                     Text(
-                        text = task.dueDate.formatDateDependingOnDay(),
                         style = TextStyle(
+                            fontSize = 12.sp,
                             color = if (task.dueDate.isDueDateOverdue()) ColorProvider(Color.Red) else ColorProvider(
                                 Color.White
                             ),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 10.sp,
-                        )
+                            fontWeight = FontWeight.Normal,
+                        ),
+                        text = task.dueDate.formatDateDependingOnDay(),
                     )
+
                 }
             }
         }

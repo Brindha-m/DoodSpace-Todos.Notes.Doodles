@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.diary
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -47,11 +48,12 @@ fun LazyItemScope.DiaryEntryItem(
 ) {
     Card(
         modifier = modifier
-            .animateItemPlacement().fillMaxWidth(),
+            .animateItem().fillMaxWidth(),
         shape = RoundedCornerShape(25.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-//        colors = CardDefaults.cardColors(containerColor = Color(0xFF141414))
-    ) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.surfaceContainerHighest)
+        ) {
         Box(modifier = modifier.fillMaxWidth())
         {
 //            Image(painter = painterResource(id = R.drawable.img_12), contentDescription = "")
@@ -104,8 +106,7 @@ fun LazyItemScope.DiaryEntryItem(
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = entry.createdDate.fullDate(),
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold,fontSize = 12.sp),
                     modifier = Modifier.align(Alignment.End),
                 )
             }

@@ -1,7 +1,10 @@
 package com.implementing.cozyspace.di
 
 import android.content.Context
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.room.Room
+import androidx.work.WorkerFactory
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.implementing.cozyspace.data.local.FeedFiveDatabase
 import com.implementing.cozyspace.data.local.dao.AlarmDao
 import com.implementing.cozyspace.data.local.dao.BookmarkDao
@@ -11,6 +14,7 @@ import com.implementing.cozyspace.data.local.dao.TaskDao
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_5_6
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_6_7
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_7_8
+import com.implementing.cozyspace.data.local.room.migration.MIGRATION_8_9
 import com.implementing.cozyspace.data.local.room.migration.MIGRATION_9_10
 import com.implementing.cozyspace.dataStore
 import com.implementing.cozyspace.domain.repository.alarm.AlarmRepository
@@ -47,7 +51,7 @@ object AppModule {
             FeedFiveDatabase.DATABASE_NAME
         )
 //            .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_9_10)
+            .addMigrations(MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10)
             .build()
 
     // Bookmark repo and dao
@@ -115,5 +119,14 @@ object AppModule {
     @Provides
     fun provideAppContext(@ApplicationContext context: Context) = context
 
+    @Provides
+    @Singleton
+    fun provideRemoteConfig() = FirebaseRemoteConfig.getInstance()
+
+//    @Provides
+//    @Singleton
+//    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
+//        return FirebaseRemoteConfig.getInstance()
+//    }
 
 }

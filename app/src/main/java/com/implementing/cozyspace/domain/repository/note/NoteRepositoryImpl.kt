@@ -3,17 +3,24 @@ package com.implementing.cozyspace.domain.repository.note
 import com.implementing.cozyspace.data.local.dao.NoteDao
 import com.implementing.cozyspace.model.Note
 import com.implementing.cozyspace.model.NoteFolder
+import com.implementing.cozyspace.model.toNote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class NoteRepositoryImpl(
     private val noteDao: NoteDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): NoteRepository {
-    override fun getAllNotes(): Flow<List<Note>> {
-        return noteDao.getAllNotes()
+    override fun getAllFolderLessNotes(): Flow<List<Note>> {
+        return noteDao.getAllFolderLessNotes()
+            .map { notes ->
+                notes.map {
+                    it.toNote()
+                }
+            }
     }
 
     override suspend fun getNote(id: Int): Note {
@@ -46,6 +53,9 @@ class NoteRepositoryImpl(
 
     override fun getNotesByFolder(folderId: Int): Flow<List<Note>> {
         return noteDao.getNotesByFolder(folderId)
+            .map { notes ->
+                notes.map { it.toNote() }
+            }
     }
 
 

@@ -30,7 +30,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -161,6 +161,8 @@ fun NotesScreen(
                         Text(
                             stringResource(R.string.notes),
                             style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
+
                         )
                     }
                 )
@@ -173,6 +175,7 @@ fun NotesScreen(
                         Text(
                             stringResource(R.string.folders),
                             style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 )
@@ -316,7 +319,8 @@ fun FoldersTab(
             Card(
                 modifier = Modifier.height(200.dp),
                 shape = RoundedCornerShape(20.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
             ) {
                 Column(
                     Modifier

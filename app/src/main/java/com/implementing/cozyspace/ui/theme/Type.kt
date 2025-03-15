@@ -27,7 +27,7 @@ val Rubik = FontFamily(
 // Set of Material typography styles to start with
 fun getTypography(font: FontFamily) = Typography(
 
-    bodyMedium = TextStyle(fontFamily = font),
+    bodyMedium = TextStyle(fontFamily = font, fontSize = 13.sp, fontWeight = FontWeight.Normal),
 
     titleMedium = TextStyle(
         fontFamily = font,

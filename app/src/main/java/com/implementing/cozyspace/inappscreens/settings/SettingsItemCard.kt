@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +30,9 @@ fun SettingsItemCard(
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 12.dp),
         shape = RoundedCornerShape(cornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-    ) {
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+        ) {
         Row(
             Modifier
                 .fillMaxWidth()

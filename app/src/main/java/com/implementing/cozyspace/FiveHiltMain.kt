@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -13,8 +14,13 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.implementing.cozyspace.firebase.remoteConfig.wrapper.RemoteConfigWrapper
 import com.implementing.cozyspace.util.Constants
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -47,8 +53,10 @@ class FiveHiltMain : Application(), Configuration.Provider {
         appContext = this
         createRemindersNotificationChannel()
         FirebaseApp.initializeApp(this)
+
         // To get the refreshed token, just comment the about func
 //        logRegToken()
+//        firebase_config()
 
     }
     // Notification
@@ -80,30 +88,32 @@ class FiveHiltMain : Application(), Configuration.Provider {
 
     }
 
-//    private fun firebase_config() {
-//        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-//        val configSettings = remoteConfigSettings {
-//            minimumFetchIntervalInSeconds = 3600
-//        }
-//        remoteConfig.setConfigSettingsAsync(configSettings)
-//        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults) // Create an XML file in res/xml/ with default values
-//        // Fetch Remote Config values
-//        remoteConfig.fetchAndActivate().addOnCompleteListener {  }
-//            .addOnCompleteListener() { task ->
-//                if (task.isSuccessful) {
-//                    val updated = task.result
-//                    Log.d(TAG, "Config params updated: $updated")
-//                    Toast.makeText(this, "Fetch and activate succeeded",
-//                        Toast.LENGTH_SHORT).show()
-//                } else {
-//                    Toast.makeText(this, "Fetch failed",
-//                        Toast.LENGTH_SHORT).show()
-//                }
-//
-//            }
-//    }
+    private fun firebase_config() {
+        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
 
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults) // Create an XML file in res/xml/ with default values
+        // Fetch Remote Config values
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
+                    Toast.makeText(this, "Fetch and activate succeeded", Toast.LENGTH_SHORT).show()
 
+                    // Get the rideImage value from Remote Config
+                    val rideImageName = remoteConfig.getString("rideImage")
+                    Log.d(TAG, "rideImage from Remote Config: $rideImageName")
+
+                    // Optionally, update UI here if you have a reference to your Image composable
+                } else {
+                    Toast.makeText(this, "Fetch failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 
 }
 

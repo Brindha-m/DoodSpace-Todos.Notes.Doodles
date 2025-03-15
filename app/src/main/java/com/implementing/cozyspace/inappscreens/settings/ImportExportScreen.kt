@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,10 +26,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +65,10 @@ fun ImportExportScreen(
     val writeStoragePermission = rememberPermissionState(
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
+    val context = LocalContext.current
+//    val workManager = remember {
+//        WorkManager.getInstance(context)
+//    }
     val workManager = remember {
         WorkManager.getInstance(FiveHiltMain.appContext)
     }
@@ -82,6 +88,10 @@ fun ImportExportScreen(
         null
     }
 
+    var showExportSuccess by remember { mutableStateOf(false) }
+    var showExportError by remember { mutableStateOf(false) }
+
+
     val exportProgress = exportWorkInfo.value?.progress?.getInt("progress", 0)
 
     val chooseDirectoryLauncher =
@@ -94,7 +104,15 @@ fun ImportExportScreen(
                 workManager.enqueueUniqueWork("import", ExistingWorkPolicy.KEEP, importRequest)
             }
         }
-
+    LaunchedEffect(exportWorkInfo.value) {
+        if (exportWorkInfo.value?.state == WorkInfo.State.SUCCEEDED) {
+            showExportSuccess = exportWorkInfo.value?.outputData?.getBoolean("success", false) == true
+            showExportError = false
+        } else if (exportWorkInfo.value?.state == WorkInfo.State.FAILED) {
+            showExportError = true
+            showExportSuccess = false
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -164,10 +182,10 @@ fun ImportExportScreen(
 
             if (exportProgress != null && exportProgress > 0) {
                 LinearProgressIndicator(
-                    progress = exportProgress.toFloat() / 100,
+                    progress = { exportProgress.toFloat() / 100 },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp)
+                        .padding(12.dp),
                 )
                 Text(
                     text = "$exportProgress%",
@@ -176,6 +194,7 @@ fun ImportExportScreen(
                     textAlign = TextAlign.Center
                 )
             }
+
 
             if (exportWorkInfo.value?.outputData?.getBoolean("success", false) == true) {
                 Text(

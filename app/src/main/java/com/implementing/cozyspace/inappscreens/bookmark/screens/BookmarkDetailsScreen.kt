@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -232,6 +233,7 @@ fun BookmarkDetailsScreen(
                 label = { Text(text = stringResource(R.string.url)) },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 13.sp),
             )
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(
@@ -240,6 +242,8 @@ fun BookmarkDetailsScreen(
                 label = { Text(text = stringResource(R.string.title)) },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp),
+
             )
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(
@@ -248,6 +252,7 @@ fun BookmarkDetailsScreen(
                 label = { Text(text = stringResource(R.string.description)) },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp),
             )
             Spacer(Modifier.height(8.dp))
             TextButton(

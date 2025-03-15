@@ -1,5 +1,6 @@
 package com.implementing.cozyspace.inappscreens.task.screens.widgets.dashboard
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +44,8 @@ fun TasksDashboardWidget(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
     ) {
 //        val isDark = !MaterialTheme.colorScheme.isLight
         Column(
@@ -102,7 +104,7 @@ fun TasksDashboardWidget(
                         task = it,
                         onClick = { onTaskClick(it) },
                         onComplete = { onCheck(it.copy(isCompleted = !it.isCompleted)) },
-                        modifier = Modifier.animateItemPlacement()
+                        modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null)
                     )
                 }
             }

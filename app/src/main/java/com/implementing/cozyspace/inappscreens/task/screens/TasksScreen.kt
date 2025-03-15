@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -137,7 +137,8 @@ fun TasksScreen(
                     focusRequester
                 )
             },
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.background,
+            sheetContainerColor = MaterialTheme.colorScheme.inverseOnSurface
         )
         {
             LaunchedEffect(uiState.error) {
@@ -305,7 +306,7 @@ fun TasksSettingsSection(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         FlowRow {
             orderTypes.forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -323,7 +324,7 @@ fun TasksSettingsSection(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = showCompleted, onCheckedChange = { onShowCompletedChange(it) }, colors = CheckboxDefaults.colors(Color.DarkGray))
             Text(

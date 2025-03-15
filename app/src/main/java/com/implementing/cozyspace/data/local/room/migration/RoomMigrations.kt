@@ -33,6 +33,15 @@ val MIGRATION_9_10 = object : Migration(9, 10) {
         database.execSQL("ALTER TABLE notes_new RENAME TO notes")
     }
 }
+
+val MIGRATION_8_9 = object : Migration(8, 9) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Add the necessary SQL statements to handle schema changes from version 8 to 9
+        // For example, if you added a new column in version 9:
+        database.execSQL("ALTER TABLE notes ADD COLUMN image_url TEXT")
+    }
+}
+
 // Task Recurring
 val MIGRATION_7_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {

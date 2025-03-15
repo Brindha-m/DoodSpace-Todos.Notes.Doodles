@@ -141,17 +141,11 @@ var GRATITUDE_TEMPLATE = """
 val DOOD_MARKDOWN_TEMPLATE = """
 # D😉🌍D
 ## Welcome Note🚀
-### Organize Your Notes Effortlessly
-
 - Create lists
   - Nested lists are supported
-
 > Blockquotes are useful for highlighting important information.
-
 ## Tidy Workspace with Folders 📁
-
 Organize your notes effortlessly using folders for a tidy workspace.
 
 ## Happy Doodling! 😎
-    
 """

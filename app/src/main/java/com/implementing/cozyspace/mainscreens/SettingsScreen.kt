@@ -48,6 +48,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.implementing.cozyspace.BuildConfig
 import com.implementing.cozyspace.inappscreens.settings.SettingsBasicLinkItem
 import com.implementing.cozyspace.inappscreens.settings.SettingsItemCard
 import com.implementing.cozyspace.inappscreens.settings.viewmodel.SettingsViewModel
@@ -72,11 +73,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
 
-    val snackbarHostState = remember {
-        SnackbarHostState()
-    }
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val appVersion = BuildConfig.VERSION_NAME
 
     Scaffold(
         topBar = {
@@ -208,31 +205,31 @@ fun SettingsScreen(
                 }
             }
 
-            item {
-                val block = viewModel
-                    .getSettings(
-                        booleanPreferencesKey(Constants.LOCK_APP_KEY),
-                        false
-                    ).collectAsStateWithLifecycle(false)
-                SettingsSwitchCard(
-                    text = stringResource(R.string.lock_app),
-                    checked = block.value,
-                    iconPainter = painterResource(R.drawable.ic_lock)
-                ) {
-//                    if (appLockManager.canUseFeature()) {
-//                        viewModel.saveSettings(
-//                            booleanPreferencesKey(Constants.LOCK_APP_KEY),
-//                            it
-//                        )
-//                    } else {
-//                        scope.launch {
-//                            snackbarHostState.showSnackbar(
-//                                context.getString(R.string.no_auth_method)
-//                            )
-//                        }
-//                    }
-                }
-            }
+//            item {
+//                val block = viewModel
+//                    .getSettings(
+//                        booleanPreferencesKey(Constants.LOCK_APP_KEY),
+//                        false
+//                    ).collectAsStateWithLifecycle(false)
+//                SettingsSwitchCard(
+//                    text = stringResource(R.string.lock_app),
+//                    checked = block.value,
+//                    iconPainter = painterResource(R.drawable.ic_lock)
+//                ) {
+////                    if (appLockManager.canUseFeature()) {
+////                        viewModel.saveSettings(
+////                            booleanPreferencesKey(Constants.LOCK_APP_KEY),
+////                            it
+////                        )
+////                    } else {
+////                        scope.launch {
+////                            snackbarHostState.showSnackbar(
+////                                context.getString(R.string.no_auth_method)
+////                            )
+////                        }
+////                    }
+//                }
+//            }
 
             item {
                 Text(
@@ -246,9 +243,18 @@ fun SettingsScreen(
             item {
                 SettingsBasicLinkItem(
                     title = R.string.share_app,
-                    icon = R.drawable.ic_code,
+                    icon = R.drawable.ic_profile,
 //                    subtitle = BuildConfig.VERSION_NAME,
                     link = Constants.GITHUB_RELEASES_LINK
+                )
+            }
+
+            item {
+                SettingsBasicLinkItem(
+                    title = R.string.app_version,
+                    icon = R.drawable.ic_code,
+                    subtitle = appVersion,  // This displays the app version from BuildConfig
+//                    link = Constants.GITHUB_RELEASES_LINK
                 )
             }
 

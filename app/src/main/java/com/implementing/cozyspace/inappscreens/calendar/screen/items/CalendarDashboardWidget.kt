@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.compose.foundation.BorderStroke
 import com.implementing.cozyspace.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,7 +55,9 @@ fun CalendarDashboardWidget(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+
     ) {
         val context = LocalContext.current
         val readCalendarPermissionState = rememberPermissionState(

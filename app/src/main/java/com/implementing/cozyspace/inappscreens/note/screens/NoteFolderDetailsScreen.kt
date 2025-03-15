@@ -72,9 +72,11 @@ fun NoteFolderDetailsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(true) {viewModel.onEvent(NoteEvent.GetFolderNotes(id)) }
+
     LaunchedEffect(uiState) {
         if (viewModel.notesUiState.navigateUp) {
-            navController.popBackStack(route = Screen.NotesScreen.route, inclusive = false)
+            navController.navigateUp()
+//            navController.popBackStack(route = Screen.NotesScreen.route, inclusive = false)
         }
         if (uiState.error != null) {
             snackbarHostState.showSnackbar(
@@ -200,7 +202,7 @@ fun NoteFolderDetailsScreen(
                                 )
                             },
 //                            modifier = Modifier.padding(bottom = 12.dp)
-                            modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null).height(120.dp)
+                            modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null).padding(bottom = 12.dp)
                         )
                     }
                 }

@@ -2,6 +2,7 @@ package com.implementing.cozyspace.inappscreens.diary.chart
 
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -60,14 +61,14 @@ fun MoodFlowChart(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp),
     ) {
 
         Column(
             modifier = Modifier.background(
                 when (themeMode.value) {
                     ThemeSettings.DARK.value -> Color.Black
-                    ThemeSettings.LIGHT.value -> Color.Transparent
+                    ThemeSettings.LIGHT.value -> MaterialTheme.colorScheme.inverseOnSurface
                     else -> {Color.Transparent}
                 }
             ),

@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -263,7 +263,7 @@ fun BookmarksSettingsSection(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         FlowRow {
             orderTypes.forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -282,7 +282,7 @@ fun BookmarksSettingsSection(
             }
         }
 
-        Divider()
+        HorizontalDivider()
 
         Text(
             text = stringResource(R.string.view_as),

@@ -2,6 +2,7 @@ package com.implementing.cozyspace.inappscreens.bookmark
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.model.Bookmark
 import com.implementing.cozyspace.util.isValidUrl
@@ -41,7 +43,9 @@ fun BookmarkItem(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.surfaceContainerHighest)
 
     ) {
         val context = LocalContext.current
@@ -56,6 +60,7 @@ fun BookmarkItem(
                     bookmark.title,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     maxLines = 1,
+                    fontSize = 14.sp,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(8.dp))
@@ -65,7 +70,7 @@ fun BookmarkItem(
             }
             Text(
                 bookmark.url,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp),
                 color = Color.Gray
             )
             IconButton(

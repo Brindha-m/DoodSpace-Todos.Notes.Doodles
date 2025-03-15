@@ -35,3 +35,16 @@ data class Note(
     val pinned: Boolean = false
 
 )
+
+
+fun Note.toNote(): Note {
+    return Note(
+        title = title,
+        content = content,
+        createdDate = createdDate,
+        updatedDate = updatedDate,
+        pinned = pinned,
+        folderId = folderId,
+        id = id,
+    )
+}

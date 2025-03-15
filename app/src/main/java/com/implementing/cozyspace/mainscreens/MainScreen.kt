@@ -42,8 +42,6 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
-
-
     val bottomNavItems = listOf(
         BottomNavItem.Dashboard, BottomNavItem.Spaces, BottomNavItem.Settings
     )

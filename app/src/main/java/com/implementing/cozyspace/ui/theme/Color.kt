@@ -4,7 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val PrimaryColor = Color(0xFFBEBBBB)
+val PrimaryColor = Color(0xFFC7C4C4)
 val PrimaryLightColor = Color.DarkGray
 val SecondaryColor = Color(0xFF5939CE)
 val DarkGray = Color(0xFF090909)
@@ -20,6 +20,8 @@ val Purple = Color(0xFF6F4CAD)
 val Gray = Color(0xFF7E7979)
 val LightGray = Color(0xFFECECEC)
 
+val surfaceContainerHighestLight = Color(0xFFA3A3A3)
+val surfaceContainerHighestDark = Color(0xFF373433)
 
 val AppOnPrimaryColor = Color.White.copy(alpha = 0.78F)
 val bgCard = Brush.verticalGradient(colors = listOf(Color.Blue, Color.White))

@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.inappscreens.task.screens.widgets.dashboard
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -47,7 +48,9 @@ fun TaskDashboardItem(
         modifier = modifier
             .padding(horizontal = 8.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+
     ) {
         Column(
             Modifier

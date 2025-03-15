@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -221,77 +222,97 @@ fun RunningCarScreenSkeleton(
                     }
                 }
 
-                Image(
-//                    painterResource(id = R.drawable.scrolling_foreground),
-                    painterResource(id = R.drawable.spaceweekfg),
-                    "foreground",
-                        Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(bottom = 15.dp, top = 18.dp)
-                            .height(48.dp)
-                            .requiredWidth(1600.dp)
-                            .graphicsLayer {
-                                translationX = animatePositionSanta
-                            },
-//                        .background(Color.Transparent),
-                        contentScale = ContentScale.Inside,
-//                    colorFilter = ColorFilter.tint(
-////                        Color(0x003D3D3D)
-//                                // color road
-//                                Color(0xFF3D3D3D)
-//                    )
-                )
-
-                /* background **/
 
                 Image(
-//                    painterResource(id = R.drawable.scrolling_background),
-                    painterResource(id = R.drawable.spaceweekbg),
+                    painterResource(id = R.drawable.scrolling_background),
                     "background",
                     Modifier
                         .align(Alignment.BottomStart)
-                        .padding(bottom = 15.dp, top = 18.dp)
+                        .padding(bottom = 18.dp)
                         .height(48.dp)
                         .requiredWidth(1280.dp)
                         .graphicsLayer {
                             translationX = animatePositionBackground
                         },
                     contentScale = ContentScale.Inside,
-//                    colorFilter = ColorFilter.tint(Color(0x00E6E6E6))
-                    /* color road */
-//                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
+                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
+                )
 
+                Image(
+                    painterResource(id = R.drawable.scrolling_foreground),
+                    "foreground",
+                    Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(bottom = 19.dp)
+                        .height(48.dp)
+                        .requiredWidth(1600.dp)
+                        .graphicsLayer {
+                            translationX = animatePositionForeground
+                        }
+                        .background(Color.Transparent),
+                    contentScale = ContentScale.Inside,
+                    colorFilter = ColorFilter.tint(
+                        Color(0xFF3D3D3D)
+                    )
                 )
 
 
+                /* background **/
+
+//                Image(
+////                    painterResource(id = R.drawable.scrolling_foreground),
+//                    painterResource(id = R.drawable.diwalicomb),
+//                    "background",
+//                    Modifier
+//                        .align(Alignment.BottomStart)
+//                        .padding(bottom = 10.dp, top = 10.dp)
+//                        .height(60.dp)
+//                        .requiredWidth(1600.dp)
+//                        .graphicsLayer {
+//                            translationX = animatePositionBackground
+//                        },
+//                    contentScale = ContentScale.Inside,
+////                    colorFilter = ColorFilter.tint(Color(0x00E6E6E6))
+//                    /* color road */
+////                    colorFilter = ColorFilter.tint(Color(0xFFE6E6E6))
+//
+//                )
 
 
+//                Image(
+////                    painterResource(id = R.drawable.scrolling_foreground),
+//                    painterResource(id = R.drawable.diwalicomb),
+//                    "foreground",
+//                    Modifier
+//                        .align(Alignment.BottomStart)
+//                        .padding(top = 0.dp)
+//                        .height(48.dp)
+//                        .requiredWidth(1280.dp)
+//                        .graphicsLayer {
+//                            translationX = animatePositionForeground
+//                        },
+////                        .background(Color.Transparent),
+//                    contentScale = ContentScale.Inside,
+////                    colorFilter = ColorFilter.tint(
+//////                        Color(0x003D3D3D)
+////                                // color road
+////                                Color(0xFF3D3D3D)
+////                    )
+//                )
 
 
                 Row {
-//                    Image(
-//                        painterResource(id = R.drawable.running),
-//                        contentDescription = "Santa",
-//                        Modifier
-//                            .size(54.dp)
-//                            .graphicsLayer {
-//                                translationX = animateSantaPositionX
-//                                translationY = animatePositionSanta
-//                            }
-//                    )
-
                     Image(
-                        painterResource(id = R.drawable.spaceweekastronaut),
-                        contentDescription = "Santa/Astronaut",
+                        painterResource(id = R.drawable.iplbus),
+                        contentDescription = "Santa/Astronaut/Bikeride",
                         Modifier
-                            .size(40.dp)
+                            .size(84.dp)
                             .graphicsLayer {
                                 translationX = animateSantaPositionX
                                 translationY = animatePositionSanta
                             }
 //
                     )
-
                 }
 
             }

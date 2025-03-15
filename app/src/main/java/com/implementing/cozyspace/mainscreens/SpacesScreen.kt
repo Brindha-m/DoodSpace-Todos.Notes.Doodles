@@ -1,6 +1,9 @@
 package com.implementing.cozyspace.mainscreens
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,36 +29,40 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.google.android.play.core.review.ReviewInfo
-import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.idapgroup.snowfall.snowfall
 import com.idapgroup.snowfall.snowmelt
 import com.idapgroup.snowfall.types.FlakeType
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.festive_animations.ChristmasRide
+import com.implementing.cozyspace.festive_animations.randomColor
 import com.implementing.cozyspace.mainscreens.viewmodel.MainViewModel
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.navigation.components.SpaceRegularCard
 import com.implementing.cozyspace.navigation.components.SpaceRegularCardMiddle
 import com.implementing.cozyspace.navigation.components.SpaceWideCard
 import com.implementing.cozyspace.util.ThemeSettings
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -64,48 +72,8 @@ fun SpacesScreen(
     navController: NavHostController,
     viewModel: MainViewModel = hiltViewModel(),
 ) {
-
-    val localContext = LocalContext.current
-    val reviewManager = remember {
-        ReviewManagerFactory.create(localContext)
-    }
-
-    val reviewInfo = rememberReviewTask(reviewManager)
-
-//    LaunchedEffect(key1 = reviewInfo) {
-//        reviewInfo?.let {
-//            reviewManager.launchReviewFlow(localContext as Activity, reviewInfo)
-//        }
-//    }
-
-
-    /*
-        LaunchedEffect(true) {
-            val remoteConfig = Firebase.remoteConfig
-            val configSettings = remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 60 // Set your desired fetch interval
-            }
-            remoteConfig.setConfigSettingsAsync(configSettings)
-            remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Apply fetched values to your view model or directly to your composable
-                    fireviewModel.updateFromMap(remoteConfig.all)
-                    val updated = task.result
-                    Log.d(TAG, "Config params updated: $updated")
-
-                    // Activate the fetched config
-                    remoteConfig.activate().addOnCompleteListener {
-                        Log.d(TAG, "Remote Config activated: $it")
-                    }
-                } else {
-                    // Handle errors
-                    Log.e(TAG, "Fetch failed", task.exception)
-                }
-            }
-        }
-        */
-
     val themeMode = viewModel.themeMode.collectAsState(initial = ThemeSettings.DARK.value)
+
 
     Scaffold(
         modifier = Modifier
@@ -155,17 +123,19 @@ fun SpacesScreen(
             )
         }
     ) {
+
+        AutoUpdateCheck()
+
         LazyColumn {
 
             item {
                 Spacer(Modifier.height(30.dp))
 
-               /**  This is the animation on top
-                ***/
+                /**  This is the animation on top
+                 ***/
 
+                Spacer(Modifier.height(18.dp))
                 ChristmasRide()
-
-
 
                 Column {
                     SpaceWideCard(
@@ -286,25 +256,78 @@ fun SpacesScreen(
             item {
                 Spacer(Modifier.height(65.dp))
             }
+
         }
+
+//            Diwali(
+//                property1 = variants[currentVariantIndex],
+//            )
+
     }
 
-//    ChristmasAnimation()
+//    //BG
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Transparent)
+            .padding(15.dp)
+    )
+    {
+        val configuration = LocalConfiguration.current
+        val density = LocalDensity.current.density
+        val screenHeightPx = (configuration.screenHeightDp * density).toInt()
+        // The ratio of the fireworks width to the screen width is 4:5.
+        val fireworkWidth = configuration.screenWidthDp / 1.25f
+        val fireworkHeight = configuration.screenHeightDp
+
+        val colorLine = randomColor((0..9).random())
+        val colorOrb = randomColor((0..9).random())
+
+
+//        Firework(
+//            width = fireworkWidth.dp,
+//            height = fireworkHeight.dp,
+//            colorLine = colorLine,
+//            colorOrb = colorOrb
+//        )
+        Spacer(modifier = Modifier.width(50.dp))
+
+    }
+
+
+    ChristmasAnimation()
 
 //    FireworkCenterView(viewModel = fireviewModel, startAnimation = true)
 
 }
 
+
 @Composable
 fun ChristmasAnimation() {
 
-//    val snowflake: List<Painter> = listOf(
-//        painterResource(id = R.drawable.ic_snow_flakes),
-//    )
+    val rcb: List<Painter> = listOf(
+        painterResource(id = R.drawable.rcbbold),
+        painterResource(id = R.drawable.sixipl)
+    )
+    val mi: List<Painter> = listOf(
+        painterResource(id = R.drawable.mihitman),
+        painterResource(id = R.drawable.rr)
+    )
+
+    val srh: List<Painter> = listOf(
+        painterResource(id = R.drawable.srh),
+        )
+
+    val violet: List<Painter> = listOf(
+        painterResource(R.drawable.fouripl),
+        painterResource(id = R.drawable.gt)
+    )
 
     val trophy = listOf(
         painterResource(id = R.drawable.trophyipl),
+        painterResource(id = R.drawable.cskwp),
     )
+    /* olympics shower special
     val game1 = listOf(
         painterResource(id = R.drawable.rugby)
     )
@@ -321,100 +344,101 @@ fun ChristmasAnimation() {
     val game5 = listOf(
         painterResource(id = R.drawable.bowarrow),
     )
-
-
-
-
+    */
 
 
 
     Box(
         modifier = Modifier
-            .padding(9.dp)
+            .padding(2.dp)
             .fillMaxSize()
-            .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
-//            .snowfall(
-////                colors = listOf(Color(0xFF56C2EB)),
+            .background(Color.Transparent, shape = RoundedCornerShape(2.dp))
+            .snowmelt(
+                colors = listOf(Color(0xFFFA1F28)),
 //                colors = listOf(Color(0xFFF64850)),
-//                type = FlakeType.Custom(heart),
-//                density = 0.002 // from 0.0 to 1.0,
-//            )
-            .snowfall(
-                type = FlakeType.Custom(game1),
-                colors = listOf(Color(0xFFce775f)),
-                density = 0.0004 // from 0.0 to 1.0,
-            )
-            .snowfall(
-                type = FlakeType.Custom(game3),
-                colors = listOf(Color(0xFFFFFFFF)),
-                density = 0.0009 // from 0.0 to 1.0,
-            )
-            .snowmelt(
-                type = FlakeType.Custom(game2),
-                colors = listOf(Color(0xFF3AB2FC)),
-                density = 0.001 // from 0.0 to 1.0,
-            )
-            .snowmelt(
-                type = FlakeType.Custom(game5),
-                colors = listOf(Color(0xFFBA8959)),
+                type = FlakeType.Custom(rcb),
                 density = 0.002 // from 0.0 to 1.0,
             )
-            .snowfall(
-                type = FlakeType.Custom(game4),
-                colors = listOf(Color(0xFFf4b37d)),
-                density = 0.0004 // from 0.0 to 1.0,
+            .snowmelt(
+                colors = listOf(Color(0xFFD9C400)),
+                type = FlakeType.Custom(trophy),
+                density = 0.003,
             )
             .snowmelt(
-//                colors = listOf(Color(0xFFF5E9E9)),
-                colors = listOf(Color(0xFFfdae33)),
-                type = FlakeType.Custom(trophy),
-                density = 0.001 // from 0.0 to 1.0,
+                colors = listOf(Color(0xFF29B6F6)),
+                type = FlakeType.Custom(mi),
+                density = 0.002,
             )
-
-
+            .snowmelt(
+                colors = listOf(Color(0xFFFB8C00)),
+                type = FlakeType.Custom(srh),
+                density = 0.002,
+            )
 
     )
 }
 
+
+
 @Composable
-fun rememberReviewTask(reviewManager: ReviewManager): ReviewInfo? {
-    var reviewInfo: ReviewInfo? by remember {
-        mutableStateOf(null)
-    }
-    reviewManager.requestReviewFlow().addOnCompleteListener {
-        if (it.isSuccessful) {
-            reviewInfo = it.result
+fun AutoUpdateCheck() {
+    @Composable
+    fun MyAppWithAutoFeatures() {
+        val context = LocalContext.current
+        val activity = context as ComponentActivity
+        val coroutineScope = rememberCoroutineScope()
+        val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+
+        // Auto-trigger In-App Review
+//        LaunchedEffect("review") {
+//            val reviewManager = ReviewManagerFactory.create(context)
+//            val request = reviewManager.requestReviewFlow()
+//            request.addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    coroutineScope.launch {
+//                        reviewManager.launchReviewFlow(context, task.result)
+//                    }
+//                }
+//            }
+//        }
+
+        LaunchedEffect("review") {
+            val reviewManager = ReviewManagerFactory.create(context)
+            val request = reviewManager.requestReviewFlow()
+            request.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    println("Review flow requested successfully")
+                    coroutineScope.launch {
+                        reviewManager.launchReviewFlow(context, task.result)
+                        Log.d("Review","Review dialog launched (won’t show locally)")
+                    }
+                } else {
+                    Log.d("Review", "Review request failed: ${task.exception}")
+                }
+            }
+        }
+
+        // Auto-trigger In-App Update
+        LaunchedEffect("update") {
+            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+            appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                ) {
+                    coroutineScope.launch {
+                        appUpdateManager.startUpdateFlow(
+                            appUpdateInfo,
+                            activity,
+                            AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                        ).addOnCompleteListener { task ->
+                            if (task.isSuccessful && task.result == RESULT_OK) {
+                                // Update started
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
-
-    return reviewInfo
 }
 
-/*
-@Composable
-fun ApplyRemoteConfigValues(remoteConfig: FirebaseRemoteConfig) {
-    val fireworksEnabled = remoteConfig.getBoolean("fireworks_enabled")
-
-    var startAnimation by remember { mutableStateOf(true) }
-
-    FireworkCenterView(startAnimation = startAnimation, fireworksEnabled = fireworksEnabled)
-    startAnimation = false
-
-
-}
-*/
-
-/*
-Gradient Green
-
-0f to Color(0xFF141D1B), // Transparent white at the start
-0.5f to Color(0xFF3A6B5E), // More transparent white in the middle
-1f to Color(0xFF59AB93)  // Fully transparent white at the end
-
-Earth Gradient
-
-0f to Color(0xFFC9BDBD),  // Light gray (sky)
-0.4f to Color(0xFF035881), // More transparent white in the middle
-0.9f to Color(0xFF455A3C),
-1.3f to Color(0xFFCD853F),
- */

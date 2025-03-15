@@ -3,6 +3,7 @@ package com.implementing.cozyspace.util
 import android.text.format.DateUtils
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.getString
+import kotlinx.datetime.Clock
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -15,6 +16,8 @@ fun Long.formatDateDependingOnDay(): String {
 
     return sdf.format(this)
 }
+
+fun now() = Clock.System.now().toEpochMilliseconds()
 
 fun Long.fullDate(): String {
     val sdf = SimpleDateFormat("MMM dd,yyyy h:mm a", Locale.getDefault())

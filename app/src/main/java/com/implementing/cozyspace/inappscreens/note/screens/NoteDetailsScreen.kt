@@ -21,10 +21,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +37,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +45,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -58,7 +57,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.inappscreens.note.NoteEvent
-import com.implementing.cozyspace.inappscreens.note.screens.components.MarkdownAction
 import com.implementing.cozyspace.inappscreens.note.screens.components.MarkdownActionToolbar
 import com.implementing.cozyspace.inappscreens.note.screens.components.NoteContentFieldComponent
 import com.implementing.cozyspace.inappscreens.note.screens.components.NoteMarkdownFieldComponent
@@ -69,6 +67,7 @@ import com.implementing.cozyspace.model.NoteFolder
 import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.ui.theme.Red
 import com.implementing.cozyspace.util.formatDateDependingOnDay
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,18 +81,18 @@ fun NoteDetailsScreen(
         if (noteId != -1) viewModel.onEvent(NoteEvent.GetNote(noteId))
         if (folderId != -1) viewModel.onEvent(NoteEvent.GetFolder(folderId))
     }
+
     val state = viewModel.notesUiState
     val snackbarHostState = remember { SnackbarHostState() }
     var openDeleteDialog by rememberSaveable { mutableStateOf(false) }
     var openFolderDialog by rememberSaveable { mutableStateOf(false) }
 
     var title by rememberSaveable { mutableStateOf(state.note?.title ?: "") }
-    var content by rememberSaveable { mutableStateOf(state.note?.content ?: "") }
+//    var content by rememberSaveable { mutableStateOf(state.note?.content ?: "") }
+    var content by remember { mutableStateOf("") }
 
     var lastModified by remember { mutableStateOf("") }
-    val wordCountString by remember {
-        derivedStateOf { content.split(" ").size.toString() }
-    }
+    var wordCountString by remember { mutableStateOf("") }
 
 //    var readingMode by remember { mutableStateOf(state.readingMode) }
     var pinned by rememberSaveable { mutableStateOf(state.note?.pinned ?: false) }
@@ -105,6 +104,13 @@ fun NoteDetailsScreen(
 
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
+    var cursorPosition by remember { mutableStateOf(0) }
+
+
+    LaunchedEffect(content) {
+//        delay(700)
+        wordCountString = content.words().toString()
+    }
 
     LaunchedEffect(state.note) {
         if (state.note != null) {
@@ -112,29 +118,24 @@ fun NoteDetailsScreen(
             content = state.note.content
             pinned = state.note.pinned
             lastModified = state.note.updatedDate.formatDateDependingOnDay()
-            folder = state.folder
         }
+        folder = state.folder
 
     }
-    LaunchedEffect(state.navigateUp) {
+
+    LaunchedEffect(state) {
         if (state.navigateUp) {
             openDeleteDialog = false
-            navController.navigateUp()
+            navController.popBackStack(route = Screen.NotesScreen.route, inclusive = false)
         }
+        if (state.error != null) {
+            snackbarHostState.showSnackbar(
+                state.error
+            )
+            viewModel.onEvent(NoteEvent.ErrorDisplayed)
+        }
+        if (state.folder != folder) folder = state.folder
     }
-//    LaunchedEffect(state) {
-//        if (state.navigateUp) {
-//            openDeleteDialog = false
-//            navController.popBackStack(route = Screen.NotesScreen.route, inclusive = false)
-//        }
-//        if (state.error != null) {
-//            snackbarHostState.showSnackbar(
-//                state.error
-//            )
-//            viewModel.onEvent(NoteEvent.ErrorDisplayed)
-//        }
-//        if (state.folder != folder) folder = state.folder
-//    }
 
 
     BackHandler {
@@ -187,18 +188,24 @@ fun NoteDetailsScreen(
                     if (folder != null) {
                         Row(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(5.dp))
+                                .clip(RoundedCornerShape(22.dp))
                                 .border(1.dp, Color.Gray, RoundedCornerShape(22.dp))
                                 .clickable { openFolderDialog = true },
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(
                                 painterResource(R.drawable.ic_folder),
                                 stringResource(R.string.folders),
-                                modifier = Modifier.padding(end = 8.dp, top = 8.dp, bottom = 8.dp).size(18.dp),
+                                modifier = Modifier
+                                    .padding(
+                                        start = 8.dp,
+                                        top = 8.dp,
+                                        bottom = 8.dp
+                                    )
+                                    .size(18.dp),
                                 tint = MaterialTheme.colorScheme.onBackground
                             )
-                            Spacer(Modifier.width(5.dp))
+                            Spacer(Modifier.width(8.dp))
                             Text(
                                 text = folder?.name!!,
                                 modifier = Modifier.padding(end = 8.dp, top = 8.dp, bottom = 8.dp),
@@ -218,18 +225,20 @@ fun NoteDetailsScreen(
                     }
                 },
                 actions = {
-                    if (state.note != null) IconButton(onClick = { openDeleteDialog = true }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.delete_icon),
-                            contentDescription = stringResource(R.string.delete_task),
-                            modifier = Modifier.size(21.dp)
-                        )
-                    }
+                    if (state.note != null)
+                        IconButton(onClick = { openDeleteDialog = true }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.trash_can),
+                                contentDescription = stringResource(R.string.delete_task),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     IconButton(onClick = { usingTemplate = true }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.template_note),
+                        Icon(
+                            painter = painterResource(id = R.drawable.note_info),
                             contentDescription = "templates",
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(17.dp),
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     DropdownMenu(
@@ -245,11 +254,11 @@ fun NoteDetailsScreen(
                             },
                             onClick = {
                                 selectedTemplate = DOOD_MARKDOWN_TEMPLATE
-                                content = DOOD_MARKDOWN_TEMPLATE
                                 usingTemplate = false
+                                content = DOOD_MARKDOWN_TEMPLATE
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -259,11 +268,11 @@ fun NoteDetailsScreen(
                             },
                             onClick = {
                                 selectedTemplate = FOOD_DIARY_TEMPLATE
-                                content = FOOD_DIARY_TEMPLATE
                                 usingTemplate = false
+                                content = FOOD_DIARY_TEMPLATE
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -277,7 +286,7 @@ fun NoteDetailsScreen(
                                 usingTemplate = false
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -291,7 +300,7 @@ fun NoteDetailsScreen(
                                 usingTemplate = false
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -305,7 +314,7 @@ fun NoteDetailsScreen(
                                 usingTemplate = false
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -342,15 +351,15 @@ fun NoteDetailsScreen(
                         val editMode = R.drawable.edit_ic
                         if (readingMode)
                             Image(
-                                painter = painterResource(id = saveMode),
+                                painter = painterResource(id = editMode),
                                 contentDescription = stringResource(R.string.reading_mode),
-                                modifier = Modifier.size(20.dp),
+                                modifier = Modifier.size(18.dp),
                             )
                         else
                             Image(
-                                painter = painterResource(id = editMode),
+                                painter = painterResource(id = saveMode),
                                 contentDescription = stringResource(R.string.reading_mode),
-                                modifier = Modifier.size(20.dp),
+                                modifier = Modifier.size(18.dp),
                             )
 
                     }
@@ -413,6 +422,7 @@ fun NoteDetailsScreen(
         },
     ) { paddingValues ->
 
+
         Column(
             Modifier
                 .fillMaxSize()
@@ -435,46 +445,62 @@ fun NoteDetailsScreen(
             )
 
 
-            MarkdownActionToolbar(
-                onMarkdownAction = { action ->
-                    when (action) {
-                        MarkdownAction.Bold -> content += "**Bold**"
-                        MarkdownAction.Italic -> content += "*Italic*"
-                        MarkdownAction.Strikethrough -> content += "~~Strikethrough Text~~"
-                        MarkdownAction.Underline -> content += "<u>Underlined Text</u>"
-                        MarkdownAction.Heading -> content += "# Heading Text"
-                        MarkdownAction.Checkbox -> content += "* [x] Do laundry"
-                        MarkdownAction.Quote -> content += "> Quote"
-                        MarkdownAction.Code -> content += "```\nCode Block\n```"
-                        MarkdownAction.Highlight -> content += "`Highlighted Text`"
+//            MarkdownActionToolbar(
+//                onMarkdownAction = { action ->
+//                    when (action) {
+//                        MarkdownAction.Bold -> content += "**Bold**\n"
+//                        MarkdownAction.Italic -> content += " *Italic*\n"
+//                        MarkdownAction.Strikethrough -> content += " ~~Strikethrough~~\n"
+//                        MarkdownAction.Image -> content += "![](https://i.ibb.co/8Y6qJpj/doodplaybg.png) \n"
+//                        MarkdownAction.Underline -> content += "\n<u>Underlined Text</u>"
+//                        MarkdownAction.Heading -> content += " # Heading Text\n"
+//                        MarkdownAction.Checkbox -> content += "- [ ] List"
+//                        MarkdownAction.Quote -> content += "\n> Quote \n"
+//                        MarkdownAction.Code -> content += "\n```\nCode Block\n```\n"
+//                        MarkdownAction.Highlight -> content += "`Highlighted Text`\n"
+//
+//                    }
+//                }
+//            )
 
-                    }
-                }
+            MarkdownActionToolbar(
+                value = content,
+                onValueChange = { newContent ->
+                    content = newContent
+                },
+                cursorPosition = cursorPosition,
+                onCursorPositionChange = { newCursorPosition ->
+                    cursorPosition = newCursorPosition
+                },
             )
+
             Spacer(modifier = Modifier.height(6.dp))
 
 
-
             if (readingMode) {
-                NoteContentFieldComponent(
-                    value = content,
-                    onValueChange = {
-                        content = it
-//                        print("From outline text ------ $content ")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(1f),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
-            } else {
                 NoteMarkdownFieldComponent(
                     content = content.ifBlank { stringResource(R.string.note_content) },
                     onClick = {
                         viewModel.onEvent(NoteEvent.ToggleReadingMode)
                     },
-                    style = MaterialTheme.typography.bodyMedium
+//                    style = MaterialTheme.typography.bodyMedium,
+                )
+
+            } else {
+                NoteContentFieldComponent(
+                    value = content,
+                    onValueChange = {
+                        content = it
+                        cursorPosition = it.length
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(1f),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+                    onCursorPositionChange = { newCursorPosition ->
+                        cursorPosition = newCursorPosition + 2
+                    },
+                    cursorPosition = cursorPosition,
                 )
             }
 
@@ -492,13 +518,21 @@ fun NoteDetailsScreen(
             ) {
                 Text(
                     text = "$lastModified",
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = Color.Gray,
+                        fontSize = 10.sp
+                    )
                 )
                 Text(
                     text = "Word Count: $wordCountString",
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = Color.Gray,
+                        fontSize = 10.sp
+                    )
                 )
             }
+            Spacer(modifier = Modifier.height(10.dp))
+
 
         }
 
@@ -677,4 +711,21 @@ private fun noteChanged(
     return note.title != newNote.title ||
             note.content != newNote.content ||
             note.folderId != newNote.folderId
+}
+
+
+private fun String.words(): Int {
+    var count = 0
+    var inWord = false
+
+    forEach { char ->
+        if (char == ' ') {
+            inWord = false
+        } else if (!inWord) {
+            count++
+            inWord = true
+        }
+    }
+
+    return count
 }

@@ -7,10 +7,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.implementing.cozyspace.data.local.backup.encryption.encryptData
+import com.implementing.cozyspace.data.local.backup.encryption.getSecretKey
 import com.implementing.cozyspace.data.local.dao.BookmarkDao
 import com.implementing.cozyspace.data.local.dao.DiaryDao
 import com.implementing.cozyspace.data.local.dao.NoteDao
@@ -24,6 +27,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 
 @HiltWorker
@@ -61,8 +65,14 @@ class ExportWorker @AssistedInject constructor(
             setProgress(workDataOf("progress" to 100))
 
             Result.success(workDataOf("success" to true))
+        } catch (e: IOException) {
+            Log.e("ExportWorker", "Error writing to file", e)
+            Result.failure()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("ExportWorker", "Error serializing data to JSON", e)
+            Result.failure()
+        } catch (e: Exception) {
+            Log.e("ExportWorker", "Unknown export error", e)
             Result.failure()
         }
     }
@@ -74,6 +84,15 @@ class ExportWorker @AssistedInject constructor(
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
         }
+
+//
+//        // Generate the secret key (or retrieve it from a secure place)
+//        val secretKey = getSecretKey()
+//
+//
+//        // Encrypt the content
+//        val encryptedContent = encryptData(content, secretKey)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             values.put(
                 MediaStore.MediaColumns.RELATIVE_PATH,

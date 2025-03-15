@@ -1,6 +1,7 @@
 package com.implementing.cozyspace.inappscreens.calendar.screen.items
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +34,10 @@ fun LazyItemScope.CalendarEventItem(
     Card(
         modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null),
         shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.surfaceContainerHighest)
+
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

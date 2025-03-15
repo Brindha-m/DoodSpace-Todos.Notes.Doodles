@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -32,11 +31,10 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DatePickerFormatter
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -85,7 +83,6 @@ import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.util.Priority
 import com.implementing.cozyspace.util.TaskFrequency
 import com.implementing.cozyspace.util.formatDateDependingOnDay
-import com.implementing.cozyspace.util.formatTime
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.util.toPriority
 import com.implementing.cozyspace.util.toTaskFrequency
@@ -115,11 +112,15 @@ fun AddTaskBottomSheetContent(
     val context = LocalContext.current
 
 
-    val timeState = rememberTimePickerState()
+    val timeState = rememberTimePickerState(
+        initialHour = dueDate.get(Calendar.HOUR_OF_DAY),
+        initialMinute = dueDate.get(Calendar.MINUTE),
+        is24Hour = false // Adjust based on your needs
+    )
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    var showTimePicker by remember { mutableStateOf(true) }
+    var showTimePicker by remember { mutableStateOf(false) }
 
     var openDialog by remember { mutableStateOf(true) }
 
@@ -129,6 +130,7 @@ fun AddTaskBottomSheetContent(
             .defaultMinSize(minHeight = 1.dp)
             .padding(horizontal = 16.dp, vertical = 24.dp)
             .verticalScroll(rememberScrollState())
+//            .background(color = MaterialTheme.colorScheme.inverseOnSurface)
     ) {
         SheetHandle(Modifier.align(Alignment.CenterHorizontally))
         Text(
@@ -185,7 +187,7 @@ fun AddTaskBottomSheetContent(
                 )
             )
         }
-        Divider()
+        HorizontalDivider()
 
         Spacer(Modifier.height(13.dp))
 
@@ -200,7 +202,7 @@ fun AddTaskBottomSheetContent(
             onChange = { priority = it }
         )
         Spacer(Modifier.height(12.dp))
-        Divider()
+        HorizontalDivider()
 
         Spacer(Modifier.height(12.dp))
 
@@ -261,8 +263,11 @@ fun AddTaskBottomSheetContent(
                             TimePicker(
                                 state = timeState,
                                 colors = TimePickerDefaults.colors(
-                                    timeSelectorSelectedContainerColor = Color(0xE18260BE),
-                                    selectorColor = Color(0xFFB79AE9),
+                                    timeSelectorSelectedContainerColor = Color(0xFF7B4BCE), // Solid deep purple
+                                    selectorColor = Color(0xFFB388FF),                    // Mid-tone purple
+                                    timeSelectorSelectedContentColor = Color.White,       // White for contrast
+                                    timeSelectorUnselectedContentColor = Color.White , // Neutral gray for unselected
+                                    timeSelectorUnselectedContainerColor = Color.DarkGray
                                 )
                             )
                         }
@@ -284,9 +289,11 @@ fun AddTaskBottomSheetContent(
                             confirmButton = {
                                 TextButton(
                                     onClick = {
-                                        val selectedDateMillis = datePickerState.selectedDateMillis ?: Calendar.getInstance().timeInMillis
+                                        val selectedDateMillis = datePickerState.selectedDateMillis
+                                            ?: Calendar.getInstance().timeInMillis
                                         // Update the dueDate with the selected date
-                                        dueDate = Calendar.getInstance().apply { timeInMillis = selectedDateMillis }
+                                        dueDate = Calendar.getInstance()
+                                            .apply { timeInMillis = selectedDateMillis }
 
                                         openDialog = false
                                         // Show the time picker after selecting the date
@@ -316,19 +323,13 @@ fun AddTaskBottomSheetContent(
                                 }
                             }
                         ) {
-                            val minDate = Calendar.getInstance().apply {
-                                // Clear the time fields to set the time to midnight
-                                set(Calendar.HOUR_OF_DAY, 0)
-                                set(Calendar.MINUTE, 0)
-                                set(Calendar.SECOND, 0)
-                                set(Calendar.MILLISECOND, 0)
-                            }.timeInMillis
-
                             DatePicker(
                                 state = datePickerState,
                                 colors = DatePickerDefaults.colors(
-                                    selectedDayContainerColor = Color(0xD78260BE)
-                                ),
+                                    selectedDayContentColor = Color.LightGray,
+                                    selectedYearContainerColor = Color(0xFF7C60A1),
+                                    selectedDayContainerColor = Color(0xFF7C60A1),
+                                )
                             )
                         }
                     }
@@ -355,7 +356,8 @@ fun AddTaskBottomSheetContent(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(checked = recurring,
+                    Checkbox(
+                        checked = recurring,
                         colors = CheckboxDefaults.colors(Color.DarkGray),
                         onCheckedChange = {
                             recurring = it
@@ -499,7 +501,6 @@ fun PriorityTabRow(
         }
     }
 }
-
 
 
 @Composable

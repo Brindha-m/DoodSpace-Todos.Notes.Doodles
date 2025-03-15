@@ -26,7 +26,7 @@ private val DarkColorScheme = darkColorScheme(
     primaryContainer = Color.LightGray,
 
     secondary = SecondaryColor,
-//    surface = DarkGray,
+
     onSurface = Color.White,
     onBackground = Color.White,
     /* Bottom navs */
@@ -37,6 +37,11 @@ private val DarkColorScheme = darkColorScheme(
 
     // save icon
     scrim = Color.DarkGray,
+
+    // THIS IS THE MAJORITY OF CARD COLOR
+    inverseOnSurface = Color(0xFF0E0D0D),
+
+    surfaceContainerHighest = surfaceContainerHighestDark
 
 
 )
@@ -58,6 +63,10 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color(0xFF67509F),
     onSecondary = Color(0xFF1B1A18),
 
+    // THIS IS THE MAJORITY OF CARD COLOR
+    inverseOnSurface = Color(0xFFFCFAFA),
+
+    surfaceContainerHighest = surfaceContainerHighestLight
 
 )
 

@@ -1,7 +1,7 @@
 package com.implementing.cozyspace.inappscreens.task
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,13 +32,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.util.formatDateDependingOnDay
 import com.implementing.cozyspace.util.isDueDateOverdue
 import com.implementing.cozyspace.util.toPriority
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun LazyItemScope.TaskItem(
     modifier: Modifier = Modifier,
@@ -47,11 +48,11 @@ fun LazyItemScope.TaskItem(
     onClick: () -> Unit
 ) {
     Card(
-        modifier = modifier
-            .padding(horizontal = 8.dp)
-            .animateItemPlacement(),
+        modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null).padding(horizontal = 8.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseOnSurface),
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.surfaceContainerHighest)
     ) {
         Column(
             Modifier
@@ -79,7 +80,7 @@ fun LazyItemScope.TaskItem(
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        modifier = Modifier.size(13.dp),
+                        modifier = Modifier.size(10.dp),
                         painter = painterResource(R.drawable.ic_alarm),
                         contentDescription = stringResource(R.string.due_date),
                         tint = if (task.dueDate.isDueDateOverdue()) Color.Red else MaterialTheme.colorScheme.onSurface
@@ -87,7 +88,7 @@ fun LazyItemScope.TaskItem(
                     Spacer(Modifier.width(4.dp))
                     Text(
                         text = task.dueDate.formatDateDependingOnDay(),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                         color = if (task.dueDate.isDueDateOverdue()) Color.Red else MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -102,13 +103,14 @@ fun TaskCheckBox(
     borderColor: Color,
     onComplete: () -> Unit
 ) {
-    Box(modifier = Modifier
-        .size(30.dp)
-        .clip(CircleShape)
-        .border(2.dp, borderColor, CircleShape)
-        .clickable {
-            onComplete()
-        }, contentAlignment = Alignment.Center
+    Box(
+        modifier = Modifier
+            .size(30.dp)
+            .clip(CircleShape)
+            .border(2.dp, borderColor, CircleShape)
+            .clickable {
+                onComplete()
+            }, contentAlignment = Alignment.Center
     ) {
         AnimatedVisibility(visible = isComplete) {
             Icon(

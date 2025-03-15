@@ -16,7 +16,7 @@ class DoodleController : ViewModel() {
     private val _redo = mutableStateListOf<PathWrapper>()
     internal var point: SnapshotStateList<PathWrapper> = _undo
 
-    var currentColor by mutableStateOf(Color.White)
+    var currentColor by mutableStateOf(Color(0xFFFA7970))
         private set
     var pathStroke by mutableStateOf(0.3f)
         private set

@@ -8,11 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+
 class GetAllNotesUseCase @Inject constructor(
-    private val notesRepository: NoteRepository
+    private val notesRepository: NoteRepository,
 ) {
     operator fun invoke(order: Order) : Flow<List<Note>> {
-        return notesRepository.getAllNotes().map { list ->
+        return notesRepository.getAllFolderLessNotes().map { list ->
             when (order.orderType) {
                 is OrderType.ASC -> {
                     when (order) {

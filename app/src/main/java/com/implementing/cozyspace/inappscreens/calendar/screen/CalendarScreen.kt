@@ -26,7 +26,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -335,7 +335,7 @@ fun CalendarSettingsSection(
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(8.dp)
         )
-        Divider()
+        HorizontalDivider()
         calendars.keys.forEach { calendar ->
             var expanded by remember { mutableStateOf(false) }
             Box(

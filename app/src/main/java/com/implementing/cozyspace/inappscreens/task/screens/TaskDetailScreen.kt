@@ -29,7 +29,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -84,6 +84,7 @@ import com.implementing.cozyspace.navigation.Screen
 import com.implementing.cozyspace.util.Priority
 import com.implementing.cozyspace.util.TaskFrequency
 import com.implementing.cozyspace.util.formatDateDependingOnDay
+import com.implementing.cozyspace.util.now
 import com.implementing.cozyspace.util.toInt
 import com.implementing.cozyspace.util.toPriority
 import com.implementing.cozyspace.util.toTaskFrequency
@@ -123,15 +124,26 @@ fun TaskDetailScreen(
     val priorities = listOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     val context = LocalContext.current
 
-
-    val timeState = rememberTimePickerState()
+    val timeState = rememberTimePickerState(
+        initialHour = if (dueDateExists && dueDate != 0L) {
+            Calendar.getInstance().apply { timeInMillis = dueDate }.get(Calendar.HOUR_OF_DAY)
+        } else {
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        },
+        initialMinute = if (dueDateExists && dueDate != 0L) {
+            Calendar.getInstance().apply { timeInMillis = dueDate }.get(Calendar.MINUTE)
+        } else {
+            Calendar.getInstance().get(Calendar.MINUTE)
+        },
+        is24Hour = false
+    )
 
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
     var showTimePicker by remember { mutableStateOf(false) }
 
-    var opendateDialog by remember { mutableStateOf(true) }
+    var opendateDialog by remember { mutableStateOf(false) }
 
 
 
@@ -221,7 +233,12 @@ fun TaskDetailScreen(
                                 navController.navigateUp()
                             }
                         ) {
-                            viewModel.onEvent(TaskEvent.UpdateTask(it, dueDate != uiState.task.dueDate))
+                            viewModel.onEvent(
+                                TaskEvent.UpdateTask(
+                                    it,
+                                    dueDate != uiState.task.dueDate
+                                )
+                            )
                         }
                     })
                     {
@@ -307,7 +324,7 @@ fun TaskDetailScreen(
 
 
             Spacer(Modifier.height(12.dp))
-            Divider()
+            HorizontalDivider()
             Text(
                 text = stringResource(R.string.priority),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
@@ -321,7 +338,7 @@ fun TaskDetailScreen(
                 onChange = { priority = it }
             )
             Spacer(Modifier.height(12.dp))
-            Divider()
+            HorizontalDivider()
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -347,7 +364,6 @@ fun TaskDetailScreen(
                         Modifier
                             .fillMaxWidth()
                             .clickable {
-                                showTimePicker = true
                                 opendateDialog = true
                             }
                             .padding(8.dp),
@@ -361,7 +377,8 @@ fun TaskDetailScreen(
                                 onConfirm = {
 
                                     val cal = Calendar.getInstance().apply {
-                                        timeInMillis = dueDate // Set the calendar's time to the current dueDate
+                                        timeInMillis =
+                                            dueDate // Set the calendar's time to the current dueDate
                                         set(Calendar.HOUR_OF_DAY, timeState.hour)
                                         set(Calendar.MINUTE, timeState.minute)
                                     }
@@ -369,7 +386,13 @@ fun TaskDetailScreen(
 
 
                                     snackScope.launch {
-                                        snackState.showSnackbar("Entered time: ${formatter.format(cal.time)}")
+                                        snackState.showSnackbar(
+                                            "Entered time: ${
+                                                formatter.format(
+                                                    cal.time
+                                                )
+                                            }"
+                                        )
                                     }
                                     showTimePicker = false
                                 },
@@ -377,8 +400,11 @@ fun TaskDetailScreen(
                                 TimePicker(
                                     state = timeState,
                                     colors = TimePickerDefaults.colors(
-                                        timeSelectorSelectedContainerColor = Color(0xE18260BE),
-                                        selectorColor = Color(0xFFB79AE9),
+                                        timeSelectorSelectedContainerColor = Color(0xFF7B4BCE), // Solid deep purple
+                                        selectorColor = Color(0xFFB388FF),                    // Mid-tone purple
+                                        timeSelectorSelectedContentColor = Color.White,       // White for contrast
+                                        timeSelectorUnselectedContentColor = Color.White , // Neutral gray for unselected
+                                        timeSelectorUnselectedContainerColor = Color.DarkGray
                                     )
                                 )
                             }
@@ -386,15 +412,6 @@ fun TaskDetailScreen(
 
 
                         if (opendateDialog) {
-
-                            val minDate = Calendar.getInstance().apply {
-                                // Clear the time fields to set the time to midnight
-                                set(Calendar.HOUR_OF_DAY, 0)
-                                set(Calendar.MINUTE, 0)
-                                set(Calendar.SECOND, 0)
-                                set(Calendar.MILLISECOND, 0)
-                            }.timeInMillis
-
                             val datePickerState = rememberDatePickerState(
                                 selectableDates = PresentAndFutureSelectableDates
                             )
@@ -409,7 +426,9 @@ fun TaskDetailScreen(
                                 confirmButton = {
                                     TextButton(
                                         onClick = {
-                                            val selectedDateMillis = datePickerState.selectedDateMillis ?: Calendar.getInstance().timeInMillis
+                                            val selectedDateMillis =
+                                                datePickerState.selectedDateMillis
+                                                    ?: Calendar.getInstance().timeInMillis
                                             dueDate = selectedDateMillis
 
                                             opendateDialog = false
@@ -435,11 +454,11 @@ fun TaskDetailScreen(
                                 DatePicker(
                                     state = datePickerState,
                                     colors = DatePickerDefaults.colors(
-                                        selectedDayContainerColor = Color(0xD78260BE)
-                                    ),
-
-
+                                        selectedDayContentColor = Color.LightGray,
+                                        selectedYearContainerColor = Color(0xFF7C60A1),
+                                        selectedDayContainerColor = Color(0xFF7C60A1),
                                     )
+                                )
                             }
                         }
 
@@ -462,7 +481,8 @@ fun TaskDetailScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Checkbox(checked = recurring,
+                        Checkbox(
+                            checked = recurring,
                             colors = CheckboxDefaults.colors(Color.DarkGray),
                             onCheckedChange = {
                                 recurring = it

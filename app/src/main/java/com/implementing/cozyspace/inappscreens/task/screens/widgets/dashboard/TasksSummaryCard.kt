@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.implementing.cozyspace.R
 import com.implementing.cozyspace.model.Task
 import com.implementing.cozyspace.ui.theme.Blue
@@ -114,7 +115,7 @@ fun TasksSummaryCard(
                         append(" ")
                         append(stringResource(R.string.of_last_week_tasks))
                     },
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),

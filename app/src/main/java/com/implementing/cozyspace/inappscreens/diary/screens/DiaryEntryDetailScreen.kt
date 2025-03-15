@@ -1,9 +1,6 @@
 package com.implementing.cozyspace.inappscreens.diary.screens
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -66,8 +63,16 @@ import com.implementing.cozyspace.util.Mood
 import com.implementing.cozyspace.util.fullDate
 import java.util.Calendar
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import com.implementing.cozyspace.inappscreens.task.screens.PresentAndFutureSelectableDates
+
+
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DiaryEntryDetailsScreen(
     navController: NavHostController,
@@ -87,12 +92,25 @@ fun DiaryEntryDetailsScreen(
 
     var title by rememberSaveable { mutableStateOf(state.entry?.title ?: "") }
     var content by rememberSaveable { mutableStateOf(state.entry?.content ?: "") }
-    var mood by rememberSaveable { mutableStateOf(state.entry?.mood ?: Mood.OKAY) }
+    var mood by rememberSaveable { mutableStateOf(state.entry?.mood ?: Mood.AWESOME) }
     var date by rememberSaveable {
         mutableStateOf(
             state.entry?.createdDate ?: System.currentTimeMillis()
         )
     }
+
+    val datePickerState = rememberDatePickerState(
+        selectableDates = PresentAndFutureSelectableDates
+    )
+    val timePickerState = rememberTimePickerState(
+        initialHour = Calendar.getInstance().apply { timeInMillis = date }
+            .get(Calendar.HOUR_OF_DAY),
+        initialMinute = Calendar.getInstance().apply { timeInMillis = date }
+            .get(Calendar.MINUTE),
+        is24Hour = false
+    )
+    var showDatePicker by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.entry) {
         if (state.entry != null) {
@@ -108,9 +126,7 @@ fun DiaryEntryDetailsScreen(
             navController.popBackStack(route = Screen.DiaryScreen.route, inclusive = false)
         }
         if (state.error != null) {
-            snackbarHostState.showSnackbar(
-                state.error
-            )
+            snackbarHostState.showSnackbar(state.error)
             viewModel.onEvent(DiaryEvent.ErrorDisplayed)
         }
     }
@@ -123,11 +139,8 @@ fun DiaryEntryDetailsScreen(
                 createdDate = date,
                 updatedDate = System.currentTimeMillis()
             )
-            if (entryChanged(
-                    state.entry,
-                    entry
-                )
-            ) viewModel.onEvent(DiaryEvent.UpdateEntry(entry))
+            if (entryChanged(state.entry, entry))
+                viewModel.onEvent(DiaryEvent.UpdateEntry(entry))
             else navController.popBackStack(route = Screen.DiaryScreen.route, inclusive = false)
         } else
             navController.popBackStack(route = Screen.DiaryScreen.route, inclusive = false)
@@ -155,7 +168,6 @@ fun DiaryEntryDetailsScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
-//                elevation = 0.dp,
             )
         },
         floatingActionButton = {
@@ -184,7 +196,6 @@ fun DiaryEntryDetailsScreen(
                         route = Screen.DiaryScreen.route,
                         inclusive = false
                     )
-
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
             ) {
@@ -223,7 +234,6 @@ fun DiaryEntryDetailsScreen(
             )
 
             Spacer(Modifier.height(9.dp))
-
             OutlinedTextField(
                 value = content,
                 onValueChange = { content = it },
@@ -234,21 +244,12 @@ fun DiaryEntryDetailsScreen(
 
             Spacer(Modifier.height(15.dp))
 
-
             TextButton(
                 elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFF221F3E)),
                 modifier = Modifier.align(Alignment.End),
-                onClick = {
-                    showDatePicker(
-                        Calendar.getInstance().apply { timeInMillis = date },
-                        context,
-                        onDateSelected = {
-                            date = it
-                        }
-                    )
-                }) {
-
+                onClick = { showDatePicker = true }
+            ) {
                 Text(
                     text = date.fullDate(),
                     style = MaterialTheme.typography.bodyMedium,
@@ -257,6 +258,72 @@ fun DiaryEntryDetailsScreen(
                 )
             }
         }
+
+        if (showDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            datePickerState.selectedDateMillis?.let { selectedDate ->
+                                showDatePicker = false
+                                showTimePicker = true
+                            }
+                        }
+                    ) { Text("Next") }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showDatePicker = false }
+                    ) { Text("Cancel") }
+                }
+            ) {
+                DatePicker(
+                    state = datePickerState,
+                    colors = DatePickerDefaults.colors(
+                        selectedDayContentColor = Color.LightGray,
+                        selectedYearContainerColor = Color(0xFF7C60A1),
+                        selectedDayContainerColor = Color(0xFF7C60A1),
+                    )
+                )
+            }
+        }
+
+        if (showTimePicker) {
+            TimePickerDialog(
+                onDismissRequest = { showTimePicker = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            val calendar = Calendar.getInstance().apply {
+                                timeInMillis = datePickerState.selectedDateMillis ?: date
+                                set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+                                set(Calendar.MINUTE, timePickerState.minute)
+                            }
+                            date = calendar.timeInMillis
+                            showTimePicker = false
+                        }
+                    ) { Text("OK") }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showTimePicker = false }
+                    ) { Text("Cancel") }
+                }
+            ) {
+                TimePicker(
+                    state = timePickerState,
+                    colors = TimePickerDefaults.colors(
+                        timeSelectorSelectedContainerColor = Color(0xFF7B4BCE), // Solid deep purple
+                        selectorColor = Color(0xFFB388FF),                    // Mid-tone purple
+                        timeSelectorSelectedContentColor = Color.White,       // White for contrast
+                        timeSelectorUnselectedContentColor = Color.White , // Neutral gray for unselected
+                        timeSelectorUnselectedContainerColor = Color.DarkGray
+                    )
+                )
+            }
+        }
+
         if (openDialog)
             AlertDialog(
                 shape = RoundedCornerShape(25.dp),
@@ -270,9 +337,7 @@ fun DiaryEntryDetailsScreen(
                 },
                 text = {
                     Text(
-                        stringResource(
-                            R.string.delete_diary_entry_confirmation_message
-                        ),
+                        stringResource(R.string.delete_diary_entry_confirmation_message),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 },
@@ -294,9 +359,8 @@ fun DiaryEntryDetailsScreen(
                 dismissButton = {
                     Button(
                         shape = RoundedCornerShape(25.dp),
-                        onClick = {
-                            openDialog = false
-                        }) {
+                        onClick = { openDialog = false }
+                    ) {
                         Text(
                             stringResource(R.string.cancel),
                             color = Color.White,
@@ -338,8 +402,7 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
                 .clickable { onMoodChange() }
                 .padding(6.dp)
         ) {
-
-            val borderColor = mood.color // Use entry.mood.color as the border color
+            val borderColor = mood.color
             val borderWidth = 2.dp
 
             Image(
@@ -348,21 +411,13 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
                 modifier = Modifier
                     .size(32.dp)
                     .border(
-                        border = BorderStroke
-                            (
+                        border = BorderStroke(
                             width = borderWidth,
                             color = if (chosen) borderColor else Color.Transparent
                         ),
-                        CircleShape
+                        shape = CircleShape
                     )
             )
-
-//            Icon(
-//                painter = painterResource(id = mood.icon),
-//                contentDescription = stringResource(mood.title),
-//                tint = if (chosen) mood.color else Color.Gray,
-//                modifier = Modifier.size(48.dp)
-//            )
 
             Spacer(Modifier.height(8.dp))
 
@@ -377,42 +432,53 @@ private fun MoodItem(mood: Mood, chosen: Boolean, onMoodChange: () -> Unit) {
     }
 }
 
-private fun entryChanged(
-    entry: Diary?,
-    newEntry: Diary
-): Boolean {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimePickerDialog(
+    onDismissRequest: () -> Unit,
+    confirmButton: @Composable (() -> Unit),
+    dismissButton: @Composable (() -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .width(IntrinsicSize.Min)
+                .height(IntrinsicSize.Min)
+                .background(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surface
+                )
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    dismissButton?.invoke()
+                    confirmButton()
+                }
+            }
+        }
+    }
+}
+
+private fun entryChanged(entry: Diary?, newEntry: Diary): Boolean {
     return entry?.title != newEntry.title ||
             entry.content != newEntry.content ||
             entry.mood != newEntry.mood ||
             entry.createdDate != newEntry.createdDate
 }
 
-private fun showDatePicker(
-    date: Calendar,
-    context: Context,
-    onDateSelected: (Long) -> Unit
-) {
-
-    val tempDate = Calendar.getInstance()
-    val timePicker = TimePickerDialog(
-        context,
-        { _, hour, minute ->
-            tempDate[Calendar.HOUR_OF_DAY] = hour
-            tempDate[Calendar.MINUTE] = minute
-            onDateSelected(tempDate.timeInMillis)
-        }, date[Calendar.HOUR_OF_DAY], date[Calendar.MINUTE], false
-    )
-    val datePicker = DatePickerDialog(
-        context,
-        { _, year, month, day ->
-            tempDate[Calendar.YEAR] = year
-            tempDate[Calendar.MONTH] = month
-            tempDate[Calendar.DAY_OF_MONTH] = day
-            timePicker.show()
-        },
-        date[Calendar.YEAR],
-        date[Calendar.MONTH],
-        date[Calendar.DAY_OF_MONTH]
-    )
-    datePicker.show()
-}

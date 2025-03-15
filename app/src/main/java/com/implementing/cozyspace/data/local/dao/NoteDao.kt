@@ -12,6 +12,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDao {
     // Note section
+
+    @Query("SELECT title, SUBSTR(content, 1, 200) AS content, created_date, updated_date, pinned, folder_id, id FROM notes WHERE folder_id IS NULL")
+    fun getAllFolderLessNotes(): Flow<List<Note>>
+
+
     @Query("SELECT * FROM notes")
     fun getAllNotes(): Flow<List<Note>>
 

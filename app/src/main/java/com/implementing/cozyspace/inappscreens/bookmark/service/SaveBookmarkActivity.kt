@@ -1,4 +1,4 @@
-package com.implementing.cozyspace.inappscreens.bookmark
+package com.implementing.cozyspace.inappscreens.bookmark.service
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.inappscreens.bookmark.BookmarkEvent
 import com.implementing.cozyspace.model.Bookmark
 import com.implementing.cozyspace.inappscreens.bookmark.viewmodel.BookmarksViewModel
 import com.implementing.cozyspace.util.isValidUrl
@@ -20,11 +21,13 @@ class SaveBookmarkActivity : ComponentActivity() {
         if (intent != null) {
             if (intent.action == Intent.ACTION_SEND && intent.type == "text/plain") {
                 val url = intent.getStringExtra(Intent.EXTRA_TEXT)
+                val title = intent.getStringExtra(Intent.EXTRA_SUBJECT)
                 if (!url.isNullOrBlank()) {
                     if (url.isValidUrl()) {
                         viewModel.onEvent(
                             BookmarkEvent.AddBookmark(
                                 Bookmark(
+                                    title = title ?: "",
                                     url = url.trim(),
                                     createdDate = System.currentTimeMillis(),
                                     updatedDate = System.currentTimeMillis()

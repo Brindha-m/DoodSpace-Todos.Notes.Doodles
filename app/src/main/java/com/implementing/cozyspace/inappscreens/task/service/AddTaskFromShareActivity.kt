@@ -1,4 +1,4 @@
-package com.implementing.cozyspace.domain.usecase.tasks
+package com.implementing.cozyspace.inappscreens.task.service
 
 import android.content.Intent
 import android.os.Bundle

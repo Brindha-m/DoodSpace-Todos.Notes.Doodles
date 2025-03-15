@@ -5,11 +5,14 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.implementing.cozyspace.R
+import com.implementing.cozyspace.data.local.backup.encryption.decryptData
+import com.implementing.cozyspace.data.local.backup.encryption.getSecretKey
 import com.implementing.cozyspace.data.local.dao.BookmarkDao
 import com.implementing.cozyspace.data.local.dao.DiaryDao
 import com.implementing.cozyspace.data.local.dao.NoteDao
@@ -101,6 +104,16 @@ class ImportWorker @AssistedInject constructor(
             openFileDescriptor(uri, "r")?.use { pfd ->
                 FileInputStream(pfd.fileDescriptor).use { inputStream ->
                     inputStream.bufferedReader().use { it.readText() }
+                    // Read encrypted data from file
+//                    val encryptedData = inputStream.bufferedReader().use { it.readText() }
+//
+//                    // Log the encrypted data for debugging
+////                    Log.d("ImportWorker", "Encrypted data read from file: $encryptedData")
+//
+////                    // Decrypt the data
+////                    val secretKey = getSecretKey()  // Retrieve the key used for encryption
+////                    return decryptData(encryptedData, secretKey)
+
                 }
             }
         }
@@ -117,8 +130,13 @@ class ImportWorker @AssistedInject constructor(
         )
         query?.use { cursor ->
             val id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+//            while (cursor.moveToNext()) {
+//                return cursor.getString(id)
+//            }
             while (cursor.moveToNext()) {
-                return cursor.getString(id)
+                val fileName = cursor.getString(id)
+//                Log.d("ImportWorker", "File name: $fileName")  // Debug file name
+                return fileName
             }
         }
         return ""

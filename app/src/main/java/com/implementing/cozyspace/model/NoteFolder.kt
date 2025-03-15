@@ -9,3 +9,15 @@ data class NoteFolder(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
 )
+
+
+
+
+fun NoteFolder.toNoteFolder(): NoteFolder {
+    return NoteFolder(
+        name = name,
+        id = id,
+    )
+}
+
+fun List<NoteFolder>.withoutIds() = map { it.copy(id = 0) }

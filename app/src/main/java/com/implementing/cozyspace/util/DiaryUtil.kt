@@ -11,7 +11,7 @@ import com.implementing.cozyspace.ui.theme.Purple
 
 enum class Mood(@DrawableRes val icon: Int, val color: Color, @StringRes val title: Int, val value: Int) {
     AWESOME(R.drawable.img, Green, R.string.awesome, 6),
-    GOOD(R.drawable.img_1, Color(0xFFFFD600), R.string.good, 5),
+    GOOD(R.drawable.img_1, Color(0xFFE8CE94), R.string.good, 5),
     OKAY(R.drawable.img_11, Purple, R.string.okay, 4),
     SLEEPY(R.drawable.img_5, Orange, R.string.sleepy, 3),
     BAD(R.drawable.img_10, Color.Red, R.string.bad, 2),
