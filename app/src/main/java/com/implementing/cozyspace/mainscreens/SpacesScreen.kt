@@ -382,14 +382,13 @@ fun ChristmasAnimation() {
 
 @Composable
 fun AutoUpdateCheck() {
-    @Composable
-    fun MyAppWithAutoFeatures() {
-        val context = LocalContext.current
-        val activity = context as ComponentActivity
-        val coroutineScope = rememberCoroutineScope()
-        val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
 
-        // Auto-trigger In-App Review
+    val context = LocalContext.current
+    val activity = context as ComponentActivity
+    val coroutineScope = rememberCoroutineScope()
+    val appUpdateManager = remember { AppUpdateManagerFactory.create(context) }
+
+    // Auto-trigger In-App Review
 //        LaunchedEffect("review") {
 //            val reviewManager = ReviewManagerFactory.create(context)
 //            val request = reviewManager.requestReviewFlow()
@@ -402,38 +401,37 @@ fun AutoUpdateCheck() {
 //            }
 //        }
 
-        LaunchedEffect("review") {
-            val reviewManager = ReviewManagerFactory.create(context)
-            val request = reviewManager.requestReviewFlow()
-            request.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    println("Review flow requested successfully")
-                    coroutineScope.launch {
-                        reviewManager.launchReviewFlow(context, task.result)
-                        Log.d("Review","Review dialog launched (won’t show locally)")
-                    }
-                } else {
-                    Log.d("Review", "Review request failed: ${task.exception}")
+    LaunchedEffect("review") {
+        val reviewManager = ReviewManagerFactory.create(context)
+        val request = reviewManager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println("Review flow requested successfully")
+                coroutineScope.launch {
+                    reviewManager.launchReviewFlow(context, task.result)
+                    Log.d("Review", "Review dialog launched (won’t show locally)")
                 }
+            } else {
+                Log.d("Review", "Review request failed: ${task.exception}")
             }
         }
+    }
 
-        // Auto-trigger In-App Update
-        LaunchedEffect("update") {
-            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-            appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                ) {
-                    coroutineScope.launch {
-                        appUpdateManager.startUpdateFlow(
-                            appUpdateInfo,
-                            activity,
-                            AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
-                        ).addOnCompleteListener { task ->
-                            if (task.isSuccessful && task.result == RESULT_OK) {
-                                // Update started
-                            }
+    // Auto-trigger In-App Update
+    LaunchedEffect("update") {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                coroutineScope.launch {
+                    appUpdateManager.startUpdateFlow(
+                        appUpdateInfo,
+                        activity,
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                    ).addOnCompleteListener { task ->
+                        if (task.isSuccessful && task.result == RESULT_OK) {
+                            // Update started
                         }
                     }
                 }
